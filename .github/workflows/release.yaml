@@ -1,0 +1,107 @@
+name: "Release new version"
+
+on:
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: 'Type of release'
+        required: true
+        type: choice
+        options:
+          - 'patch'
+          - 'minor'
+          - 'major'
+          - 'prepatch'
+          - 'preminor'
+          - 'premajor'
+          - 'prerelease'
+        default: 'minor'
+      preid:
+        description: 'Prerelease prefix'
+        required: false
+        type: choice
+        options:
+          - ''
+          - 'rc'
+          - 'beta'
+          - 'alpha'
+        default: ''
+      draft:
+        description: 'Create a draft release'
+        required: false
+        type: boolean
+        default: false
+
+
+jobs:
+  version_increase:
+    name: Increase plugin version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    outputs:
+      commit_hash: ${{ steps.push_git_tag.outputs.commit_hash }}
+
+    steps:
+      - name: Configure Git user
+        run: |
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Bump version number
+        run: npm version ${{ github.event.inputs.increment }} --preid ${{ github.event.inputs.preid }}
+
+      - name: Push version bump and tag to GitHub
+        id: push_git_tag
+        run: |
+          echo "commit_hash=$(git rev-parse --verify HEAD)" >> "$GITHUB_OUTPUT"
+          git push origin --follow-tags
+
+  release:
+    needs: version_increase
+    name: Build and Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.version_increase.outputs.commit_hash }}
+          fetch-tags: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm clean-install
+      - run: npm run-script build
+      - name: 'Composer install'
+        run: 'composer install --no-dev --prefer-dist --no-progress --optimize-autoloader'
+      - run: npm run-script plugin-zip
+
+      - name: Get tag from Git
+        id: git_tag
+        run: |
+          git fetch --tags
+          echo "tag_name=$(git describe --exact-match --tags)" >> "$GITHUB_OUTPUT"
+
+      - name: 'test'
+        run: 'echo ${{ steps.git_tag.outputs.tag_name }}'
+        
+      - name: Create Github Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: ${{ startsWith(github.event.inputs.increment, 'pre') }}
+          draft: ${{ github.event.inputs.draft }}
+          tag_name: ${{ steps.git_tag.outputs.tag_name }}
+          generate_release_notes: true
+          files: 'dc23-prototype.zip'
+
