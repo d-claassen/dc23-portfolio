@@ -1,0 +1,91 @@
+name: 'Test'
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: null
+
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e-playwright:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        wp_version: ["6.7", "6.8", "master"]
+        dependencies_version: ["lowest", "highest"]
+
+    name: "E2E Test: WP ${{ matrix.wp_version }} / Composer ${{ matrix.dependencies_version }}"
+
+    # Allow builds to fail on as-of-yet unreleased WordPress versions.
+    continue-on-error: ${{ matrix.wp_version == 'master' }}
+
+    env:
+      WP_ENV_CORE: ${{ format( 'WordPress/WordPress#{0}', matrix.wp_version ) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: 'Setup PHP'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php_version }}
+
+      - name: 'Validate composer.json and composer.lock'
+        run: 'composer validate --no-check-publish'
+
+      - name: 'NPM install'
+        run: npm install
+
+      - name: 'Composer install'
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependencies_version }}
+          composer-options: '--prefer-dist --optimize-autoloader'
+
+      - name: NPM build
+        run: npm run build
+
+      - name: Install Playwright dependencies
+        run: npx playwright install chromium firefox webkit --with-deps
+
+      - name: Install WordPress and start the server
+        run: npm run wp-env start || npm run wp-env start
+
+      - name: 'Debug wp-env'
+        run: |
+          docker ps -a
+          # npm run wp-env run -- tests-mysql mysql -- --version
+          npm run wp-env run -- tests-wordpress php -- --version
+          # npm run wp-env run -- tests-wordpress php -m
+          # npm run wp-env run -- tests-wordpress php -i
+          # npm run wp-env run -- --env-cwd='wp-content/themes/dennisclaassen2023' tests-wordpress ./vendor/bin/phpunit -- --version
+          # npm run wp-env run -- tests-wordpress locale -a
+          npm run wp-env run -- tests-cli wp core version
+          # npm run wp-env run -- tests-cli wp user list
+          npm run wp-env run -- tests-cli wp theme list
+          npm run wp-env run -- tests-cli wp plugin list
+
+      - name: Run the tests
+        id: tests
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+        run: npm run test:e2e
+
+      - name: 'Archive test artifacts'
+        uses: actions/upload-artifact@v4
+        if: ${{ failure() && steps.tests.conclusion == 'failure' }}
+        with:
+          name: 'tests'
+          path: 'artifacts'
