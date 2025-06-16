@@ -1,0 +1,74 @@
+name: 'CI'
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: null
+
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: 'Quality Control'
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Node and node_modules cache'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: 'Setup PHP'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: 'Validate composer.json and composer.lock'
+        run: 'composer validate --no-check-publish'
+        continue-on-error: true
+
+      - name: 'NPM install'
+        run: npm clean-install
+
+      - name: 'Composer install'
+        run: 'composer install --prefer-dist --no-progress --optimize-autoloader'
+
+      - name: 'Lint package.json'
+        run: 'npm run-script lint:pkg-json'
+
+      - name: 'Lint JS'
+        continue-on-error: true
+        run: 'npm run-script lint:js'
+
+      - name: 'Lint CSS'
+        run: 'npm run-script lint:css'
+
+      - name: 'Lint PHP'
+        run: 'composer phplint'
+
+      - name: 'PHP code style'
+        continue-on-error: true
+        run: 'composer phpcs'
+
+      - name: 'Build the plugin'
+        run: 'npm run-script build'
+
+      - name: 'Purge Composer install'
+        run: 'composer install --no-dev --prefer-dist --no-progress --optimize-autoloader'
+
+      - name: 'Zip it'
+        run: 'npm run-script plugin-zip'
+
+      - name: 'Archive plugin zip'
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'dc23-portfolio'
+          path: 'dc23-portfolio.zip'
