@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	name="Dennis Claassen 2023"
+	xsi:noNamespaceSchemaLocation="./vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+	<description>Dennis Claassen 2023 rules for PHP_CodeSniffer</description>
+
+	<!--
+	#############################################################################
+	COMMAND LINE ARGUMENTS
+	https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+	#############################################################################
+	-->
+
+	<file>src</file>
+	<file>dc23-tea.php</file>
+
+	<!-- Only check PHP files. -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Show progress, show the error codes for each message (source). -->
+	<arg value="sp"/>
+
+	<!-- Strip the filepaths down to the relevant bit. -->
+	<arg name="basepath" value="./"/>
+
+	<!-- Check up to 8 files simultaneously. -->
+	<arg name="parallel" value="8"/>
+
+	<!-- Cache the results between runs. -->
+	<arg name="cache" value="./.cache/phpcs.cache"/>
+
+
+	<!--
+	#############################################################################
+	USE THE YoastCS RULESET
+	#############################################################################
+	-->
+
+	<rule ref="Yoast">
+		<properties>
+			<!-- Provide the plugin specific prefixes for all naming related sniffs. -->
+			<property name="prefixes" type="array">
+				<element value="DC23"/>
+			</property>
+		</properties>
+
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals"/>
+		<exclude name="WordPress.Security.EscapeOutput"/>
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing"/>
+		<exclude name="Yoast.Files.FileName"/>
+		<exclude name="Yoast.NamingConventions.NamespaceName"/>
+		<exclude name="Yoast.Commenting.FileComment"/>
+		<exclude name="Squiz.Commenting.ClassComment"/>
+		<exclude name="Squiz.Commenting.FunctionComment"/>
+		<exclude name="Squiz.Commenting.VariableComment"/>
+	</rule>
+
+	<!-- The PHPCompatibility testVersion value set by YoastCS cannot be overridden here.
+		 It can, however, be overridden via a secondary ruleset import. -->
+	<rule ref=".phpcs.phpcompat.xml"/>
+</ruleset>
