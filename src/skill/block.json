@@ -5,8 +5,8 @@
 	"version": "0.1.0",
 	"title": "Portfolio skill",
 	"category": "portfolio",
-	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"icon": "star-filled",
+	"description": "Display your skills with automatic schema.org integration.",
 	"example": {},
 	"supports": {
 		"html": false
