@@ -1,11 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { test, expect } = require('@playwright/test');
-
-/**
- * WordPress testing utilities
- */
+const { test, expect } = require( '@wordpress/e2e-test-utils-playwright' );
+/*
 import {
 	createNewPost,
 	insertBlock,
@@ -14,7 +11,7 @@ import {
 	publishPost,
 	visitAdminPage,
 } from '@wordpress/e2e-test-utils-playwright';
-
+*/
 test.describe('Skills Block', () => {
 	test.beforeEach(async ({ page, admin }) => {
 		await admin.createNewPost();
