@@ -35,6 +35,6 @@ require_once 'vendor/autoload.php';
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function dc23_portfolio_block_init() {
-	// register_block_type( __DIR__ . '/build/date' );
+	register_block_type( __DIR__ . '/build/skill' );
 }
 add_action( 'init', 'dc23_portfolio_block_init' );
