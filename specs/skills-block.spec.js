@@ -19,27 +19,27 @@ test.describe('Skills Block', () => {
 
 test('can be inserted and configured', async ({ page, editor }) => {
 	// Insert the Skills block
-	await editor.insertBlock({ name: 'dc23-portfolio/skills' });
+	await editor.insertBlock({ name: 'dc23-portfolio/skill' });
 
 	// Check that the block was inserted
-	const skillsBlock = page.locator('[data-type="dc23-portfolio/skills"]');
+	const skillsBlock = page.locator('[data-type="dc23-portfolio/skill"]');
 	await expect(skillsBlock).toBeVisible();
 
 	// Check default title is editable
-	const titleField = skillsBlock.locator('.skills-title');
-	await expect(titleField).toContainText('Skills');
+	const titleField = skillsBlock.locator('.skill-title');
+	await expect(titleField).toContainText('Skill');
 	
 	// Change the title
 	await titleField.click();
 	await titleField.clear();
-	await titleField.type('My Technical Skills');
-	await expect(titleField).toContainText('My Technical Skills');
+	await titleField.type('My Technical Skill');
+	await expect(titleField).toContainText('My Technical Skill');
 });
 
 test('can add and remove skills', async ({ page, editor }) => {
-	await editor.insertBlock({ name: 'dc23-portfolio/skills' });
+	await editor.insertBlock({ name: 'dc23-portfolio/skill' });
 	
-	const skillsBlock = page.locator('[data-type="dc23-portfolio/skills"]');
+	const skillsBlock = page.locator('[data-type="dc23-portfolio/skill"]');
 	
 	// Find first skill input (default skill)
 	const firstSkillInput = skillsBlock.locator('input[placeholder*="Enter skill name"]').first();
@@ -69,9 +69,9 @@ test('can add and remove skills', async ({ page, editor }) => {
 });
 
 test('cannot remove the last skill', async ({ page, editor }) => {
-	await editor.insertBlock({ name: 'dc23-portfolio/skills' });
+	await editor.insertBlock({ name: 'dc23-portfolio/skill' });
 	
-	const skillsBlock = page.locator('[data-type="dc23-portfolio/skills"]');
+	const skillsBlock = page.locator('[data-type="dc23-portfolio/skill"]');
 	const removeButton = skillsBlock.getByRole('button', { name: 'Remove' });
 	
 	// The remove button should be disabled when there's only one skill
@@ -79,9 +79,9 @@ test('cannot remove the last skill', async ({ page, editor }) => {
 });
 
 test('can configure skill levels', async ({ page, editor }) => {
-	await editor.insertBlock({ name: 'dc23-portfolio/skills' });
+	await editor.insertBlock({ name: 'dc23-portfolio/skill' });
 	
-	const skillsBlock = page.locator('[data-type="dc23-portfolio/skills"]');
+	const skillsBlock = page.locator('[data-type="dc23-portfolio/skill"]');
 	
 	// Fill skill name
 	const skillInput = skillsBlock.locator('input[placeholder*="Enter skill name"]').first();
@@ -98,13 +98,13 @@ test('can configure skill levels', async ({ page, editor }) => {
 });
 
 test('can toggle display settings', async ({ page, editor }) => {
-	await editor.insertBlock({ name: 'dc23-portfolio/skills' });
+	await editor.insertBlock({ name: 'dc23-portfolio/skill' });
 	
 	// Open block inspector
 	await editor.openDocumentSettingsSidebar();
 	
 	// Add a skill first
-	const skillsBlock = page.locator('[data-type="dc23-portfolio/skills"]');
+	const skillsBlock = page.locator('[data-type="dc23-portfolio/skill"]');
 	await skillsBlock.locator('input[placeholder*="Enter skill name"]').first().fill('CSS');
 	
 	// Toggle off show levels
@@ -132,9 +132,9 @@ test('can toggle display settings', async ({ page, editor }) => {
 });
 
 test('saves and displays correctly on frontend', async ({ page, editor }) => {
-	await editor.insertBlock({ name: 'dc23-portfolio/skills' });
+	await editor.insertBlock({ name: 'dc23-portfolio/skill' });
 	
-	const skillsBlock = page.locator('[data-type="dc23-portfolio/skills"]');
+	const skillsBlock = page.locator('[data-type="dc23-portfolio/skill"]');
 	
 	// Configure the block
 	await skillsBlock.locator('.skills-title').fill('My Skills');
@@ -158,9 +158,9 @@ test('saves and displays correctly on frontend', async ({ page, editor }) => {
 });
 
 test('validates empty skill names', async ({ page, editor }) => {
-	await editor.insertBlock({ name: 'dc23-portfolio/skills' });
+	await editor.insertBlock({ name: 'dc23-portfolio/skill' });
 	
-	const skillsBlock = page.locator('[data-type="dc23-portfolio/skills"]');
+	const skillsBlock = page.locator('[data-type="dc23-portfolio/skill"]');
 	
 	// Add multiple skills but leave some empty
 	await skillsBlock.getByRole('button', { name: 'Add Skill' }).click();
@@ -181,9 +181,9 @@ test('validates empty skill names', async ({ page, editor }) => {
 });
 
 test('maintains data integrity during editing', async ({ page, editor }) => {
-	await editor.insertBlock({ name: 'dc23-portfolio/skills' });
+	await editor.insertBlock({ name: 'dc23-portfolio/skill' });
 	
-	const skillsBlock = page.locator('[data-type="dc23-portfolio/skills"]');
+	const skillsBlock = page.locator('[data-type="dc23-portfolio/skill"]');
 	
 	// Add and configure multiple skills
 	const skills = [
