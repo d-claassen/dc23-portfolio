@@ -1,11 +1,11 @@
 {
-	"name": "the-events-attendee",
-	"version": "0.6.2",
-	"description": "A block for The Event Calendar event date from post meta.",
+	"name": "dc23-portfolii",
+	"version": "0.0.1",
+	"description": "A set of blocks for a portfolio page.",
 	"author": "The WordPress Contributors",
 	"license": "GPL-2.0-or-later",
 	"keywords": [
-		"event calendar",
+		"portfolio",
 		"wordpress block"
 	],
 	"homepage": "",
@@ -13,7 +13,7 @@
 	"bugs": "",
 	"files": [
 		"readme.*",
-		"dc23-tea.php",
+		"dc23-portfolio.php",
 		"vendor/**",
 		"build/**"
 	],
@@ -33,7 +33,7 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start --webpack-copy-php",
 		"test:e2e": "wp-scripts test-playwright --pass-with-no-tests",
-		"version": "node ./scripts/update-version.js $npm_package_version && git add dc23-tea.php readme.txt",
+		"version": "node ./scripts/update-version.js $npm_package_version && git add dc23-portfolio.php readme.txt",
 		"wp-env": "wp-env"
 	}
 }
