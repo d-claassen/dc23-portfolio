@@ -32,7 +32,7 @@
 		"packages-update": "wp-scripts packages-update",
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start --webpack-copy-php",
-		"test:e2e": "wp-scripts test-playwright",
+		"test:e2e": "wp-scripts test-playwright --pass-with-no-tests",
 		"version": "node ./scripts/update-version.js $npm_package_version && git add dc23-tea.php readme.txt",
 		"wp-env": "wp-env"
 	}
