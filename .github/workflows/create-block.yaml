@@ -1,0 +1,50 @@
+name: Create a new block
+
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 'Block slug and folder name'
+        required: true
+      title:
+        description: 'Display title for the block'
+        required: true
+      category:
+        description: 'Category name for the block'
+        required: false
+        default: ''
+
+jobs:
+  Create:
+    name: Create block dc23-portfolio/${{github.event.inputs.slug}}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Set up Git user
+        run: |
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Create block
+        working-directory: src
+        run: npx @wordpress/create-block@latest ${{ github.event.inputs.slug }} --title "${{ github.event.inputs.title }}" --namespace "dc23-portfolio" --category "${{ github.event.inputs.category }}" --no-plugin --variant dynamic
+
+      - name: Push block
+        working-directory: src
+        run: |
+          git add ${{ github.event.inputs.slug }}
+          git commit -m "Create block dc23-portfolio/${{ github.event.inputs.slug }}"
+          git push origin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
