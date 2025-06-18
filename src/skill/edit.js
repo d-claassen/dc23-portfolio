@@ -21,9 +21,35 @@ export default function Edit( { attributes, setAttributes } ) {
     const { name, description } = attributes;
     const setName = (name) => setAtttributes( { name });
     const setDescription = (description) => setAttributes( { description });
+
+
 	return (
-		<p { ...useBlockProps() }>
-			{ __( 'Portfolio skill – hello from the editor!', 'skill' ) }
-		</p>
+		<div { ...useBlockProps() }>
+            <div className="skills-block">
+					<div className="skill-item">
+						<div className="skill-controls">
+								<TextControl
+									label={__('Skill name', 'dc23-portfolio')}
+									value={name}
+									onChange={setName}
+									placeholder={__('Enter skill name', 'dc23-portfolio')}
+								/>
+                                <TextControl
+									label={__('Description', 'dc23-portfolio')}
+									value={description}
+									onChange={setDescription}
+									placeholder={__('Enter description', 'dc23-portfolio')}
+								/>
+                        </div>
+                        <div className="skill-preview">
+								<span className="skill-name">{name || __('Skill name', 'dc23-portfolio')}</span>
+
+								{description && (
+									<span className="skill-description">{description}</span>
+								)}
+						</div>
+					</div>
+            </div>
+		</div>
 	);
 }
