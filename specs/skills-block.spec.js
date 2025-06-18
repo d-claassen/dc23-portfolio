@@ -22,7 +22,7 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	await editor.insertBlock({ name: 'dc23-portfolio/skill' });
 
 	// Check that the block was inserted
-	const skillsBlock = page.locator('[data-type="dc23-portfolio/skill"]');
+	const skillsBlock = editor.canvas.locator('[data-type="dc23-portfolio/skill"]');
 	await expect(skillsBlock).toBeVisible();
 
 	// Check default title is editable
