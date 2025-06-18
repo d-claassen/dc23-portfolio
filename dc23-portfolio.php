@@ -64,7 +64,7 @@ function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context )
 	}
 
     $specialty = [
-        '@id'   => YoastSEO()->meta->for_current_page()->canonical . '#/schema/Specialty/' . $block['id'];
+        '@id'   => $context->canonical . '#/schema/Specialty/' . $block['id'];
         '@type'=>'http://schema.org/Specialty',
         'name'=>$block_data['attrs']['name'],
     ];
