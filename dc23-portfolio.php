@@ -38,3 +38,51 @@ function dc23_portfolio_block_init() {
 	register_block_type( __DIR__ . '/build/skill' );
 }
 add_action( 'init', 'dc23_portfolio_block_init' );
+
+
+/**
+ * Initialize schema hooks for portfolio blocks.
+ */
+function dc23_portfolio_schema_init() {
+	add_filter( 'wpseo_schema_block_dc23-portfolio/skill', 'dc23_portfolio_skills_to_schema', 10, 3 );
+	// add_filter( 'wpseo_pre_schema_block_type_dc23-portfolio/education', 'dc23_portfolio_education_to_schema', 10, 3 );
+	// add_filter( 'wpseo_pre_schema_block_type_dc23-portfolio/experience', 'dc23_portfolio_experience_to_schema', 10, 3 );
+}
+add_action( 'init', 'dc23_portfolio_schema_init' );
+
+/**
+ * Convert skills block attributes to schema.org data.
+ *
+ * @param array $schema_graph Current schema data.
+ * @param array $block_data Block data including attributes.
+ * @param Meta_Tags_Context $context Yoast context.
+ * @return array Modified schema data.
+ */
+function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context ) {
+	if ( empty( $block_data['attrs']['name'] ) ) {
+		return $schema_graph;
+	}
+
+    $specialty = [
+        '@id'   => YoastSEO()->meta->for_current_page()->canonical . '#/schema/Specialty/' . $block['id'];
+        '@type'=>'http://schema.org/Specialty',
+        'name'=>$block_data['attrs']['name'],
+    ];
+
+	$description = $block_data['attrs']['description'];
+	if ( ! empty( $description ) ) {
+        $specialty['description'] = $description;
+	}
+
+/* 
+@id":"https://www.dennisclaassen.nl/#/schema/Specialty/5"
+"@type":"http://schema.org/Specialty"
+"name":"Soft skills"
+"description":"Communication, coaching, prioritizing, proactive."
+"sameAs":"https://en.wikipedia.org/wiki/Soft_skills"
+*/
+
+    array_push( $schema_graph, $specialty );
+
+	return $schema_graph;
+}
