@@ -31,9 +31,9 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	//await expect(titleField).toContainText('Skill');
 
 	// Change the title
-	//await titleField.click();
-	//await titleField.clear();
-	await titleField.fill('Automated testing');
+	await titleField.click();
+	await titleField.clear();
+	await titleField.type('Automated testing');
 	await expect(titleField).toContainText('Automated testing');
 
 	// Check description is editable
@@ -41,8 +41,8 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	//await expect(descriptionField).toContainText('Skill');
 
 	// Change the title
-	//await descriptionField.click();
-	//await descriptionField.clear();
+	await descriptionField.click();
+	await descriptionField.clear();
 	await descriptionField.type('End-to-end testing (Playwright)');
 	await expect(descriptionField).toContainText('End-to-end testing');
 });
