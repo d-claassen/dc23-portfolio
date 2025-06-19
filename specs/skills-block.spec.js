@@ -39,13 +39,14 @@ test('can be inserted and configured', async ({ page, editor }) => {
 
 	// Check description is editable
 	const descriptionField = skillsBlock.locator('input[placeholder*="Enter description"]').first();
-	//await expect(descriptionField).toContainText('Skill');
+	const descriptionText = skillsBlock.locator('.skill-description');
 
-	// Change the title
+	// Change the description
 	await descriptionField.click();
 	await descriptionField.clear();
 	await descriptionField.type('End-to-end testing (Playwright)');
-	await expect(descriptionField).toContainText('End-to-end testing');
+		// Check the skill descriptiom updates
+	await expect(descriptionText).toContainText('End-to-end testing');
 });
 
 test.skip('can add and remove skills', async ({ page, editor }) => {
