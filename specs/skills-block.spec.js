@@ -26,26 +26,25 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	await expect(skillsBlock).toBeVisible();
 
 	// Check default name is editable
-	const titleField = skillsBlock.locator('.skill-title');
-	await expect(titleField).toContainText('Skill');
-	
+	//const titleField = skillsBlock.locator('.skill-title');
+	const titleField = skillsBlock.locator('input[placeholder*="Enter skill name"]').first();
+	//await expect(titleField).toContainText('Skill');
+
 	// Change the title
-	await titleField.click();
-	await titleField.clear();
-	await titleField.type('php');
-	await expect(titleField).toContainText('php');
-	
-	// @todo support description 
-	return;
+	//await titleField.click();
+	//await titleField.clear();
+	await titleField.fill('Automated testing');
+	await expect(titleField).toContainText('Automated testing');
+
 	// Check description is editable
-	const descriptionField = skillsBlock.locator('.skill-title');
-	await expect(descriptionField).toContainText('Skill');
-	
+	const descriptionField = skillsBlock.locator('input[placeholder*="Enter description"]').first();
+	//await expect(descriptionField).toContainText('Skill');
+
 	// Change the title
-	await descriptionField.click();
-	await descriptionField.clear();
-	await descriptionField.type('wordpress');
-	await expect(descriptionField).toContainText('wordpress');
+	//await descriptionField.click();
+	//await descriptionField.clear();
+	await descriptionField.type('End-to-end testing (Playwright)');
+	await expect(descriptionField).toContainText('End-to-end testing');
 });
 
 test.skip('can add and remove skills', async ({ page, editor }) => {
