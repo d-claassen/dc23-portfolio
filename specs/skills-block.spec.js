@@ -149,12 +149,16 @@ test('saves and displays correctly on frontend', async ({ page, editor }) => {
 	
 	const skillsBlock = editor.canvas.locator('[data-type="dc23-portfolio/skill"]');
 	
-	// @TODO Configure the block
-	//await skillsBlock.locator('.skills-title').fill('My Skills');
-	
 	// Add skill
-	//await skillsBlock.locator('input[placeholder*="Enter skill name"]').first().fill('PHP');
-	//await skillsBlock.locator('input[placeholder*="Enter skill name"]').nth(1).fill('WordPress');
+	const titleField = skillsBlock.locator('input[placeholder*="Enter skill name"]').first();
+	await titleField.click();
+	await titleField.clear();
+	await titleField.type('PHP');
+	
+	const descriptionField = skillsBlock.locator('input[placeholder*="Enter description"]').first();
+	await descriptionField.click();
+	await descriptionField.clear();
+	await descriptionField.type('WordPress');
 	
 	// Save the post
 	await editor.saveDraft();
