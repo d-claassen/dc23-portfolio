@@ -160,7 +160,7 @@ test('saves and displays correctly on frontend', async ({ page, editor }) => {
 	
 	// Check the saved content structure
 	const content = await editor.getEditedPostContent();
-	expect(content).toContain('dc23-portfolio/skills');
+	expect(content).toContain('dc23-portfolio/skill');
 	expect(content).toContain('PHP');
 	expect(content).toContain('WordPress');
 });
