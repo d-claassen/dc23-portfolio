@@ -20,7 +20,7 @@ import './editor.scss';
  */
 export default function Edit( { attributes, setAttributes } ) {
     const { name, description } = attributes;
-    const setName = (name) => setAtttributes( { name });
+    const setName = (name) => setAttributes( { name });
     const setDescription = (description) => setAttributes( { description });
 
 
