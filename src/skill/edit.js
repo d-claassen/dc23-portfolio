@@ -19,14 +19,14 @@ import './editor.scss';
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-    const { name, description } = attributes;
-    const setName = (name) => setAttributes( { name });
-    const setDescription = (description) => setAttributes( { description });
+	const { name, description } = attributes;
+	const setName = (name) => setAttributes( { ...attributes, name });
+	const setDescription = (description) => setAttributes( { ...attributes, description });
 
 
 	return (
 		<div { ...useBlockProps() }>
-            <div className="skills-block">
+			<div className="skills-block">
 					<div className="skill-item">
 						<div className="skill-controls">
 								<TextControl
@@ -35,14 +35,14 @@ export default function Edit( { attributes, setAttributes } ) {
 									onChange={setName}
 									placeholder={__('Enter skill name', 'dc23-portfolio')}
 								/>
-                                <TextControl
+								<TextControl
 									label={__('Description', 'dc23-portfolio')}
 									value={description}
 									onChange={setDescription}
 									placeholder={__('Enter description', 'dc23-portfolio')}
 								/>
-                        </div>
-                        <div className="skill-preview">
+							</div>
+							<div className="skill-preview">
 								<span className="skill-name">{name || __('Skill name', 'dc23-portfolio')}</span>
 
 								{description && (
@@ -50,7 +50,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								)}
 						</div>
 					</div>
-            </div>
+			</div>
 		</div>
 	);
 }
