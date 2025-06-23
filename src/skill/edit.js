@@ -18,38 +18,49 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default function Edit( { attributes, setAttributes } ) {
+export default function Edit( { attributes, setAttributes, isSelected } ) {
 	const { name, description } = attributes;
 	const setName = (name) => setAttributes( { ...attributes, name });
 	const setDescription = (description) => setAttributes( { ...attributes, description });
 
-
 	return (
 		<div { ...useBlockProps() }>
 			<div className="skills-block">
-					<div className="skill-item">
-						<div className="skill-controls">
+				<div className="skill-item">
+					<div className="skill-preview" style={{ display: 'flex', gap: '0.5em', alignItems: 'center' }}>
+						{ isSelected ? (
+							<>
 								<TextControl
-									label={__('Skill name', 'dc23-portfolio')}
+									className="skill-name"
 									value={name}
 									onChange={setName}
-									placeholder={__('Enter skill name', 'dc23-portfolio')}
+									placeholder={__('Skill name', 'dc23-portfolio')}
+									aria-label={__('Skill name', 'dc23-portfolio')}
+									hideLabelFromVision
+									style={{ marginBottom: 0, minWidth: '6em', flex: '0 1 auto' }}
 								/>
 								<TextControl
-									label={__('Description', 'dc23-portfolio')}
+									className="skill-description"
 									value={description}
 									onChange={setDescription}
-									placeholder={__('Enter description', 'dc23-portfolio')}
+									placeholder={__('Description', 'dc23-portfolio')}
+									aria-label={__('Description', 'dc23-portfolio')}
+									hideLabelFromVision
+									style={{ marginBottom: 0, minWidth: '10em', flex: '1 1 auto' }}
 								/>
-							</div>
-							<div className="skill-preview">
+							</>
+						) : (
+							<>
 								<span className="skill-name">{name || __('Skill name', 'dc23-portfolio')}</span>
-
-								{description && (
-									<span className="skill-description">{description}</span>
+								{ (description || description === '') && (
+									<span className="skill-description">
+										{description || __('Description', 'dc23-portfolio')}
+									</span>
 								)}
-						</div>
+							</>
+						)}
 					</div>
+				</div>
 			</div>
 		</div>
 	);

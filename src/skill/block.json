@@ -9,7 +9,20 @@
 	"description": "Display your skills with automatic schema.org integration.",
 	"example": {},
 	"supports": {
-		"html": false
+		"html": false,
+		"color": {
+			"background": true,
+			"text": true,
+			"link": false
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"spacing": {
+			"padding": true,
+			"margin": true
+		}
 	},
 	"attributes": {
 		"name": {
