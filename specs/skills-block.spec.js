@@ -27,7 +27,7 @@ test('can be inserted and configured', async ({ page, editor }) => {
 
 	// Check default name is editable
 	const nameField = skillsBlock.locator('.skill-name');
-	const titleField = skillsBlock.locator('input[placeholder*="Enter skill name"]').first();
+	const titleField = skillsBlock.locator('input[placeholder*="Skill name"]').first();
 	//await expect(titleField).toContainText('Skill');
 
 	// Change the title TextControl
@@ -38,7 +38,7 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	await expect(nameField).toContainText('Automated testing');
 
 	// Check description is editable
-	const descriptionField = skillsBlock.locator('input[placeholder*="Enter description"]').first();
+	const descriptionField = skillsBlock.locator('input[placeholder*="Description"]').first();
 	const descriptionText = skillsBlock.locator('.skill-description');
 
 	// Change the description
@@ -55,12 +55,12 @@ test('saves and displays correctly on frontend', async ({ page, editor }) => {
 	const skillsBlock = editor.canvas.locator('[data-type="dc23-portfolio/skill"]');
 
 	// Add skill
-	const titleField = skillsBlock.locator('input[placeholder*="Enter skill name"]').first();
+	const titleField = skillsBlock.locator('input[placeholder*="Skill name"]').first();
 	await titleField.click();
 	await titleField.clear();
 	await titleField.type('PHP');
 
-	const descriptionField = skillsBlock.locator('input[placeholder*="Enter description"]').first();
+	const descriptionField = skillsBlock.locator('input[placeholder*="Description"]').first();
 	await descriptionField.click();
 	await descriptionField.clear();
 	await descriptionField.type('WordPress');
