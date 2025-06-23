@@ -26,26 +26,25 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	await expect(skillsBlock).toBeVisible();
 
 	// Check default name is editable
-	const nameField = skillsBlock.locator('.skill-name');
-	const titleField = skillsBlock.locator('input[placeholder*="Skill name"]').first();
-	//await expect(titleField).toContainText('Skill');
+	const titleInput = skillsBlock.locator('input[placeholder*="Skill name"]').first();
 
 	// Change the title TextControl
-	await titleField.click();
-	await titleField.clear();
-	await titleField.type('Automated testing');
+	await titleInput.click();
+	await titleInput.clear();
+	await titleInput.type('Automated testing');
 	// Check the skill name updates
-	await expect(nameField).toContainText('Automated testing');
+	const titleText = skillsBlock.locator('.skill-name');
+	await expect(titleText).toContainText('Automated testing');
 
 	// Check description is editable
-	const descriptionField = skillsBlock.locator('input[placeholder*="Description"]').first();
-	const descriptionText = skillsBlock.locator('.skill-description');
-
+	const descriptionInput = skillsBlock.locator('input[placeholder*="Description"]').first();
 	// Change the description
-	await descriptionField.click();
-	await descriptionField.clear();
-	await descriptionField.type('End-to-end testing (Playwright)');
+	await descriptionInput.click();
+	await descriptionInput.clear();
+	await descriptionInput.type('End-to-end testing (Playwright)');
+	
 		// Check the skill description updates
+	const descriptionText = skillsBlock.locator('.skill-description');
 	await expect(descriptionText).toContainText('End-to-end testing');
 });
 
