@@ -10,7 +10,7 @@ return (
 							<span className="skill-name">{name}</span>
 
 							{description && (
-								<span className="skill-description">{skill.description}</span>
+								<span className="skill-description">{description}</span>
 							)}
 						</div>
 		</div>
