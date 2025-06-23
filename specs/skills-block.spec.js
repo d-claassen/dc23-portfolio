@@ -33,7 +33,7 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	await titleInput.clear();
 	await titleInput.type('Automated testing');
 	
-	await editor.saveDraft();
+	await editor.canvas.click();
 	
 	// Check the skill name updates
 	const titleText = skillsBlock.locator('.skill-name');
@@ -46,7 +46,7 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	await descriptionInput.clear();
 	await descriptionInput.type('End-to-end testing (Playwright)');
 	
-	await editor.saveDraft();
+	await editor.canvas.click();
 	
 		// Check the skill description updates
 	const descriptionText = skillsBlock.locator('.skill-description');
