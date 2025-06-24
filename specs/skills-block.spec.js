@@ -34,6 +34,7 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	await titleInput.type('Automated testing');
 	
 	await page.keyboard.press('Escape');
+	await page.waitForTimeout(100);
 	
 	// Check the skill name updates
 	const titleText = skillsBlock.locator('.skill-name');
