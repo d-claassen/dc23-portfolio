@@ -32,24 +32,25 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	await titleInput.click();
 	await titleInput.clear();
 	await titleInput.type('Automated testing');
-	
-	await page.keyboard.press('Escape');
-	await page.keyboard.press('Escape');
-	await page.waitForTimeout(100);
-	
+
+	// Move focus to post title.
+	await editor.canvas.getByRole( 'textbox', { name: 'Add title' } ).click();
+
 	// Check the skill name updates
 	const titleText = skillsBlock.locator('.skill-name');
 	await expect(titleText).toContainText('Automated testing');
 
 	// Check description is editable
+	await skillsBlock.click();
 	const descriptionInput = skillsBlock.locator('input[placeholder*="Description"]').first();
 	// Change the description
 	await descriptionInput.click();
 	await descriptionInput.clear();
 	await descriptionInput.type('End-to-end testing (Playwright)');
-	
-	await page.keyboard.press('Escape');
-	
+
+	// Move focus to post title.
+	await editor.canvas.getByRole( 'textbox', { name: 'Add title' } ).click();
+
 		// Check the skill description updates
 	const descriptionText = skillsBlock.locator('.skill-description');
 	await expect(descriptionText).toContainText('End-to-end testing');
