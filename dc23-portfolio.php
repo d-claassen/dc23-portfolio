@@ -36,6 +36,7 @@ require_once 'vendor/autoload.php';
  */
 function dc23_portfolio_block_init() {
 	register_block_type( __DIR__ . '/build/skill' );
+	register_block_type( __DIR__ . '/build/social' );
 }
 add_action( 'init', 'dc23_portfolio_block_init' );
 
