@@ -1,17 +1,7 @@
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
- */
 import { __ } from '@wordpress/i18n';
-
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
-import { useBlockProps } from '@wordpress/block-editor';
+import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -29,10 +19,64 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default function Edit() {
-	return (
-		<p { ...useBlockProps() }>
-			{ __( 'Author Socials  – hello from the editor!', 'socials' ) }
-		</p>
-	);
-}
+const Edit = ({ attributes, setAttributes, clientId }) => {
+    /*
+    const { authorId, showLabels, iconSize } = attributes;
+    
+    // Get Yoast social data
+    const authorSocials = useSelect(select => {
+        // Fetch author meta via REST API or store
+        return getAuthorYoastSocials(authorId);
+    });
+    */
+    // Generate social link blocks template
+    const socialTemplate = [].map(social => [
+        'core/social-link', 
+        { 
+            service: social.service,
+            url: social.url,
+            label: social.label 
+        }
+    ]);
+
+    return (
+        <>
+            { /*
+            <InspectorControls>
+                <PanelBody title="Settings">
+                    <SelectControl
+                        label="Author"
+                        value={authorId}
+                        onChange={(value) => setAttributes({ authorId: parseInt(value) })}
+                        options={authorOptions}
+                    />
+                    <ToggleControl
+                        label="Show Labels"
+                        checked={showLabels}
+                        onChange={(value) => setAttributes({ showLabels: value })}
+                    />
+                    <SelectControl
+                        label="Icon Size"
+                        value={iconSize}
+                        onChange={(value) => setAttributes({ iconSize: value })}
+                        options={[
+                            { label: 'Small', value: 'small' },
+                            { label: 'Normal', value: 'normal' },
+                            { label: 'Large', value: 'large' }
+                        ]}
+                    />
+                </PanelBody>
+            </InspectorControls>
+            */ }
+            
+            <InnerBlocks
+                allowedBlocks={['core/social-links']}
+                template={[['core/social-links', { 
+                    showLabels: true,,
+                    size: 'normal' 
+                }, socialTemplate]]}
+                templateLock="insert"
+            />
+        </>
+    );
+};
