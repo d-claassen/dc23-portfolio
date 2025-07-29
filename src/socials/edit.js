@@ -42,6 +42,7 @@ export default function Edit({ attributes, setAttributes }) {
         <div {...useBlockProps() }>
             <InspectorControls group="settings">
                 <PanelBody title="Settings">
+                    inspector controls
                     { /*
                     <SelectControl
                         label="Author"
@@ -49,7 +50,7 @@ export default function Edit({ attributes, setAttributes }) {
                         onChange={(value) => setAttributes({ authorId: parseInt(value) })}
                         options={authorOptions}
                     />
-                    */ }
+
                     <ToggleControl
                         label="Show Labels"
                         checked={showLabels}
@@ -65,6 +66,7 @@ export default function Edit({ attributes, setAttributes }) {
                             { label: 'Large', value: 'large' }
                         ]}
                     />
+                    */ }
                 </PanelBody>
             </InspectorControls>
 
