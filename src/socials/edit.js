@@ -26,6 +26,10 @@ export default function Edit({ attributes, setAttributes }) {
     console.log('setAttributes function:', typeof setAttributes);
    
 
+   const authorSocials = [
+      {service: "github", url: "testurlwhocaresright", lsbel: "pretty text"},
+      {service: "facebook", url: "testurlwhocaresright", lsbel: "pretty text"},
+   ];
     /*
     // Get Yoast social data
     const authorSocials = useSelect(select => {
@@ -34,7 +38,7 @@ export default function Edit({ attributes, setAttributes }) {
     });
     */
     // Generate social link blocks template
-    const socialTemplate = [].map(social => [
+    const socialTemplate = authorSocials.map(social => [
         'core/social-link', 
         { 
             service: social.service,
@@ -66,6 +70,8 @@ export default function Edit({ attributes, setAttributes }) {
                     />
                 </PanelBody>
             </InspectorControls>
+
+            custom content
 
             <InnerBlocks
                 allowedBlocks={['core/social-links']}
