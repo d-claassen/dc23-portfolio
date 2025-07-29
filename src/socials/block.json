@@ -11,6 +11,16 @@
 	"supports": {
 		"html": false
 	},
+	"attributes": {
+		"showLabels": {
+			"type": "boolean", 
+			"default": false
+		},
+		"iconSize": {
+			"type": "string",
+			"default": "normal"
+		}
+	},
 	"textdomain": "socials",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
