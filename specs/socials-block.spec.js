@@ -12,7 +12,7 @@ test.describe('Yoast Author Social Block', () => {
   });
 
   // Test 2: Basic Block Structure
-  test.fixme('block contains social-links inner block', async ({ admin, editor }) => {
+  test('block contains social-links inner block', async ({ admin, editor }) => {
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
     
