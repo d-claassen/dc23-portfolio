@@ -32,9 +32,7 @@ test.describe('Author Socials block', () => {
     // Capture any console errors
     const errors = [];
     page.on('console', msg => {
-        if (msg.type() === 'error') {
-            errors.push(msg.text());
-        }
+      errors.push(msg.text());
     });
 
     // Select the block
