@@ -19,10 +19,9 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default function Edit({ attributes }) {
+export default function Edit({ attributes, setAttributes }) {
+    const { showLabels, iconSize } = attributes;
     /*
-    const { authorId, showLabels, iconSize } = attributes;
-    
     // Get Yoast social data
     const authorSocials = useSelect(select => {
         // Fetch author meta via REST API or store
@@ -41,15 +40,16 @@ export default function Edit({ attributes }) {
 
     return (
         <>
-            { /*
             <InspectorControls>
                 <PanelBody title="Settings">
+                    { /*
                     <SelectControl
                         label="Author"
                         value={authorId}
                         onChange={(value) => setAttributes({ authorId: parseInt(value) })}
                         options={authorOptions}
                     />
+                    */ }
                     <ToggleControl
                         label="Show Labels"
                         checked={showLabels}
@@ -67,14 +67,13 @@ export default function Edit({ attributes }) {
                     />
                 </PanelBody>
             </InspectorControls>
-            */ }
             
             <p {...useBlockProps() }>
                 <InnerBlocks
                     allowedBlocks={['core/social-links']}
                     template={[['core/social-links', { 
-                        showLabels: true,
-                        size: 'normal' 
+                        showLabels,
+                        size: iconSize,
                     }, socialTemplate]]}
                     templateLock="insert"
                 />
