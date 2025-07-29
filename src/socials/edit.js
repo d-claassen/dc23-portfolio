@@ -21,6 +21,11 @@ import './editor.scss';
  */
 export default function Edit({ attributes, setAttributes }) {
     const { showLabels, iconSize } = attributes;
+
+    console.log('Edit component rendered', { showLabels, iconSize });
+    console.log('setAttributes function:', typeof setAttributes);
+   
+
     /*
     // Get Yoast social data
     const authorSocials = useSelect(select => {
@@ -42,7 +47,8 @@ export default function Edit({ attributes, setAttributes }) {
         <div {...useBlockProps() }>
             <InspectorControls>
                 <PanelBody title="Settings">
-
+                    {console.log('Rendering inspector controls')}
+                    
                     <ToggleControl
                         label="Show Labels"
                         checked={showLabels}
