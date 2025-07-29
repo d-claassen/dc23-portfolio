@@ -19,7 +19,7 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default const Edit = ({ attributes, setAttributes, clientId }) => {
+export default function Edit({ attributes, setAttributes, clientId }) {
     /*
     const { authorId, showLabels, iconSize } = attributes;
     
