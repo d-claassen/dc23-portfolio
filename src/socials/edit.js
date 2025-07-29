@@ -41,29 +41,31 @@ export default function Edit({ attributes, setAttributes }) {
     return (
         <div {...useBlockProps() }>
             <InspectorControls group="settings">
-                { /*
-                <SelectControl
-                    label="Author"
-                    value={authorId}
-                    onChange={(value) => setAttributes({ authorId: parseInt(value) })}
-                    options={authorOptions}
-                />
-                */ }
-                <ToggleControl
-                    label="Show Labels"
-                    checked={showLabels}
-                    onChange={(value) => setAttributes({ showLabels: value })}
-                />
-                <SelectControl
-                    label="Icon Size"
-                    value={iconSize}
-                    onChange={(value) => setAttributes({ iconSize: value })}
-                    options={[
-                        { label: 'Small', value: 'small' },
-                        { label: 'Normal', value: 'normal' },
-                        { label: 'Large', value: 'large' }
-                    ]}
-                />
+                <PanelBody title="Settings">
+                    { /*
+                    <SelectControl
+                        label="Author"
+                        value={authorId}
+                        onChange={(value) => setAttributes({ authorId: parseInt(value) })}
+                        options={authorOptions}
+                    />
+                    */ }
+                    <ToggleControl
+                        label="Show Labels"
+                        checked={showLabels}
+                        onChange={(value) => setAttributes({ showLabels: value })}
+                    />
+                    <SelectControl
+                        label="Icon Size"
+                        value={iconSize}
+                        onChange={(value) => setAttributes({ iconSize: value })}
+                        options={[
+                            { label: 'Small', value: 'small' },
+                            { label: 'Normal', value: 'normal' },
+                            { label: 'Large', value: 'large' }
+                        ]}
+                    />
+                </PanelBody>
             </InspectorControls>
 
             <InnerBlocks
