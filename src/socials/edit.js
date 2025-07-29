@@ -72,7 +72,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
             <InnerBlocks
                 allowedBlocks={['core/social-links']}
                 template={[['core/social-links', { 
-                    showLabels: true,,
+                    showLabels: true,
                     size: 'normal' 
                 }, socialTemplate]]}
                 templateLock="insert"
