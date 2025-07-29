@@ -75,7 +75,7 @@ export default function Edit({ attributes, setAttributes }) {
                         showLabels,
                         size: iconSize,
                     }, socialTemplate]]}
-                    templateLock="insert"
+                    templateLock="contentOnly"
                 />
             </p>
         </>
