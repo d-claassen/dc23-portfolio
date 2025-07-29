@@ -39,7 +39,7 @@ export default function Edit({ attributes, setAttributes }) {
     ]);
 
     return (
-        <dic {...useBlockProps() }>
+        <div {...useBlockProps() }>
             <InspectorControls group="settings">
                 { /*
                 <SelectControl
