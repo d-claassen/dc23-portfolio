@@ -1,12 +1,14 @@
 const { test, expect } = require('@wordpress/e2e-test-utils-playwright');
 
-test.describe('Yoast Author Social Block', () => {
+test.describe('Author Socials block', () => {
   
   // Test 1: Block Registration & Availability
   test('block appears in inserter', async ({ admin, editor }) => {
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
-    
+
+    await expect(editor.canvas.locator('body')).not.toContainText('This block has encountered an error');
+
     const block = editor.canvas.locator('[data-type="dc23-portfolio/socials"]');
     await expect(block).toBeVisible();
   });
@@ -15,7 +17,9 @@ test.describe('Yoast Author Social Block', () => {
   test('block contains social-links inner block', async ({ admin, editor }) => {
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
-    
+
+    await expect(editor.canvas.locator('body')).not.toContainText('This block has encountered an error');
+
     const socialLinksBlock = editor.canvas.locator('[data-type="core/social-links"]');
     await expect(socialLinksBlock).toBeVisible();
   });
