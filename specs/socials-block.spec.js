@@ -28,9 +28,24 @@ test.describe('Author Socials block', () => {
   test('shows inspector controls', async ({ admin, editor, page }) => {
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
-    
+
+    // Capture any console errors
+    const errors = [];
+    page.on('console', msg => {
+        if (msg.type() === 'error') {
+            errors.push(msg.text());
+        }
+    });
+
     // Select the block
     await editor.canvas.locator('[data-type="dc23-portfolio/socials"]').click();
+    
+     // Log errors if controls aren't visible
+    const labelsControl = page.locator('label:has-text("Show Labels")');
+    if (!(await labelsControl.isVisible())) {
+        console.log('Errors:', errors);
+        throw new Error('Inspector controls not visible');
+    }
     
     // @TODO. Check for author selection
     // await expect(page.locator('label:has-text("Author")')).toBeVisible();
@@ -39,7 +54,7 @@ test.describe('Author Socials block', () => {
     // await expect(page.locator('text=Social Platforms')).toBeVisible();
     
     // Check for display options
-    await expect(page.locator('label:has-text("Show Labels")')).toBeVisible();
+    await expect(labelsControl).toBeVisible();
     await expect(page.locator('label:has-text("Icon Size")')).toBeVisible();
   });
 
