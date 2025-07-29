@@ -27,13 +27,14 @@ test.describe('Author Socials block', () => {
   // Test 3: Inspector Controls Exist
   test('shows inspector controls', async ({ admin, editor, page }) => {
     await admin.createNewPost();
-    await editor.insertBlock({ name: 'dc23-portfolio/socials' });
 
     // Capture any console errors
     const errors = [];
     page.on('console', msg => {
       errors.push(msg.text());
     });
+    
+    await editor.insertBlock({ name: 'dc23-portfolio/socials' });
     
     await page.evaluate(() => console.log('Test log from page'));
 
