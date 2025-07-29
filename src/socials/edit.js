@@ -39,45 +39,41 @@ export default function Edit({ attributes, setAttributes }) {
     ]);
 
     return (
-        <>
-            <InspectorControls>
-                <PanelBody title="Settings">
-                    { /*
-                    <SelectControl
-                        label="Author"
-                        value={authorId}
-                        onChange={(value) => setAttributes({ authorId: parseInt(value) })}
-                        options={authorOptions}
-                    />
-                    */ }
-                    <ToggleControl
-                        label="Show Labels"
-                        checked={showLabels}
-                        onChange={(value) => setAttributes({ showLabels: value })}
-                    />
-                    <SelectControl
-                        label="Icon Size"
-                        value={iconSize}
-                        onChange={(value) => setAttributes({ iconSize: value })}
-                        options={[
-                            { label: 'Small', value: 'small' },
-                            { label: 'Normal', value: 'normal' },
-                            { label: 'Large', value: 'large' }
-                        ]}
-                    />
-                </PanelBody>
-            </InspectorControls>
-            
-            <p {...useBlockProps() }>
-                <InnerBlocks
-                    allowedBlocks={['core/social-links']}
-                    template={[['core/social-links', { 
-                        showLabels,
-                        size: iconSize,
-                    }, socialTemplate]]}
-                    templateLock="contentOnly"
+        <dic {...useBlockProps() }>
+            <InspectorControls group="settings">
+                { /*
+                <SelectControl
+                    label="Author"
+                    value={authorId}
+                    onChange={(value) => setAttributes({ authorId: parseInt(value) })}
+                    options={authorOptions}
                 />
-            </p>
-        </>
+                */ }
+                <ToggleControl
+                    label="Show Labels"
+                    checked={showLabels}
+                    onChange={(value) => setAttributes({ showLabels: value })}
+                />
+                <SelectControl
+                    label="Icon Size"
+                    value={iconSize}
+                    onChange={(value) => setAttributes({ iconSize: value })}
+                    options={[
+                        { label: 'Small', value: 'small' },
+                        { label: 'Normal', value: 'normal' },
+                        { label: 'Large', value: 'large' }
+                    ]}
+                />
+            </InspectorControls>
+
+            <InnerBlocks
+                allowedBlocks={['core/social-links']}
+                template={[['core/social-links', { 
+                    showLabels,
+                    size: iconSize,
+                }, socialTemplate]]}
+                templateLock="contentOnly"
+            />
+        </div>
     );
 };
