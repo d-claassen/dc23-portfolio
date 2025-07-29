@@ -34,6 +34,8 @@ test.describe('Author Socials block', () => {
     page.on('console', msg => {
       errors.push(msg.text());
     });
+    
+    await page.evaluate(() => console.log('Test log from page'));
 
     // Select the block
     await editor.canvas.locator('[data-type="dc23-portfolio/socials"]').click();
