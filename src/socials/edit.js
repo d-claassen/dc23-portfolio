@@ -69,14 +69,16 @@ export default function Edit({ attributes }) {
             </InspectorControls>
             */ }
             
-            <InnerBlocks
-                allowedBlocks={['core/social-links']}
-                template={[['core/social-links', { 
-                    showLabels: true,
-                    size: 'normal' 
-                }, socialTemplate]]}
-                templateLock="insert"
-            />
+            <p {...useBlockProps() }>
+                <InnerBlocks
+                    allowedBlocks={['core/social-links']}
+                    template={[['core/social-links', { 
+                        showLabels: true,
+                        size: 'normal' 
+                    }, socialTemplate]]}
+                    templateLock="insert"
+                />
+            </p>
         </>
     );
 };
