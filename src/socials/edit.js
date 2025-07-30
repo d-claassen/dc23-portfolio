@@ -71,18 +71,14 @@ export default function Edit({ attributes, setAttributes }) {
                 </PanelBody>
             </InspectorControls>
 
-            custom content
-
-            { /*
             <InnerBlocks
                 allowedBlocks={['core/social-links']}
                 template={[['core/social-links', { 
                     showLabels,
                     size: iconSize,
                 }, socialTemplate]]}
-                templateLock="contentOnly"
+                templateLock="all"
             />
-            */ }
         </div>
     );
 };
