@@ -3,12 +3,12 @@ const { test, expect } = require('@wordpress/e2e-test-utils-playwright');
 test.describe('Author Socials block', () => {
   let consoleLogs = [];
 
-  beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     consoleLogs = [];
     page.on('console', msg => consoleLogs.push(msg.text()));
   });
 
-  afterEach(async ({ page }) => {
+  test.afterEach(async ({ page }) => {
     if (consoleLogs.length > 0) {
       console.log('Page logs:', consoleLogs);
     }
