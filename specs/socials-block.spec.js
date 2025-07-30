@@ -1,7 +1,20 @@
 const { test, expect } = require('@wordpress/e2e-test-utils-playwright');
 
 test.describe('Author Socials block', () => {
-  
+  let consoleLogs = [];
+
+  beforeEach(async ({ page }) => {
+    consoleLogs = [];
+    page.on('console', msg => consoleLogs.push(msg.text()));
+  });
+
+  afterEach(async ({ page }) => {
+    if (consoleLogs.length > 0) {
+      console.log('Page logs:', consoleLogs);
+    }
+    page.removeAllListeners('console');
+  });
+
   // Test 1: Block Registration & Availability
   test('block appears in inserter', async ({ admin, editor }) => {
     await admin.createNewPost();
@@ -26,26 +39,11 @@ test.describe('Author Socials block', () => {
 
   // Test 3: Inspector Controls Exist
   test('shows inspector controls', async ({ admin, editor, page }) => {
-    // Capture any console errors
-    const errors = [];
-    page.on('console', msg => {
-      errors.push(msg.text());
-    });
-    
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
-    
-    await page.evaluate(() => console.log('Test log from page'));
 
     // Select the block
     await editor.canvas.locator('[data-type="dc23-portfolio/socials"]').click();
-    
-     // Log errors if controls aren't visible
-    const labelsControl = page.locator('label:has-text("Show Labels")');
-    if (!(await labelsControl.isVisible())) {
-        console.log('Errors:', errors);
-        throw new Error('Inspector controls not visible');
-    }
     
     // @TODO. Check for author selection
     // await expect(page.locator('label:has-text("Author")')).toBeVisible();
@@ -54,7 +52,7 @@ test.describe('Author Socials block', () => {
     // await expect(page.locator('text=Social Platforms')).toBeVisible();
     
     // Check for display options
-    await expect(labelsControl).toBeVisible();
+    await expect(page.locator('label:has-text("Show Labels")')).toBeVisible();
     await expect(page.locator('label:has-text("Icon Size")')).toBeVisible();
   });
 
