@@ -22,13 +22,9 @@ import './editor.scss';
 export default function Edit({ attributes, setAttributes }) {
     const { showLabels, iconSize } = attributes;
 
-    console.log('Edit component rendered', { showLabels, iconSize });
-    console.log('setAttributes function:', typeof setAttributes);
-   
-
    const authorSocials = [
-      {service: "github", url: "testurlwhocaresright", lsbel: "pretty text"},
-      {service: "facebook", url: "testurlwhocaresright", lsbel: "pretty text"},
+      {service: "github", url: "testurlwhocaresright", label: "pretty text"},
+      {service: "facebook", url: "testurlwhocaresright", label: "pretty text"},
    ];
     /*
     // Get Yoast social data
@@ -51,8 +47,6 @@ export default function Edit({ attributes, setAttributes }) {
         <div {...useBlockProps() }>
             <InspectorControls>
                 <PanelBody title="Settings">
-                    {console.log('Rendering inspector controls')}
-                    
                     <ToggleControl
                         label="Show Labels"
                         checked={showLabels}
