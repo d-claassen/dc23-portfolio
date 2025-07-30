@@ -73,6 +73,7 @@ export default function Edit({ attributes, setAttributes }) {
 
             custom content
 
+            { /*
             <InnerBlocks
                 allowedBlocks={['core/social-links']}
                 template={[['core/social-links', { 
@@ -81,6 +82,7 @@ export default function Edit({ attributes, setAttributes }) {
                 }, socialTemplate]]}
                 templateLock="contentOnly"
             />
+            */ }
         </div>
     );
 };
