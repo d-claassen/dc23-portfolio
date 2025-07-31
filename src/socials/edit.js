@@ -63,6 +63,7 @@ export default function Edit({ attributes, setAttributes }) {
                             { label: 'Large', value: 'large' }
                         ]}
                         __nextHasNoMarginBottom={true}
+                        __next40pxDefaultSize={true}
                     />
                 </PanelBody>
             </InspectorControls>
