@@ -51,6 +51,7 @@ export default function Edit({ attributes, setAttributes }) {
                         label="Show Labels"
                         checked={showLabels}
                         onChange={(value) => setAttributes({ showLabels: value })}
+                        __nextHasNoMarginBottom={true}
                     />
                     <SelectControl
                         label="Icon Size"
@@ -61,6 +62,7 @@ export default function Edit({ attributes, setAttributes }) {
                             { label: 'Normal', value: 'normal' },
                             { label: 'Large', value: 'large' }
                         ]}
+                        __nextHasNoMarginBottom={true}
                     />
                 </PanelBody>
             </InspectorControls>
