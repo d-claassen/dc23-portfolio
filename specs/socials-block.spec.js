@@ -91,7 +91,7 @@ test.describe('Author Socials block', () => {
     
     await editor.canvas.locator('[data-type="dc23-portfolio/socials"]').click();
     
-    const labelsToggle = page.locator('input[type="checkbox"] + label:has-text("Show Labels")').locator('..');
+    const labelsToggle = page.locator('input[type="checkbox"] + label:has-text("Show Labels")');
     await labelsToggle.click();
     
     // Verify the social-links block receives the showLabels attribute
