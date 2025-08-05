@@ -32,7 +32,6 @@ export default function Edit({ attributes, setAttributes }) {
     */
 
    const preview = useMemo( () => {
-      console.log({msg:'memoize the preview', showLabels, iconSize });
       const authorSocials = [
          {service: "github", url: "testurlwhocaresright", label: "pretty text"},
          {service: "facebook", url: "testurlwhocaresright", label: "pretty text"},
@@ -49,7 +48,9 @@ export default function Edit({ attributes, setAttributes }) {
        ]);
       
       const key = `${showLabels}-${iconSize}-${JSON.stringify(socialTemplate)}`;
-   
+
+      console.log({msg:'memoize the preview', showLabels, iconSize, key });
+
       return (
          <InnerBlocks
             key={ key }
