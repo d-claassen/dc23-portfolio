@@ -22,26 +22,42 @@ import './editor.scss';
 export default function Edit({ attributes, setAttributes }) {
     const { showLabels, iconSize } = attributes;
 
-   const authorSocials = [
-      {service: "github", url: "testurlwhocaresright", label: "pretty text"},
-      {service: "facebook", url: "testurlwhocaresright", label: "pretty text"},
-   ];
-    /*
+    /* this should end as dep for below memo.
     // Get Yoast social data
     const authorSocials = useSelect(select => {
         // Fetch author meta via REST API or store
         return getAuthorYoastSocials(authorId);
     });
     */
-    // Generate social link blocks template
-    const socialTemplate = authorSocials.map(social => [
-        'core/social-link', 
-        { 
-            service: social.service,
-            url: social.url,
-            label: social.label 
-        }
-    ]);
+
+   const preview = useMemo( () => {
+      console.log('memoize the preview');
+      const authorSocials = [
+         {service: "github", url: "testurlwhocaresright", label: "pretty text"},
+         {service: "facebook", url: "testurlwhocaresright", label: "pretty text"},
+      ];
+
+       // Generate social link blocks template
+       const socialTemplate = authorSocials.map(social => [
+           'core/social-link', 
+           { 
+               service: social.service,
+               url: social.url,
+               label: social.label 
+           }
+       ]);
+   
+      return (
+         <InnerBlocks
+             allowedBlocks={['core/social-links']}
+             template={[['core/social-links', { 
+                 showLabels,
+                 size: iconSize,
+             }, socialTemplate]]}
+             templateLock="all"
+         />
+      );
+   }, [ showLabels, iconSize ] );
 
     return (
         <div {...useBlockProps() }>
@@ -68,14 +84,7 @@ export default function Edit({ attributes, setAttributes }) {
                 </PanelBody>
             </InspectorControls>
 
-            <InnerBlocks
-                allowedBlocks={['core/social-links']}
-                template={[['core/social-links', { 
-                    showLabels,
-                    size: iconSize,
-                }, socialTemplate]]}
-                templateLock="all"
-            />
+            { preview }
         </div>
     );
 };
