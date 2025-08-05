@@ -47,9 +47,12 @@ export default function Edit({ attributes, setAttributes }) {
                label: social.label 
            }
        ]);
+      
+      const key = new Date().getTimestamp();
    
       return (
          <InnerBlocks
+            key={ key }
              allowedBlocks={['core/social-links']}
              template={[['core/social-links', { 
                  showLabels,
