@@ -85,7 +85,7 @@ test.describe('Author Socials block', () => {
   });
 
   // Test 6: Display Options Toggle
-  test('show labels toggle works', async ({ admin, editor, page }) => {
+  test.only('show labels toggle works', async ({ admin, editor, page }) => {
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
     
