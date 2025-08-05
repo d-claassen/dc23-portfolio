@@ -14,7 +14,7 @@
 	"attributes": {
 		"showLabels": {
 			"type": "boolean", 
-			"default": false
+			"default": true
 		},
 		"iconSize": {
 			"type": "string",
