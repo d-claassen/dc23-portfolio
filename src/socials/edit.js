@@ -32,7 +32,7 @@ export default function Edit({ attributes, setAttributes }) {
     */
 
    const preview = useMemo( () => {
-      console.log('memoize the preview');
+      console.log({msg:'memoize the preview', showLabels, iconSize });
       const authorSocials = [
          {service: "github", url: "testurlwhocaresright", label: "pretty text"},
          {service: "facebook", url: "testurlwhocaresright", label: "pretty text"},
