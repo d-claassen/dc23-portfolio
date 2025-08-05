@@ -48,7 +48,7 @@ export default function Edit({ attributes, setAttributes }) {
            }
        ]);
       
-      const key = new Date().getTimestamp();
+      const key = `${showLabels}-${iconSize}-${JSON.stringify(socialTemplate)}`;
    
       return (
          <InnerBlocks
