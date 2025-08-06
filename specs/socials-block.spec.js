@@ -96,7 +96,7 @@ test.describe('Author Socials block', () => {
     
     // Verify the social-links block receives the showLabels attribute
     const socialLinksBlock = editor.canvas.locator('[data-type="core/social-links"]');
-    await expect(socialLinksBlock).toHaveClass('has-visible-labels');
+    await expect(socialLinksBlock).toHaveClass(/has-visible-labels/);
   });
 
   // Test 7: Icon Size Selection
