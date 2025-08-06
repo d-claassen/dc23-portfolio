@@ -1,7 +1,8 @@
 import { __ } from '@wordpress/i18n';
 import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { createBlock } from '@wordpress/blocks';
 import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useMemo, useState } from '@wordpress/element';
 
 /**
@@ -12,6 +13,11 @@ import { useEffect, useMemo, useState } from '@wordpress/element';
  */
 import './editor.scss';
 
+const authorSocials = [
+   {service: "github", url: "testurlwhocaresright", label: "pretty text"},
+   {service: "facebook", url: "testurlwhocaresright", label: "pretty text"},
+];
+   
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
@@ -20,9 +26,10 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default function Edit({ attributes, setAttributes }) {
+export default function Edit({ attributes, setAttributes, clientId }) {
     const { showLabels, iconSize } = attributes;
-
+   const { replaceInnerBlocks } = useDispatch('core/block-editor');
+   
     /* this should end as dep for below memo.
     // Get Yoast social data
     const authorSocials = useSelect(select => {
@@ -30,46 +37,26 @@ export default function Edit({ attributes, setAttributes }) {
         return getAuthorYoastSocials(authorId);
     });
     */
-
-   const [forceKey, setForceKey] = useState(0);
-   
-   useEffect(() => {
-       setForceKey(prev => prev + 1);
-   }, [showLabels, iconSize]);
-   // }, [showLabels, iconSize, socialTemplate]);
-
-   const preview = useMemo( () => {
-      const authorSocials = [
-         {service: "github", url: "testurlwhocaresright", label: "pretty text"},
-         {service: "facebook", url: "testurlwhocaresright", label: "pretty text"},
-      ];
-
-       // Generate social link blocks template
-       const socialTemplate = authorSocials.map(social => [
-           'core/social-link', 
-           { 
-               service: social.service,
-               url: social.url,
-               label: social.label 
-           }
-       ]);
       
-      const key = `${showLabels}-${iconSize}-${JSON.stringify(socialTemplate)}`;
-
-      console.log({msg:'memoize the preview', showLabels, iconSize, key, forceKey });
-
-      return (
-         <InnerBlocks
-            key={ `${ forceKey }-${ key }` }
-             allowedBlocks={['core/social-links']}
-             template={[['core/social-links', { 
-                 showLabels,
-                 size: iconSize,
-             }, socialTemplate]]}
-             templateLock="all"
-         />
-      );
-   }, [ showLabels, iconSize, forceKey ] );
+   useEffect(() => {
+        // Create individual social-link blocks
+        const socialLinkBlocks = authorSocials.map(social => 
+            createBlock('core/social-link', {
+                service: social.service,
+                url: social.url,
+                label: social.label
+            })
+        );
+        
+        // Create the wrapper social-links block
+        const socialLinksBlock = createBlock('core/social-links', {
+            showLabels,
+            size: iconSize
+        }, socialLinkBlocks);
+        
+        // Replace all inner blocks with our new structure
+        replaceInnerBlocks( clientId, [ socialLinksBlock ] );
+    }, [showLabels, iconSize, authorSocials, clientId]);
 
     return (
         <div {...useBlockProps() }>
@@ -96,7 +83,7 @@ export default function Edit({ attributes, setAttributes }) {
                 </PanelBody>
             </InspectorControls>
 
-            { preview }
+            <InnerBlocks templateLock="all" />
         </div>
     );
 };
