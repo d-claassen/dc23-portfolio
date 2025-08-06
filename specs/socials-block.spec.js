@@ -125,7 +125,7 @@ test.describe('Author Socials block', () => {
   });
 
   // Test 9: Social Links Generation (with mock data)
-  test.fixme('generates social links from yoast data', async ({ admin, editor, page }) => {
+  test('generates social links from yoast data', async ({ admin, editor, page }) => {
     // This test assumes author has Yoast social data
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
