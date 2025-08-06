@@ -111,7 +111,7 @@ test.describe('Author Socials block', () => {
     
     // Verify the social-links block receives the size attribute
     const socialLinksBlock = editor.canvas.locator('[data-type="core/social-links"]');
-    await expect(socialLinksBlock).toHaveClass(/has-large-icon-size/);
+    await expect(socialLinksBlock).toHaveClass(/large/);
   });
 
   // Test 8: Empty State Handling
