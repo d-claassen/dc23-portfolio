@@ -100,13 +100,13 @@ test.describe('Author Socials block', () => {
   });
 
   // Test 7: Icon Size Selection
-  test.fixme('icon size dropdown changes size', async ({ admin, editor, page }) => {
+  test('icon size dropdown changes size', async ({ admin, editor, page }) => {
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
     
     await editor.canvas.locator('[data-type="dc23-portfolio/socials"]').click();
     
-    const sizeSelect = page.locator('select[aria-label="Icon Size"], .components-select-control__input').last();
+    const sizeSelect = page.getByLabel('Icon Size');
     await sizeSelect.selectOption('large');
     
     // Verify the social-links block receives the size attribute
