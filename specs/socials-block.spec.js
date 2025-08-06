@@ -133,7 +133,7 @@ test.describe('Author Socials block', () => {
     // Mock or setup author with social profiles first
     // Then verify social-link blocks are generated
     const socialLinks = editor.canvas.locator('[data-type="core/social-link"]');
-    await expect(socialLinks).toHaveCountGreaterThan(0);
+    await expect(socialLinks.size()).toBeGreaterThan(0);
   });
 
   // Test 10: Frontend Rendering
