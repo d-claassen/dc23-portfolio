@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useMemo } from '@wordpress/element';
+import { useMemo, useState } from '@wordpress/element';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -31,6 +31,12 @@ export default function Edit({ attributes, setAttributes }) {
     });
     */
 
+   const [forceKey, setForceKey] = useState(0);
+   
+   useEffect(() => {
+       setForceKey(prev => prev + 1);
+   }, [showLabels, iconSize, socialTemplate]);
+
    const preview = useMemo( () => {
       const authorSocials = [
          {service: "github", url: "testurlwhocaresright", label: "pretty text"},
@@ -49,11 +55,11 @@ export default function Edit({ attributes, setAttributes }) {
       
       const key = `${showLabels}-${iconSize}-${JSON.stringify(socialTemplate)}`;
 
-      console.log({msg:'memoize the preview', showLabels, iconSize, key });
+      console.log({msg:'memoize the preview', showLabels, iconSize, key, forceKey });
 
       return (
          <InnerBlocks
-            key={ key }
+            key={ `${ forceKey }-${ key }` }
              allowedBlocks={['core/social-links']}
              template={[['core/social-links', { 
                  showLabels,
@@ -62,7 +68,7 @@ export default function Edit({ attributes, setAttributes }) {
              templateLock="all"
          />
       );
-   }, [ showLabels, iconSize ] );
+   }, [ showLabels, iconSize, forceKey ] );
 
     return (
         <div {...useBlockProps() }>
