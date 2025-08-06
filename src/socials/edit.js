@@ -35,7 +35,8 @@ export default function Edit({ attributes, setAttributes }) {
    
    useEffect(() => {
        setForceKey(prev => prev + 1);
-   }, [showLabels, iconSize, socialTemplate]);
+   }, [showLabels, iconSize]);
+   // }, [showLabels, iconSize, socialTemplate]);
 
    const preview = useMemo( () => {
       const authorSocials = [
