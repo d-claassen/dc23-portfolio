@@ -91,19 +91,21 @@ function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context )
 
 function custom_rest_user_profiles() {
 	$collector = \YoastSEO()->classes->get( Additional_Contactmethods_Collector::class );
-	register_rest_field('user', 'facebook', array(
-		'get_callback' => function($user) {
-			return get_user_meta($user['id'], 'facebook', true);
-		},
-		'update_callback' => function($value, $user) {
-			return update_user_meta($user->ID, 'facebook', $value);
-		},
-		'schema' => array(
-			'type' => 'string',
-			'description' => 'Facebook URL',
+	foreach( $collector->get_additional_contactmethods() as $contactmethod){
+		register_rest_field('user', $contactmethod->getKey(), array(
+			'get_callback' => function($user) {
+				return get_user_meta($user['id'], $contactmethod->getKey(), true);
+			},
+			'update_callback' => function($value, $user) {
+				return update_user_meta($user->ID, $contactmethod->getKey(), $value);
+			},
+			'schema' => array(
+				'type' => 'string',
+				'description' => $contactmethod->getLabel(),
+				)
 			)
-		)
-	);
+		);
+	}
 }
 
 add_action('rest_api_init', 'custom_rest_user_profiles');
