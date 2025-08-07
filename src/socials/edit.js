@@ -31,7 +31,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     const { showLabels, iconSize } = attributes;
     const { replaceInnerBlocks } = useDispatch('core/block-editor');
 
-    const { authorId = 0 } = attributes;
+    const { authorId } = useSelect(select => {
+        return {
+            authorId: select('core/editor').getEditedPostAttribute('author'),
+        };
+    }, []);
 
     // Get Yoast social meta for the author
     const [facebook] = useEntityProp('root', 'user', 'facebook', authorId);
@@ -45,7 +49,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         if (twitter) socials.push({ service: 'twitter', url: twitter });
         if (linkedin) socials.push({ service: 'linkedin', url: linkedin });
 
-        console.log({socials});
+        console.log({authorId, socials});
 
         return socials;
     }, [facebook, twitter, linkedin]);
