@@ -90,6 +90,10 @@ function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context )
 }
 
 function custom_rest_user_profiles() {
+	if ( ! function_exists( 'YoastSEO' ) ) {
+		return;
+	}
+
 	$collector = \YoastSEO()->classes->get( Additional_Contactmethods_Collector::class );
 	foreach( $collector->get_additional_contactmethods() as $contactmethod){
 		register_rest_field('user', $contactmethod->getKey(), array(
