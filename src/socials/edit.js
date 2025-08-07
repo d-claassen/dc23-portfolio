@@ -45,7 +45,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     
     const meta = useEntityProp('root', 'user', 'meta', authorId);
     console.log({authorId, meta});
-    console.log(meta);
+
+    meta.filter(Boolean).map(console.log);
 
     // Build social template from meta
     const socialTemplate = useMemo(() => {
