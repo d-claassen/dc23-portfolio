@@ -100,16 +100,16 @@ function custom_rest_user_profiles() {
 			continue;
 		}
 		
-		register_rest_field('user', $contactmethod->get_key(), array(
+		register_rest_field('user', 'facebook', array(
 			'get_callback' => function($user) {
-				return get_user_meta($user['id'], $contactmethod->get_key(), true);
+				return get_user_meta($user['id'], 'facebook', true);
 			},
 			'update_callback' => function($value, $user) {
-				return update_user_meta($user->ID, $contactmethod->get_key(), $value);
+				return update_user_meta($user->ID, 'facebook', $value);
 			},
 			'schema' => array(
 				'type' => 'string',
-				'description' => $contactmethod->get_label(),
+				'description' => 'fscebook url',
 				)
 			)
 		);
