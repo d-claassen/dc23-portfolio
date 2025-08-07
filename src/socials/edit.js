@@ -2,6 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import { useEntityProp } from '@wordpress/core-data';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useMemo, useState } from '@wordpress/element';
 
@@ -28,8 +29,27 @@ const authorSocials = [
  */
 export default function Edit({ attributes, setAttributes, clientId }) {
     const { showLabels, iconSize } = attributes;
-   const { replaceInnerBlocks } = useDispatch('core/block-editor');
-   
+    const { replaceInnerBlocks } = useDispatch('core/block-editor');
+
+    const { authorId = 0 } = attributes;
+
+    // Get Yoast social meta for the author
+    const [facebook] = useEntityProp('root', 'user', 'facebook', authorId);
+    const [twitter] = useEntityProp('root', 'user', 'twitter', authorId);
+    const [linkedin] = useEntityProp('root', 'user', 'linkedin', authorId);
+    
+    // Build social template from meta
+    const socialTemplate = useMemo(() => {
+        const socials = [];
+        if (facebook) socials.push({ service: 'facebook', url: facebook });
+        if (twitter) socials.push({ service: 'twitter', url: twitter });
+        if (linkedin) socials.push({ service: 'linkedin', url: linkedin });
+
+        console.log({socials});
+
+        return socials;
+    }, [facebook, twitter, linkedin]);
+    
     /* this should end as dep for below memo.
     // Get Yoast social data
     const authorSocials = useSelect(select => {
