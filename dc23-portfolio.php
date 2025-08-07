@@ -87,3 +87,21 @@ function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context )
 
 	return $schema_graph;
 }
+
+function custom_rest_user_profiles() {
+	register_rest_field('user', 'facebook', array(
+		'get_callback' => function($user) {
+			return get_user_meta($user['id'], 'facebook', true);
+		},
+		'update_callback' => function($value, $user) {
+			return update_user_meta($user->ID, 'facebook', $value);
+		},
+		'schema' => array(
+			'type' => 'string',
+			'description' => 'Facebook URL',
+			)
+		)
+	);
+}
+
+add_action('rest_api_init', 'custom_rest_user_profiles');
