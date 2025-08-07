@@ -98,14 +98,14 @@ function custom_rest_user_profiles() {
 	foreach( $collector->get_additional_contactmethods() as $contactmethod){
 		register_rest_field('user', $contactmethod->getKey(), array(
 			'get_callback' => function($user) {
-				return get_user_meta($user['id'], $contactmethod->getKey(), true);
+				return get_user_meta($user['id'], $contactmethod->get_key(), true);
 			},
 			'update_callback' => function($value, $user) {
-				return update_user_meta($user->ID, $contactmethod->getKey(), $value);
+				return update_user_meta($user->ID, $contactmethod->get_key(), $value);
 			},
 			'schema' => array(
 				'type' => 'string',
-				'description' => $contactmethod->getLabel(),
+				'description' => $contactmethod->get_label(),
 				)
 			)
 		);
