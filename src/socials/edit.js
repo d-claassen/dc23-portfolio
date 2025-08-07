@@ -41,12 +41,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     const [facebook] = useEntityProp('root', 'user', 'facebook', authorId);
     const [twitter] = useEntityProp('root', 'user', 'twitter', authorId);
     const [linkedin] = useEntityProp('root', 'user', 'linkedin', authorId);
-    console.log({authorId, facebook, twitter, linkedin});
+    console.log({ authorId, facebook, twitter, linkedin });
     
-    const meta = useEntityProp('root', 'user', 'meta', authorId);
-    console.log({authorId, meta});
-
-    meta.filter(Boolean).map(console.log);
+    const [ meta, updateMeta ] = useEntityProp( 'root', 'user', 'meta', authorId );
+    console.log({ authorId, meta, string: JSON.stringify(meta) });
 
     // Build social template from meta
     const socialTemplate = useMemo(() => {
