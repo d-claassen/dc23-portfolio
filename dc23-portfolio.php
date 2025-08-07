@@ -20,7 +20,7 @@
 declare( strict_types=1 );
 
 use Yoast\WP\SEO\Context\Meta_Tags_Context;
-use Yoast\WP\SEO\UserData\Application\Additional_Contactmethods_Collector;
+use Yoast\WP\SEO\User_Meta\Application\Additional_Contactmethods_Collector;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
