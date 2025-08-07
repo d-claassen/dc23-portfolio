@@ -20,6 +20,7 @@
 declare( strict_types=1 );
 
 use Yoast\WP\SEO\Context\Meta_Tags_Context;
+use Yoast\WP\SEO\UserData\Application\Additional_Contactmethods_Collector;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -89,6 +90,7 @@ function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context )
 }
 
 function custom_rest_user_profiles() {
+	$collector = \YoastSEO()->classes->get( Additional_Contactmethods_Collector::class );
 	register_rest_field('user', 'facebook', array(
 		'get_callback' => function($user) {
 			return get_user_meta($user['id'], 'facebook', true);
