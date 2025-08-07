@@ -96,7 +96,7 @@ function custom_rest_user_profiles() {
 
 	$collector = \YoastSEO()->classes->get( Additional_Contactmethods_Collector::class );
 	foreach( $collector->get_additional_contactmethods() as $contactmethod){
-		register_rest_field('user', $contactmethod->getKey(), array(
+		register_rest_field('user', $contactmethod->get_key(), array(
 			'get_callback' => function($user) {
 				return get_user_meta($user['id'], $contactmethod->get_key(), true);
 			},
