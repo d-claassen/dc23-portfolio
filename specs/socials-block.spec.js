@@ -128,6 +128,7 @@ test.describe('Author Socials block', () => {
   test('generates social links from yoast data', async ({ admin, editor, page }) => {
     await admin.visitAdminPage('profile.php');
     await page.getByLabel('Facebook profile URL').fill('https://www.facebook.com/authorprofile');
+    await page.getByLabel('Instagram profile URL').fill('https://instagram.com/authorprofile');
     await page.getByRole('button', { name: 'Update Profile' }).click();
     
     // This test assumes author has Yoast social data
