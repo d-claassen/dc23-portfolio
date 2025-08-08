@@ -100,7 +100,7 @@ function custom_rest_user_profiles() {
 			continue;
 		}
 		
-		register_rest_field('user', 'facebook', array(
+		register_rest_field('user', $contactmethod->get_key(), array(
 			'get_callback' => function($user) {
 				return get_user_meta($user['id'], 'facebook', true);
 			},
