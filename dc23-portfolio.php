@@ -96,10 +96,6 @@ function custom_rest_user_profiles() {
 
 	$collector = \YoastSEO()->classes->get( Additional_Contactmethods_Collector::class );
 	foreach( $collector->get_additional_contactmethods() as $contactmethod){
-		if ( ! in_array( $contactmethod->get_key(), [ 'facebook' ], true ) ) {
-			continue;
-		}
-		
 		register_rest_field('user', $contactmethod->get_key(), array(
 			'get_callback' => function($user) use ($contactmethod) {
 				return get_user_meta($user['id'], $contactmethod->get_key(), true);
