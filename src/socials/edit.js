@@ -14,11 +14,6 @@ import { useEffect, useMemo, useState } from '@wordpress/element';
  */
 import './editor.scss';
 
-const authorSocials = [
-   {service: "github", url: "testurlwhocaresright", label: "pretty text"},
-   {service: "facebook", url: "testurlwhocaresright", label: "pretty text"},
-];
-   
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
@@ -42,30 +37,17 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     const [twitter] = useEntityProp('root', 'user', 'twitter', authorId);
     const [linkedin] = useEntityProp('root', 'user', 'linkedin', authorId);
     const [instagram] = useEntityProp('root', 'user', 'instagram', authorId);
-    console.log({ authorId, facebook, twitter, linkedin, instagram });
 
     // Build social template from meta
-    const socialTemplate = useMemo(() => {
-        const socials = [];
-        if (facebook) socials.push({ service: 'facebook', url: facebook });
-        if (twitter) socials.push({ service: 'twitter', url: twitter });
-        if (linkedin) socials.push({ service: 'linkedin', url: linkedin });
-        if (instagram) socials.push({ service: 'instagram', url: instagram });
-      
-        console.log({authorId, socials});
+    const authorSocials = [];
+    if (facebook) authorSocials.push({ service: 'facebook', url: facebook });
+    if (twitter) authorSocials.push({ service: 'twitter', url: twitter });
+    if (linkedin) authorSocials.push({ service: 'linkedin', url: linkedin });
+    if (instagram) authorSocials.push({ service: 'instagram', url: instagram });
 
-        return socials;
-    }, [facebook, twitter, linkedin]);
-    
-    /* this should end as dep for below memo.
-    // Get Yoast social data
-    const authorSocials = useSelect(select => {
-        // Fetch author meta via REST API or store
-        return getAuthorYoastSocials(authorId);
-    });
-    */
-      
-   useEffect(() => {
+    console.log(JSON.stringify(authorSocials));
+
+    useEffect(() => {
         // Create individual social-link blocks
         const socialLinkBlocks = authorSocials.map(social => 
             createBlock('core/social-link', {
