@@ -101,15 +101,15 @@ function custom_rest_user_profiles() {
 		}
 		
 		register_rest_field('user', $contactmethod->get_key(), array(
-			'get_callback' => function($user) {
-				return get_user_meta($user['id'], 'facebook', true);
+			'get_callback' => function($user) use ($contactmethod) {
+				return get_user_meta($user['id'], $contactmethod->get_key(), true);
 			},
-			'update_callback' => function($value, $user) {
-				return update_user_meta($user->ID, 'facebook', $value);
+			'update_callback' => function($value, $user) use ($contactmethod) {
+				return update_user_meta($user->ID, $contactmethod->get_key(), $value);
 			},
 			'schema' => array(
 				'type' => 'string',
-				'description' => 'fscebook url',
+				'description' => $contactmethod->get_label(),,
 				)
 			)
 		);
