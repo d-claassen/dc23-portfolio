@@ -41,7 +41,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     const [facebook] = useEntityProp('root', 'user', 'facebook', authorId);
     const [twitter] = useEntityProp('root', 'user', 'twitter', authorId);
     const [linkedin] = useEntityProp('root', 'user', 'linkedin', authorId);
-    console.log({ authorId, facebook, twitter, linkedin });
+    const [instagram] = useEntityProp('root', 'user', 'instagram', authorId);
+    console.log({ authorId, facebook, twitter, linkedin, instagram });
 
     // Build social template from meta
     const socialTemplate = useMemo(() => {
@@ -49,7 +50,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         if (facebook) socials.push({ service: 'facebook', url: facebook });
         if (twitter) socials.push({ service: 'twitter', url: twitter });
         if (linkedin) socials.push({ service: 'linkedin', url: linkedin });
-
+        if (instagram) socials.push({ service: 'instagram', url: instagram });
+      
         console.log({authorId, socials});
 
         return socials;
