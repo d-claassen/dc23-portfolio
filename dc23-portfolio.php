@@ -109,7 +109,7 @@ function custom_rest_user_profiles() {
 			},
 			'schema' => array(
 				'type' => 'string',
-				'description' => $contactmethod->get_label(),,
+				'description' => $contactmethod->get_label(),
 				)
 			)
 		);
