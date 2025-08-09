@@ -34,16 +34,24 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
     // Get Yoast social meta for the author
     const [facebook] = useEntityProp('root', 'user', 'facebook', authorId);
-    const [twitter] = useEntityProp('root', 'user', 'twitter', authorId);
-    const [linkedin] = useEntityProp('root', 'user', 'linkedin', authorId);
     const [instagram] = useEntityProp('root', 'user', 'instagram', authorId);
-
+    const [linkedin] = useEntityProp('root', 'user', 'linkedin', authorId);
+    const [myspace] = useEntityProp('root', 'user', 'myspace', authorId);
+    const [pinterest] = useEntityProp('root', 'user', 'pinterest', authorId);
+    const [wikipedia] = useEntityProp('root', 'user', 'wikipedia', authorId);
+    const [twitter] = useEntityProp('root', 'user', 'twitter', authorId);
+    const [youtube] = useEntityProp('root', 'user', 'youtube', authorId);
+        
     // Build social template from meta
     const authorSocials = [];
     if (facebook) authorSocials.push({ service: 'facebook', url: facebook });
-    if (twitter) authorSocials.push({ service: 'twitter', url: twitter });
-    if (linkedin) authorSocials.push({ service: 'linkedin', url: linkedin });
     if (instagram) authorSocials.push({ service: 'instagram', url: instagram });
+    if (linkedin) authorSocials.push({ service: 'linkedin', url: linkedin });
+    if (myspace) authorSocials.push({ service: 'myspace', url: myspace });
+    if (pinterest) authorSocials.push({ service: 'pinterest', url: pinterest });
+    if (wikipedia) authorSocials.push({ service: 'wikipedia', url: wikipedia });
+    if (twitter) authorSocials.push({ service: 'twitter', url: twitter });
+    if (youtube) authorSocials.push({ service: 'youtube', url: youtube });
 
     console.log(JSON.stringify(authorSocials));
 
