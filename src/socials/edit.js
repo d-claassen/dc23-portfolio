@@ -49,7 +49,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     if (linkedin) authorSocials.push({ service: 'linkedin', url: linkedin });
     if (myspace) authorSocials.push({ service: 'myspace', url: myspace });
     if (pinterest) authorSocials.push({ service: 'pinterest', url: pinterest });
-    if (wikipedia) authorSocials.push({ service: 'wikipedia', url: wikipedia });
+    // no wikipedia social support 
+    // if (wikipedia) authorSocials.push({ service: 'wikipedia', url: wikipedia });
     if (twitter) authorSocials.push({ service: 'twitter', url: twitter });
     if (youtube) authorSocials.push({ service: 'youtube', url: youtube });
 
