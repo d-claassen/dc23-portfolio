@@ -38,8 +38,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     const [linkedin] = useEntityProp('root', 'user', 'linkedin', authorId);
     const [myspace] = useEntityProp('root', 'user', 'myspace', authorId);
     const [pinterest] = useEntityProp('root', 'user', 'pinterest', authorId);
-    const [wikipedia] = useEntityProp('root', 'user', 'wikipedia', authorId);
+    const [soundcloud] = useEntityProp('root', 'user', 'soundcloud', authorId);
+    const [tumblr] = useEntityProp('root', 'user', 'tumblr', authorId);
     const [twitter] = useEntityProp('root', 'user', 'twitter', authorId);
+    const [wikipedia] = useEntityProp('root', 'user', 'wikipedia', authorId);
     const [youtube] = useEntityProp('root', 'user', 'youtube', authorId);
         
     // Build social template from meta
@@ -49,9 +51,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     if (linkedin) authorSocials.push({ service: 'linkedin', url: linkedin });
     if (myspace) authorSocials.push({ service: 'myspace', url: myspace });
     if (pinterest) authorSocials.push({ service: 'pinterest', url: pinterest });
+    if (soundcloud) authorSocials.push({ service: 'soundcloud', url: soundcloud });
+    if (tumblr) authorSocials.push({ service: 'tumblr', url: tumblr });
+    if (twitter) authorSocials.push({ service: 'twitter', url: twitter });
     // no wikipedia social support 
     // if (wikipedia) authorSocials.push({ service: 'wikipedia', url: wikipedia });
-    if (twitter) authorSocials.push({ service: 'twitter', url: twitter });
     if (youtube) authorSocials.push({ service: 'youtube', url: youtube });
 
     console.log(JSON.stringify(authorSocials));
