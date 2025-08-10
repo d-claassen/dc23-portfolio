@@ -129,6 +129,14 @@ test.describe('Author Socials block', () => {
     await admin.visitAdminPage('profile.php');
     await page.getByLabel('Facebook profile URL').fill('https://www.facebook.com/authorprofile');
     await page.getByLabel('Instagram profile URL').fill('https://instagram.com/authorprofile');
+    await page.getByLabel('LinkedIn profile URL').fill('https://linkedin.com/authorprofile');
+    await page.getByLabel('MySpace profile URL').fill('https://myspace.com/authorprofile');
+    await page.getByLabel('Pinterest profile URL').fill('https://pinterest.com/authorprofile');
+    await page.getByLabel('SoundCloud profile URL').fill('https://soundcloud.com/authorprofile');
+    await page.getByLabel('Tumblr profile URL').fill('https://tumblr.com/authorprofile');
+    await page.getByLabel('Wikipedia page').fill('https://wikipedia.org/w/authorprofile');
+    await page.getByLabel('X username').fill('https://twitter.com/authorprofile');
+    await page.getByLabel('YouTube profile URL').fill('https://youtube.com/authorprofile');
     await page.getByRole('button', { name: 'Update Profile' }).click();
     
     // This test assumes author has Yoast social data
