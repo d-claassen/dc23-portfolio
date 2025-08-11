@@ -49,7 +49,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     if (facebook) authorSocials.push({ service: 'facebook', url: facebook });
     if (instagram) authorSocials.push({ service: 'instagram', url: instagram });
     if (linkedin) authorSocials.push({ service: 'linkedin', url: linkedin });
-    if (myspace) authorSocials.push({ service: 'myspace', url: myspace });
+    // if (myspace) authorSocials.push({ service: 'myspace', url: myspace });
     if (pinterest) authorSocials.push({ service: 'pinterest', url: pinterest });
     if (soundcloud) authorSocials.push({ service: 'soundcloud', url: soundcloud });
     if (tumblr) authorSocials.push({ service: 'tumblr', url: tumblr });
