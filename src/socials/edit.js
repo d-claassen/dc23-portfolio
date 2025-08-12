@@ -34,7 +34,11 @@ const platforms = [
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes, clientId }) {
-    const { showLabels, iconSize } = attributes;
+    const { 
+        showLabels, 
+        iconSize,
+        activePlatforms = platforms.map(p => p.service),
+    } = attributes;
     const { replaceInnerBlocks } = useDispatch('core/block-editor');
 
     const { authorId } = useSelect(select => {
@@ -42,6 +46,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
             authorId: select('core/editor').getEditedPostAttribute('author'),
         };
     }, []);
+    
+    const socials = platforms
+        .filter(p => activePlatforms.indexOf(p.service) => 0)
+        .map(({ service, userMeta })  => ({
+            service, 
+            url: (useEntityProp('root', 'user', userMeta, authorId))[0],
+        }));
 
     // Get Yoast social meta for the author
     const [facebook] = useEntityProp('root', 'user', 'facebook', authorId);
@@ -69,7 +80,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     // if (wikipedia) authorSocials.push({ service: 'wikipedia', url: wikipedia });
     if (youtube) authorSocials.push({ service: 'youtube', url: youtube });
 
-    console.log(JSON.stringify(authorSocials));
+    console.log(JSON.stringify(authorSocials, activePlatforms, socials));
 
     useEffect(() => {
         // Create individual social-link blocks
