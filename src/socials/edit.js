@@ -14,6 +14,17 @@ import { useEffect, useMemo, useState } from '@wordpress/element';
  */
 import './editor.scss';
 
+const platforms = [
+    { service: 'facebook', userMeta: 'facebook' },
+    { service: 'instagram', userMeta: 'instagram' },
+    { service: 'linkedin', userMeta: 'linkedin' },
+    { service: 'pinterest', userMeta: 'pinterest' },
+    { service: 'soundcloud', userMeta: 'soundcloud' },
+    { service: 'tumblr', userMeta: 'tumblr' },
+    { service: 'twitter', userMeta: 'twitter' },
+    { service: 'youtube', userMeta: 'youtube' },
+];
+
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
