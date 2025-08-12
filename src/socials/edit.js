@@ -48,7 +48,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     }, []);
     
     const socials = platforms
-        .filter(p => activePlatforms.indexOf(p.service) => 0)
+        .filter(p => (activePlatforms.indexOf(p.service) => 0))
         .map(({ service, userMeta })  => ({
             service, 
             url: (useEntityProp('root', 'user', userMeta, authorId))[0],
