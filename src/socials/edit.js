@@ -80,8 +80,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     // if (wikipedia) authorSocials.push({ service: 'wikipedia', url: wikipedia });
     if (youtube) authorSocials.push({ service: 'youtube', url: youtube });
 
-    console.log(JSON.stringify(authorSocials, activePlatforms, socials));
-
+    console.log(JSON.stringify(authorSocials));
+    console.log(JSON.stringify(activePlatforms));
+    console.log(JSON.stringify(socials));
+    
     useEffect(() => {
         // Create individual social-link blocks
         const socialLinkBlocks = authorSocials.map(social => 
