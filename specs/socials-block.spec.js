@@ -48,8 +48,8 @@ test.describe('Author Socials block', () => {
     // @TODO. Check for author selection
     // await expect(page.locator('label:has-text("Author")')).toBeVisible();
     
-    // @TODO. Check for platform filtering
-    // await expect(page.locator('text=Social Platforms')).toBeVisible();
+    // Check for platform filtering
+    await expect(page.getByText('Social Platforms')).toBeVisible();
     
     // Check for display options
     await expect(page.locator('label:has-text("Show Labels")')).toBeVisible();
