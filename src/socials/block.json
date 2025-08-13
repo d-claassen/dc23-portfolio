@@ -19,7 +19,14 @@
 		"iconSize": {
 			"type": "string",
 			"default": "normal"
-		}
+		},
+		"activePlatforms": {
+			"type": "array",
+			"default": [
+				"twitter",
+				"linkedin",
+				"wordpress"
+			]
 	},
 	"textdomain": "socials",
 	"editorScript": "file:./index.js",
