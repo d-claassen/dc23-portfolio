@@ -103,7 +103,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         
         // Replace all inner blocks with our new structure
         replaceInnerBlocks( clientId, [ socialLinksBlock ] );
-    }, [showLabels, iconSize, authorSocials, clientId]);
+    }, [showLabels, iconSize, socials, clientId]);
 
     return (
         <div {...useBlockProps() }>
