@@ -24,8 +24,7 @@
 			"type": "array",
 			"default": [
 				"twitter",
-				"linkedin",
-				"wordpress"
+				"linkedin"
 			]
 		}
 	},
