@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import { FormTokenField, PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
 import { useEntityProp } from '@wordpress/core-data';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useMemo, useState } from '@wordpress/element';
@@ -24,6 +24,8 @@ const platforms = [
     { service: 'twitter', userMeta: 'twitter' },
     { service: 'youtube', userMeta: 'youtube' },
 ];
+
+const supportedPlatforms = platforms.map(p => p.service);
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -109,6 +111,17 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         <div {...useBlockProps() }>
             <InspectorControls>
                 <PanelBody title="Settings">
+                    <FormTokenField
+                        __experimentalExpandOnFocus
+                         __experimentalValidateInput={(nextActivePlatform) => supportedPlatforms.indexOf(nextActivePlatform) >= 0}
+                         __next40pxDefaultSize
+                         __nextHasNoMarginBottom
+                         label="Social Platforms"
+                         onChange={(nextActivePlatforms) => setAttributes({activePlatforms: nextActivePlatforms})}
+                         suggestions={ supportedPlatforms }
+                         value={ activePlatforms }
+                    />
+                    
                     <ToggleControl
                         label="Show Labels"
                         checked={showLabels}
