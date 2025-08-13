@@ -27,6 +27,7 @@
 				"linkedin",
 				"wordpress"
 			]
+		}
 	},
 	"textdomain": "socials",
 	"editorScript": "file:./index.js",
