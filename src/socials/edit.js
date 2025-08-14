@@ -65,10 +65,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                 url: user[userMeta],
                 label: ''
             }))
-            .filter(s => ( !! s.url ));
+            ;//.filter(s => ( !! s.url ));
             
         console.log(JSON.stringify(socials));
-        
+        console.log(JSON.stringify(activePlatforms));
+
         // Create individual social-link blocks
         const socialLinkBlocks = socials.map(social => 
             createBlock('core/social-link', {
