@@ -52,12 +52,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     const { record: user, isResolving } = useEntityRecord( 'root', 'user', authorId );
 
     useEffect(() => {
-        console.log({user,isResolving});
-
         if ( isResolving || ! user ) {
             return;
         }
-
+        
+        console.log(user);
+        
         const socials = platforms
             .filter(p => (activePlatforms.indexOf(p.service) >= 0))
             .map(({ service, userMeta })  => ({
@@ -66,7 +66,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                 label: ''
             }))
             .filter(s => ( !! s.url ));
-
+            
+        console.log(JSON.stringify(socials));
+        
         // Create individual social-link blocks
         const socialLinkBlocks = socials.map(social => 
             createBlock('core/social-link', {
