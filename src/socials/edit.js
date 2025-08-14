@@ -49,7 +49,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         };
     }, []);
     
-    const { user, isResolving } = useEntityRecord( 'root', 'user', authorId );
+    const { record: user, isResolving } = useEntityRecord( 'root', 'user', authorId );
 
     useEffect(() => {
         console.log({user,isResolving});
