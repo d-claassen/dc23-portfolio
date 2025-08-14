@@ -52,6 +52,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     const { user, isResolving } = useEntityRecord( 'root', 'user', authorId );
 
     useEffect(() => {
+        console.log({user,isResolving});
+
         if ( isResolving || ! user ) {
             return;
         }
@@ -82,7 +84,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         
         // Replace all inner blocks with our new structure
         replaceInnerBlocks( clientId, [ socialLinksBlock ] );
-    }, [showLabels, iconSize, user, clientId]);
+    }, [showLabels, iconSize, user, isResolving, clientId]);
 
 
     const validateInput = (nextActivePlatform) => {
