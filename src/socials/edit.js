@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 import { FormTokenField, PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
-import { useEntityProp } from '@wordpress/core-data';
+import { useEntityRecord } from '@wordpress/core-data';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useMemo, useState } from '@wordpress/element';
 
@@ -49,45 +49,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         };
     }, []);
     
-    const socials = platforms
-        .filter(p => (activePlatforms.indexOf(p.service) >= 0))
-        .map(({ service, userMeta })  => ({
-            service, 
-            url: (useEntityProp('root', 'user', userMeta, authorId))[0],
-            label: ''
-        }))
-        .filter(s => ( !! s.url ));
+    const { user, isResolving } = useEntityRecord( 'postType', 'page', id );
 
-    // Get Yoast social meta for the author
-    //const [facebook] = useEntityProp('root', 'user', 'facebook', authorId);
-    //const [instagram] = useEntityProp('root', 'user', 'instagram', authorId);
-    //const [linkedin] = useEntityProp('root', 'user', 'linkedin', authorId);
-    //const [myspace] = useEntityProp('root', 'user', 'myspace', authorId);
-    //const [pinterest] = useEntityProp('root', 'user', 'pinterest', authorId);
-    //const [soundcloud] = useEntityProp('root', 'user', 'soundcloud', authorId);
-    //const [tumblr] = useEntityProp('root', 'user', 'tumblr', authorId);
-    //const [twitter] = useEntityProp('root', 'user', 'twitter', authorId);
-    //const [wikipedia] = useEntityProp('root', 'user', 'wikipedia', authorId);
-    //const [youtube] = useEntityProp('root', 'user', 'youtube', authorId);
-        
-    // Build social template from meta
-    //const authorSocials = [];
-    //if (facebook) authorSocials.push({ service: 'facebook', url: facebook });
-    //if (instagram) authorSocials.push({ service: 'instagram', url: instagram });
-    //if (linkedin) authorSocials.push({ service: 'linkedin', url: linkedin });
-    // if (myspace) authorSocials.push({ service: 'myspace', url: myspace });
-    //if (pinterest) authorSocials.push({ service: 'pinterest', url: pinterest });
-    //if (soundcloud) authorSocials.push({ service: 'soundcloud', url: soundcloud });
-    //if (tumblr) authorSocials.push({ service: 'tumblr', url: tumblr });
-    //if (twitter) authorSocials.push({ service: 'twitter', url: twitter });
-    // no wikipedia social support 
-    // if (wikipedia) authorSocials.push({ service: 'wikipedia', url: wikipedia });
-    //if (youtube) authorSocials.push({ service: 'youtube', url: youtube });
-
-    console.log(JSON.stringify(activePlatforms));
-    console.log(JSON.stringify(socials));
-    
     useEffect(() => {
+        const socials = platforms
+            .filter(p => (activePlatforms.indexOf(p.service) >= 0))
+            .map(({ service, userMeta })  => ({
+                service, 
+                url: user[userMeta],
+                label: ''
+            }))
+            .filter(s => ( !! s.url ));
+
         // Create individual social-link blocks
         const socialLinkBlocks = socials.map(social => 
             createBlock('core/social-link', {
@@ -105,7 +78,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         
         // Replace all inner blocks with our new structure
         replaceInnerBlocks( clientId, [ socialLinksBlock ] );
-    }, [showLabels, iconSize, socials, clientId]);
+    }, [showLabels, iconSize, user, clientId]);
 
 
     const validateInput = (nextActivePlatform) => {
