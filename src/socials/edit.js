@@ -107,6 +107,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         replaceInnerBlocks( clientId, [ socialLinksBlock ] );
     }, [showLabels, iconSize, socials, clientId]);
 
+
+    const validateInput = (nextActivePlatform) => {
+        const res = supportedPlatforms.indexOf(nextActivePlatform) >= 0;
+        
+        console.log({
+            res,
+            nextActivePlatform,
+            supportedPlatforms,
+        });
+        
+        return res;
+    };
     return (
         <div {...useBlockProps() }>
             <InspectorControls>
@@ -115,7 +127,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                         __experimentalExpandOnFocus
                         __experimentalAutoSelectFirstMatch
                         tokenizeOnSpace
-                        __experimentalValidateInput={(nextActivePlatform) => supportedPlatforms.indexOf(nextActivePlatform) >= 0}
+                        __experimentalValidateInput={ validateInput }
                          __next40pxDefaultSize
                          __nextHasNoMarginBottom
                          label="Social Platforms"
