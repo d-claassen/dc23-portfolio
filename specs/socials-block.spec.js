@@ -126,6 +126,7 @@ test.describe('Author Socials block', () => {
 
   // Test 9: Social Links Generation (with mock data)
   test('generates social links from yoast data', async ({ admin, editor, page }) => {
+    // setup author with social profiles first
     await admin.visitAdminPage('profile.php');
     await page.getByLabel('Facebook profile URL').fill('https://www.facebook.com/authorprofile');
     await page.getByLabel('Instagram profile URL').fill('https://instagram.com/authorprofile');
@@ -142,8 +143,10 @@ test.describe('Author Socials block', () => {
     // This test assumes author has Yoast social data
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
-    
-    // Mock or setup author with social profiles first
+
+    const platformSelector = page.getByLabel('Social Platforms');
+    await platformSelector.type('Faceb Instag MySpac Pinter SoundCl YouTu ');
+
     // Then verify social-link blocks are generated
     const socialLinks = editor.canvas.locator('[data-type="core/social-link"]');
     expect(await socialLinks.count()).toBe(8);
