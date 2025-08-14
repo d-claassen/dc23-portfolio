@@ -52,6 +52,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     const { user, isResolving } = useEntityRecord( 'root', 'user', authorId );
 
     useEffect(() => {
+        if ( isResolving || ! user ) {
+            return;
+        }
+
         const socials = platforms
             .filter(p => (activePlatforms.indexOf(p.service) >= 0))
             .map(({ service, userMeta })  => ({
