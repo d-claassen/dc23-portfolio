@@ -113,7 +113,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                 <PanelBody title="Settings">
                     <FormTokenField
                         __experimentalExpandOnFocus
-                         __experimentalValidateInput={(nextActivePlatform) => supportedPlatforms.indexOf(nextActivePlatform) >= 0}
+                        __experimentalAutoSelectFirstMatch
+                        tokenizeOnSpace
+                        __experimentalValidateInput={(nextActivePlatform) => supportedPlatforms.indexOf(nextActivePlatform) >= 0}
                          __next40pxDefaultSize
                          __nextHasNoMarginBottom
                          label="Social Platforms"
