@@ -49,7 +49,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         };
     }, []);
     
-    const { user, isResolving } = useEntityRecord( 'postType', 'page', id );
+    const { user, isResolving } = useEntityRecord( 'root', 'user', authorId );
 
     useEffect(() => {
         const socials = platforms
