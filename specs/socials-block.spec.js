@@ -145,7 +145,7 @@ test.describe('Author Socials block', () => {
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
 
     const platformSelector = page.getByLabel('Social Platforms');
-    await platformSelector.pressSequentially('facebook instagram myspace pinterest soundcloud youtube ');
+    await platformSelector.pressSequentially('facebook instagram myspace pinterest soundcloud tumblr youtube ');
     await platformSelector.press('Tab');
     
     // Then verify social-link blocks are generated
