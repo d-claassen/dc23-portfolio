@@ -102,7 +102,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         return res;
     }, [supportedPlatforms]);
 
-    const onChamge = useCallback((nextActivePlatforms) => {
+    const onChange = useCallback((nextActivePlatforms) => {
         console.log('onChange', JSON.stringify(nextActivePlatforms));
         return setAttributes({
             activePlatforms: nextActivePlatforms,
@@ -118,12 +118,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                         __experimentalAutoSelectFirstMatch
                         tokenizeOnSpace
                         __experimentalValidateInput={ validateInput }
-                         __next40pxDefaultSize
-                         __nextHasNoMarginBottom
-                         label="Social Platforms"
-                         onChange={(nextActivePlatforms) => setAttributes({activePlatforms: nextActivePlatforms})}
-                         suggestions={ supportedPlatforms }
-                         value={ activePlatforms }
+                        __next40pxDefaultSize
+                        __nextHasNoMarginBottom
+                        label="Social Platforms"
+                        onChange={ onChange }
+                        suggestions={ supportedPlatforms }
+                        value={ activePlatforms }
                     />
                     
                     <ToggleControl
