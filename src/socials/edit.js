@@ -4,7 +4,7 @@ import { createBlock } from '@wordpress/blocks';
 import { FormTokenField, PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
 import { useEntityRecord } from '@wordpress/core-data';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useEffect, useMemo, useState } from '@wordpress/element';
+import { useCallback, useEffect, useMemo, useState } from '@wordpress/element';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -90,17 +90,25 @@ export default function Edit({ attributes, setAttributes, clientId }) {
     }, [showLabels, iconSize, user, isResolving, clientId]);
 
 
-    const validateInput = (nextActivePlatform) => {
+    const validateInput = useCallback((nextActivePlatform) => {
         const res = supportedPlatforms.indexOf(nextActivePlatform) >= 0;
-        
+
         console.log({
             res,
             nextActivePlatform,
             supportedPlatforms,
         });
-        
+
         return res;
-    };
+    }, [supportedPlatforms]);
+
+    const onChamge = useCallback((nextActivePlatforms) => {
+        console.log('onChange', JSON.stringify(nextActivePlatforms));
+        return setAttributes({
+            activePlatforms: nextActivePlatforms,
+        });
+    }, [setAttributes]);
+
     return (
         <div {...useBlockProps() }>
             <InspectorControls>
