@@ -87,7 +87,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         
         // Replace all inner blocks with our new structure
         replaceInnerBlocks( clientId, [ socialLinksBlock ] );
-    }, [showLabels, iconSize, user, isResolving, clientId]);
+    }, [activePlatforms, showLabels, iconSize, user, isResolving, clientId]);
 
 
     const validateInput = useCallback((nextActivePlatform) => {
