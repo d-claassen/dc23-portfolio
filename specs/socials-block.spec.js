@@ -72,16 +72,17 @@ test.describe('Author Socials block', () => {
   });
 
   // Test 5: Platform Filtering Controls
-  test.fixme('shows platform checkboxes', async ({ admin, editor, page }) => {
+  test('shows platform options', async ({ admin, editor, page }) => {
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
     
     await editor.canvas.locator('[data-type="dc23-portfolio/socials"]').click();
-    
-    // Common platforms should have checkboxes
-    await expect(page.locator('input[type="checkbox"] + label:has-text("Facebook")')).toBeVisible();
-    await expect(page.locator('input[type="checkbox"] + label:has-text("Twitter")')).toBeVisible();
-    await expect(page.locator('input[type="checkbox"] + label:has-text("LinkedIn")')).toBeVisible();
+    await page.getByLabel('Social Platforms').click();
+
+    // Common platforms should be shown
+    await expect(page).toContainText('facebook');
+    await expect(page).toContainText('twitter');
+    await expect(page).toContainText('linkedin');
   });
 
   // Test 6: Display Options Toggle
