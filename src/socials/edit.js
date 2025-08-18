@@ -63,6 +63,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                 url: user[userMeta],
                 label: ''
             }))
+            .filter(s => !! s.url);
 
         console.log({nrOfSocials: socials.length, theSocials: JSON.stringify(socials)});
         if ( socials.length === 0 ) {
