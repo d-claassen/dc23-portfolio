@@ -64,7 +64,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                 label: ''
             }))
 
-        console.log({nrOfSocials: socials.length});
+        console.log({nrOfSocials: socials.length, theSocials: JSON.stringify(socials)});
         if ( socials.length === 0 ) {
             console.log({mag:'no social profiles found'});
     
