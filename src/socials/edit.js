@@ -64,7 +64,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                 label: ''
             }))
 
-        if ( ! socials.length === 0 ) {
+        console.log({nrOfSocials: socials.length});
+        if ( socials.length === 0 ) {
+            console.log({mag:'no social profiles found'});
+    
             replaceInnerBlocks( 
                 clientId, 
                 [ 
@@ -101,19 +104,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 
     const validateInput = useCallback((nextActivePlatform) => {
-        const res = supportedPlatforms.indexOf(nextActivePlatform) >= 0;
-
-        console.log({
-            res,
-            nextActivePlatform,
-            supportedPlatforms,
-        });
-
-        return res;
+        return supportedPlatforms.indexOf(nextActivePlatform) >= 0;
     }, [supportedPlatforms]);
 
     const onChange = useCallback((nextActivePlatforms) => {
-        console.log('onChange', JSON.stringify(nextActivePlatforms));
         return setAttributes({
             activePlatforms: nextActivePlatforms,
         });
