@@ -79,10 +79,12 @@ test.describe('Author Socials block', () => {
     await editor.canvas.locator('[data-type="dc23-portfolio/socials"]').click();
     await page.getByLabel('Social Platforms').click();
 
+    const sidebar = await page.getByRole( 'region', { name: 'Editor settings' } );
+
     // Common platforms should be shown
-    await expect(page).toContainText('facebook');
-    await expect(page).toContainText('twitter');
-    await expect(page).toContainText('linkedin');
+    await expect(sidebar).toContainText('facebook');
+    await expect(sidebar).toContainText('twitter');
+    await expect(sidebar).toContainText('linkedin');
   });
 
   // Test 6: Display Options Toggle
