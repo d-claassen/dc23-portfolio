@@ -118,7 +118,7 @@ test.describe('Author Socials block', () => {
   });
 
   // Test 8: Empty State Handling
-  test.fixme('shows message when author has no social profiles', async ({ admin, editor }) => {
+  test('shows message when author has no social profiles', async ({ admin, editor }) => {
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
     
