@@ -71,7 +71,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                     createBlock(
                         'core/paragraph',
                         // @todo provavly 
-                        {},
+                        {
+                            content: "No social profiles found",
+                        },
                     )
                 ]
             );
