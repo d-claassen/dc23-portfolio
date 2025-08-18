@@ -55,9 +55,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         if ( isResolving || ! user ) {
             return;
         }
-        
-        console.log(user);
-        
+
         const socials = platforms
             .filter(p => (activePlatforms.indexOf(p.service) >= 0))
             .map(({ service, userMeta })  => ({
@@ -65,10 +63,20 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                 url: user[userMeta],
                 label: ''
             }))
-            ;//.filter(s => ( !! s.url ));
-            
-        console.log(JSON.stringify(socials));
-        console.log(JSON.stringify(activePlatforms));
+
+        if ( ! socials.length === 0 ) {
+            replaceInnerBlocks( 
+                clientId, 
+                [ 
+                    createBlock(
+                        'core/paragraph',
+                        // @todo provavly 
+                        {},
+                    )
+                ]
+            );
+            return;
+        }
 
         // Create individual social-link blocks
         const socialLinkBlocks = socials.map(social => 
