@@ -2,6 +2,14 @@ const { test, expect } = require('@wordpress/e2e-test-utils-playwright');
 
 test.describe('Author Socials block', () => {
   let consoleLogs = [];
+  
+  const setBasicSocials = async ( { admin, page } ) => {
+    // setup author with social profiles first
+    await admin.visitAdminPage('profile.php');
+
+    await page.getByLabel('LinkedIn profile URL').fill('https://linkedin.com/authorprofile');
+    await page.getByLabel('X username').fill('https://twitter.com/authorprofile');
+  };
 
   test.beforeEach(async ({ page }) => {
     consoleLogs = [];
@@ -27,7 +35,9 @@ test.describe('Author Socials block', () => {
   });
 
   // Test 2: Basic Block Structure
-  test('block contains social-links inner block', async ({ admin, editor }) => {
+  test('block contains social-links inner block', async ({ admin, editor, page }) => {
+    await setBasicSocials( { admin, page } );
+
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
 
@@ -89,6 +99,8 @@ test.describe('Author Socials block', () => {
 
   // Test 6: Display Options Toggle
   test('show labels toggle works', async ({ admin, editor, page }) => {
+    await setBasicSocials( { admin, page } );
+
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
     
@@ -104,6 +116,8 @@ test.describe('Author Socials block', () => {
 
   // Test 7: Icon Size Selection
   test('icon size dropdown changes size', async ({ admin, editor, page }) => {
+    await setBasicSocials( { admin, page } );
+
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
     
