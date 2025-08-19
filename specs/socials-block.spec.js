@@ -19,6 +19,19 @@ test.describe('Author Socials block', () => {
   });
 
   test.afterEach(async ({ page }) => {
+    await admin.visitAdminPage('profile.php');
+    await page.getByLabel('Facebook profile URL').fill('');
+    await page.getByLabel('Instagram profile URL').fill('');
+    await page.getByLabel('LinkedIn profile URL').fill('');
+    await page.getByLabel('MySpace profile URL').fill('');
+    await page.getByLabel('Pinterest profile URL').fill('');
+    await page.getByLabel('SoundCloud profile URL').fill('');
+    await page.getByLabel('Tumblr profile URL').fill('');
+    await page.getByLabel('Wikipedia page').fill('');
+    await page.getByLabel('X username').fill('');
+    await page.getByLabel('YouTube profile URL').fill('');
+    await page.getByRole('button', { name: 'Update Profile' }).click();
+
     if (consoleLogs.length > 0) {
       console.log('Page logs:', consoleLogs);
     }
