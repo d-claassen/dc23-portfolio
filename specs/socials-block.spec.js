@@ -9,6 +9,8 @@ test.describe('Author Socials block', () => {
 
     await page.getByLabel('LinkedIn profile URL').fill('https://linkedin.com/authorprofile');
     await page.getByLabel('X username').fill('https://twitter.com/authorprofile');
+
+    await page.getByRole('button', { name: 'Update Profile' }).click();
   };
 
   test.beforeEach(async ({ page }) => {
