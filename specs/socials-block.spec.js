@@ -18,7 +18,7 @@ test.describe('Author Socials block', () => {
     page.on('console', msg => consoleLogs.push(msg.text()));
   });
 
-  test.afterEach(async ({ page }) => {
+  test.afterEach(async ({ admin, page }) => {
     await admin.visitAdminPage('profile.php');
     await page.getByLabel('Facebook profile URL').fill('');
     await page.getByLabel('Instagram profile URL').fill('');
