@@ -196,10 +196,8 @@ test.describe('Author Socials block', () => {
     await editor.publishPost();
     
     // Visit frontend
-    const postUrl = await editor.getPermalink();
-    console.log({postUrl});
-    await page.goto(postUrl);
-    
+    await page.getByText('View Post').first().click();
+
     // Verify social links render
     const socialLinksContainer = page.locator('.wp-block-social-links');
     await expect(socialLinksContainer).toBeVisible();
