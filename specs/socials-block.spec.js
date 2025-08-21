@@ -186,7 +186,9 @@ test.describe('Author Socials block', () => {
   });
 
   // Test 10: Frontend Rendering
-  test.fixme('renders correctly on frontend', async ({ admin, editor, page }) => {
+  test('renders correctly on frontend', async ({ admin, editor, page }) => {
+    await setBasicSocials( { admin, page } );
+
     await admin.createNewPost();
     await editor.insertBlock({ name: 'dc23-portfolio/socials' });
     
@@ -195,6 +197,7 @@ test.describe('Author Socials block', () => {
     
     // Visit frontend
     const postUrl = await editor.getPermalink();
+    console.log({postUrl});
     await page.goto(postUrl);
     
     // Verify social links render
