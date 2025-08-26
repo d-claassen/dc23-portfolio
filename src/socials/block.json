@@ -13,12 +13,12 @@
 	},
 	"attributes": {
 		"showLabels": {
-			"type": "boolean", 
+			"type": "boolean",
 			"default": false
 		},
 		"iconSize": {
 			"type": "string",
-			"default": "normal"
+			"default": ""
 		},
 		"activePlatforms": {
 			"type": "array",

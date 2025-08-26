@@ -36,8 +36,8 @@ const supportedPlatforms = platforms.map(p => p.service);
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes, clientId }) {
-    const { 
-        showLabels, 
+    const {
+        showLabels,
         iconSize,
         activePlatforms = platforms.map(p => p.service),
     } = attributes;
@@ -48,7 +48,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
             authorId: select('core/editor').getEditedPostAttribute('author'),
         };
     }, []);
-    
+
     const { record: user, isResolving } = useEntityRecord( 'root', 'user', authorId );
 
     useEffect(() => {
@@ -59,7 +59,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         const socials = platforms
             .filter(p => (activePlatforms.indexOf(p.service) >= 0))
             .map(({ service, userMeta })  => ({
-                service, 
+                service,
                 url: user[userMeta],
                 label: ''
             }))
@@ -68,13 +68,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         console.log({nrOfSocials: socials.length, theSocials: JSON.stringify(socials)});
         if ( socials.length === 0 ) {
             console.log({mag:'no social profiles found'});
-    
-            replaceInnerBlocks( 
-                clientId, 
-                [ 
+
+            replaceInnerBlocks(
+                clientId,
+                [
                     createBlock(
                         'core/paragraph',
-                        // @todo provavly 
+                        // @todo provavly
                         {
                             content: "No social profiles found",
                         },
@@ -85,20 +85,20 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         }
 
         // Create individual social-link blocks
-        const socialLinkBlocks = socials.map(social => 
+        const socialLinkBlocks = socials.map(social =>
             createBlock('core/social-link', {
                 service: social.service,
                 url: social.url,
                 label: social.label
             })
         );
-        
+
         // Create the wrapper social-links block
         const socialLinksBlock = createBlock('core/social-links', {
             showLabels,
             size: iconSize
         }, socialLinkBlocks);
-        
+
         // Replace all inner blocks with our new structure
         replaceInnerBlocks( clientId, [ socialLinksBlock ] );
     }, [activePlatforms, showLabels, iconSize, user, isResolving, clientId]);
@@ -130,7 +130,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                         suggestions={ supportedPlatforms }
                         value={ activePlatforms }
                     />
-                    
+
                     <ToggleControl
                         label="Show Labels"
                         checked={showLabels}
@@ -142,9 +142,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                         value={iconSize}
                         onChange={(value) => setAttributes({ iconSize: value })}
                         options={[
-                            { label: 'Small', value: 'small' },
-                            { label: 'Normal', value: 'normal' },
-                            { label: 'Large', value: 'large' }
+                            { label: __( 'Default' ), value: '' },
+                            { label: __( 'Small' ), value: 'has-small-icon-size' },
+                            { label: __( 'Normal' ), value: 'has-normal-icon-size' },
+                            { label: __( 'Large' ), value: 'has-large-icon-size' },
+                            { label: __( 'Huge' ), value: 'has-huge-icon-size' },
                         ]}
                         __nextHasNoMarginBottom={true}
                         __next40pxDefaultSize={true}
