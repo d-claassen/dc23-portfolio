@@ -93,13 +93,3 @@ $social_links_block = [
 //var_dump( $social_links_block );
 
 echo (new WP_Block( $social_links_block))->render();
-//return;
-
-// Convert to WP_Block and render
-$block_instance = new WP_Block([
-	'blockName' => 'core/group',
-	'innerBlocks' => [$social_links_block],
-	'innerHTML' => '<div></div>',
-	'innerContent' => ['<div>', null, '</div>']
-]);
-echo $block_instance->render();
