@@ -139,7 +139,7 @@ test.describe('Author Socials block', () => {
     await editor.canvas.locator('[data-type="dc23-portfolio/socials"]').click();
     
     const sizeSelect = page.getByLabel('Icon Size');
-    await sizeSelect.selectOption('large');
+    await sizeSelect.selectOption('Large');
     
     // Verify the social-links block receives the size attribute
     const socialLinksBlock = editor.canvas.locator('[data-type="core/social-links"]');
