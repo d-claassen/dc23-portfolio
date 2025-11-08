@@ -1,0 +1,10 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-dc23-portfolio-socials .wp-block-social-links,
+.wp-block-dc23-portfolio-socials .wp-block-paragraph {
+	pointer-events: none;
+}

@@ -20,6 +20,7 @@
 declare( strict_types=1 );
 
 use Yoast\WP\SEO\Context\Meta_Tags_Context;
+use Yoast\WP\SEO\User_Meta\Application\Additional_Contactmethods_Collector;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -36,6 +37,7 @@ require_once 'vendor/autoload.php';
  */
 function dc23_portfolio_block_init() {
 	register_block_type( __DIR__ . '/build/skill' );
+	register_block_type( __DIR__ . '/build/socials' );
 }
 add_action( 'init', 'dc23_portfolio_block_init' );
 
@@ -86,3 +88,28 @@ function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context )
 
 	return $schema_graph;
 }
+
+function custom_rest_user_profiles() {
+	if ( ! function_exists( 'YoastSEO' ) ) {
+		return;
+	}
+
+	$collector = \YoastSEO()->classes->get( Additional_Contactmethods_Collector::class );
+	foreach( $collector->get_additional_contactmethods() as $contactmethod){
+		register_rest_field('user', $contactmethod->get_key(), array(
+			'get_callback' => function($user) use ($contactmethod) {
+				return get_user_meta($user['id'], $contactmethod->get_key(), true);
+			},
+			'update_callback' => function($value, $user) use ($contactmethod) {
+				return update_user_meta($user->ID, $contactmethod->get_key(), $value);
+			},
+			'schema' => array(
+				'type' => 'string',
+				'description' => $contactmethod->get_label(),
+				)
+			)
+		);
+	}
+}
+
+add_action('rest_api_init', 'custom_rest_user_profiles');
