@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        wp_version: ["6.7", "6.8", "master"]
+        wp_version: ["6.7", "6.8.3", "master"]
         dependencies_version: ["lowest", "highest"]
 
     name: "E2E Test: WP ${{ matrix.wp_version }} / Composer ${{ matrix.dependencies_version }}"
