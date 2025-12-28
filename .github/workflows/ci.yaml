@@ -68,7 +68,7 @@ jobs:
         run: 'npm run-script plugin-zip'
 
       - name: 'Archive plugin zip'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: 'dc23-portfolio'
           path: 'dc23-portfolio.zip'
