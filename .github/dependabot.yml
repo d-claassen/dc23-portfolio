@@ -4,16 +4,22 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    assignees:
+      - d-claassen
 
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
+    assignees:
+      - d-claassen
 
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
       interval: "weeky"
+    assignees:
+      - d-claassen
     versioning-strategy: widen
     allow:
       - dependency-name: "*"
