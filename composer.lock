@@ -1138,15 +1138,15 @@
         },
         {
             "name": "wpackagist-plugin/the-events-calendar",
-            "version": "6.13.2.1",
+            "version": "6.15.13",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
-                "reference": "tags/6.13.2.1"
+                "reference": "tags/6.15.13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.6.13.2.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.6.15.13.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -1237,10 +1237,10 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }
