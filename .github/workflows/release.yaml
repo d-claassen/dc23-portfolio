@@ -53,7 +53,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
 
@@ -78,7 +78,7 @@ jobs:
         with:
           ref: ${{ needs.version_increase.outputs.commit_hash }}
           fetch-tags: true
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
       - run: npm clean-install
