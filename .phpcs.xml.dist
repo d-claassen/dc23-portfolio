@@ -13,7 +13,7 @@
 	-->
 
 	<file>src</file>
-	<file>dc23-tea.php</file>
+	<file>dc23-portfolio.php</file>
 
 	<!-- Only check PHP files. -->
 	<arg name="extensions" value="php"/>
