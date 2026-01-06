@@ -18,10 +18,21 @@ jobs:
 
     strategy:
       matrix:
-        wp_version: ["6.7", "6.8.3", "master"]
-        dependencies_version: ["lowest", "highest"]
+        php_version: ["8.3","8.4","8.5"]
+        wp_version: ["6.9"]
+        dependencies_version: ["locked"]
+        include:
+          # Lowest PHP, WP, and deps
+          - php_version: "8.2"
+            wp_version: "6.7"
+            dependencies_version: "lowest"
+          # Unstable latest PHP and WP
+          - php_version: "8.6"
+            wp_version: "master"
+            dependencies_version: "highest"
 
-    name: "E2E Test: WP ${{ matrix.wp_version }} / Composer ${{ matrix.dependencies_version }}"
+
+    name: "E2E Test: WP ${{ matrix.wp_version }} / PHO ${{ matrix.php_version }} / Composer ${{ matrix.dependencies_version }}"
 
     # Allow builds to fail on as-of-yet unreleased WordPress versions.
     continue-on-error: ${{ matrix.wp_version == 'master' }}
