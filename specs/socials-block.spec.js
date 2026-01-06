@@ -186,7 +186,7 @@ test.describe('Author Socials block', () => {
   });
 
   // Test 10: Frontend Rendering
-  test('renders correctly on frontend', async ({ admin, editor, page }) => {
+  test('renders correctly on frontend', async ({ admin, context, editor, page }) => {
     await setBasicSocials( { admin, page } );
 
     await admin.createNewPost();
