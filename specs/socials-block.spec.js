@@ -196,10 +196,15 @@ test.describe('Author Socials block', () => {
     await editor.publishPost();
     
     // Visit frontend
-    await page.getByText('View Post').first().click();
+    const [newPage] = await Promise.all([
+      context.waitForEvent('page', {timeout: 1500}).catch(() => null),
+      page.getByText('View Post').first().click(),
+    ]);
 
+    // Fallback for pre-WP6.9
+    const postPage = newPage || page;
     // Verify social links render
-    const socialLinksContainer = page.locator('.wp-block-social-links');
+    const socialLinksContainer = postPage.locator('.wp-block-social-links');
     await expect(socialLinksContainer).toBeVisible();
   });
 
