@@ -19,7 +19,7 @@
 	],
 	"main": "build/index.js",
 	"devDependencies": {
-		"@wordpress/date": "^5.37.0",
+		"@wordpress/date": "^5.38.0",
 		"@wordpress/env": "^10.38.0",
 		"@wordpress/scripts": "^31.3.0"
 	},
