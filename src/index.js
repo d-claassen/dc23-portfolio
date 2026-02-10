@@ -32,12 +32,6 @@ function ProfilePageSchemaSection() {
 		[]
 	);
 
-	// Get current post ID and meta
-	const postId = useSelect(
-		(select) => select(editorStore).getCurrentPostId(),
-		[]
-	);
-
 	const savedUserId = useSelect(
 		(select) => select(editorStore).getEditedPostAttribute('meta')?._dc23_portfolio_user_id,
 		[]
