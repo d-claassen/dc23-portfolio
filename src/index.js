@@ -47,8 +47,9 @@ function ProfilePageSchemaSection() {
 	}, [savedUserId]);
 
 	// Only show this section when post type is page and page type is ProfilePage
+	console.log({postType, articleType});
 	if (postType !== 'page' || articleType !== 'ProfilePage') {
-		return null;
+		// return null;
 	}
 
 	// Search for users
