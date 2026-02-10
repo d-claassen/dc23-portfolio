@@ -1,10 +1,10 @@
 /**
  * WordPress dependencies
  */
-import { render, useState, useEffect } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { Fill } from '@wordpress/components';
-import { SearchControl, PanelBody, Spinner } from '@wordpress/components';
+import { registerPlugin } from '@wordpress/plugins';
+import { Fill, PanelBody, SearchControl, Spinner } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 import { store as editorStore } from '@wordpress/editor';
 import { __ } from '@wordpress/i18n';
@@ -26,6 +26,12 @@ function ProfilePageSchemaSection() {
 		return yoastStore ? yoastStore.getArticleType() : null;
 	}, []);
 
+	// Get current post type
+	const postType = useSelect(
+		(select) => select(editorStore).getCurrentPostType(),
+		[]
+	);
+
 	// Get current post ID and meta
 	const postId = useSelect(
 		(select) => select(editorStore).getCurrentPostId(),
@@ -46,8 +52,8 @@ function ProfilePageSchemaSection() {
 		}
 	}, [savedUserId]);
 
-	// Only show this section when page type is ProfilePage
-	if (articleType !== 'ProfilePage') {
+	// Only show this section when post type is page and page type is ProfilePage
+	if (postType !== 'page' || articleType !== 'ProfilePage') {
 		return null;
 	}
 
@@ -109,7 +115,7 @@ function ProfilePageSchemaSection() {
 	};
 
 	return (
-		<Fill name="YoastSidebar" priority={28}>
+		<Fill name="YoastSidebar">
 			<PanelBody
 				title={__('ProfilePage Schema', 'dc23-portfolio')}
 				initialOpen={true}
@@ -176,9 +182,7 @@ function ProfilePageSchemaSection() {
 	);
 }
 
-// Mount the component
-if (window.wp && window.wp.element) {
-	const container = document.createElement('div');
-	document.body.appendChild(container);
-	render(<ProfilePageSchemaSection />, container);
-}
+// Register the plugin
+registerPlugin('dc23-profile-page-schema', {
+	render: ProfilePageSchemaSection,
+});
