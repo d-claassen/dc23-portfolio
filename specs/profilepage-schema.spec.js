@@ -81,20 +81,22 @@ test.describe('ProfilePage Schema', () => {
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
 		await yoastButton.click();
-		
-		const schemaTab = page.locator('button:has-text("Schema")').first();
+
+		const yoastSidebar =	page.getByRole('region', { name: 'Editor settings' });
+
+		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
-		const pageTypeSelect = page.getByLabel('Page type');
+		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Wait for ProfilePage Schema section
-		await expect(page.locator('text=ProfilePage Schema')).toBeVisible();
+		await expect(yoastSidebar.locator('text=ProfilePage Schema')).toBeVisible();
 
 		// Find the search input
-		const searchInput = page.locator('input[placeholder*="Search for a user"]').first();
+		const searchInput = yoastSidebar.locator('input[placeholder*="Search for a user"]').first();
 		await searchInput.click();
 		await searchInput.fill('Test Profile');
 
@@ -102,11 +104,11 @@ test.describe('ProfilePage Schema', () => {
 		await page.waitForTimeout(1000); // Wait for API call
 
 		// Check that search results appear
-		const searchResults = page.locator('.dc23-user-search-results');
+		const searchResults = yoastSidebar.locator('.dc23-user-search-results');
 		await expect(searchResults).toBeVisible({ timeout: 3000 });
 		
 		// Check that our test user appears in results
-		await expect(page.locator('text=Test Profile User')).toBeVisible();
+		await expect(yoastSidebar.locator('text=Test Profile User')).toBeVisible();
 	});
 
 	test('can select a user and save to post meta', async ({ page, editor }) => {
@@ -114,27 +116,29 @@ test.describe('ProfilePage Schema', () => {
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
 		await yoastButton.click();
+
+		const yoastSidebar =	page.getByRole('region', { name: 'Editor settings' });
 		
-		const schemaTab = page.locator('button:has-text("Schema")').first();
+		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
-		const pageTypeSelect = page.getByLabel('Page type');
+		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Search for user
-		const searchInput = page.locator('input[placeholder*="Search for a user"]').first();
+		const searchInput = yoastSidebar.locator('input[placeholder*="Search for a user"]').first();
 		await searchInput.fill('Test Profile');
 		await page.waitForTimeout(1000);
 
 		// Select the user
-		const userButton = page.locator('button.dc23-user-select-button:has-text("Test Profile User")').first();
+		const userButton = yoastSidebar.locator('button.dc23-user-select-button:has-text("Test Profile User")').first();
 		await userButton.click();
 
 		// Wait for user profile to load
-		await expect(page.locator('text=Selected Profile')).toBeVisible({ timeout: 3000 });
-		await expect(page.locator('text=Test Profile User')).toBeVisible();
+		await expect(yoastSidebar.locator('text=Selected Profile')).toBeVisible({ timeout: 3000 });
+		await expect(yoastSidebar.locator('text=Test Profile User')).toBeVisible();
 
 		// Save the post
 		await editor.publishPost();
@@ -149,14 +153,16 @@ test.describe('ProfilePage Schema', () => {
 		const yoastButtonReload = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButtonReload.waitFor({ state: 'visible', timeout: 5000 });
 		await yoastButtonReload.click();
-		
-		const schemaTabReload = page.locator('button:has-text("Schema")').first();
+
+		const yoastSidebarReload =	page.getByRole('region', { name: 'Editor settings' });
+
+		const schemaTabReload = yoastSidebarReload.locator('button:has-text("Schema")').first();
 		await schemaTabReload.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTabReload.click();
 
 		// Check that the selected user is still shown
-		await expect(page.locator('text=Selected Profile')).toBeVisible({ timeout: 5000 });
-		await expect(page.locator('.dc23-user-profile:has-text("Test Profile User")')).toBeVisible();
+		await expect(yoastSidebarReload.locator('text=Selected Profile')).toBeVisible({ timeout: 5000 });
+		await expect(yoastSidebarReload.locator('.dc23-user-profile:has-text("Test Profile User")')).toBeVisible();
 	});
 
 	test('displays user profile information', async ({ page }) => {
@@ -164,25 +170,27 @@ test.describe('ProfilePage Schema', () => {
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
 		await yoastButton.click();
+
+		const yoastSidebar =	page.getByRole('region', { name: 'Editor settings' });
 		
-		const schemaTab = page.locator('button:has-text("Schema")').first();
+		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
-		const pageTypeSelect = page.getByLabel('Page type');
+		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Search and select user
-		const searchInput = page.locator('input[placeholder*="Search for a user"]').first();
+		const searchInput = yoastSidebar.locator('input[placeholder*="Search for a user"]').first();
 		await searchInput.fill('Test Profile');
 		await page.waitForTimeout(1000);
 
-		const userButton = page.locator('button.dc23-user-select-button:has-text("Test Profile User")').first();
+		const userButton = yoastSidebar.locator('button.dc23-user-select-button:has-text("Test Profile User")').first();
 		await userButton.click();
 
 		// Check that user info is displayed
-		const userProfile = page.locator('.dc23-user-profile');
+		const userProfile = yoastSidebar.locator('.dc23-user-profile');
 		await expect(userProfile).toBeVisible();
 		
 		// Check for name
@@ -195,32 +203,34 @@ test.describe('ProfilePage Schema', () => {
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
 		await yoastButton.click();
+
+		const yoastSidebar =	page.getByRole('region', { name: 'Editor settings' });
 		
-		const schemaTab = page.locator('button:has-text("Schema")').first();
+		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
-		const pageTypeSelect = page.getByLabel('Page type');
+		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Search for user
-		const searchInput = page.locator('input[placeholder*="Search for a user"]').first();
+		const searchInput = yoastSidebar.locator('input[placeholder*="Search for a user"]').first();
 		await searchInput.fill('Test Profile');
 		await page.waitForTimeout(1000);
 
 		// Verify search results are visible
-		await expect(page.locator('.dc23-user-search-results')).toBeVisible();
+		await expect(yoastSidebar.locator('.dc23-user-search-results')).toBeVisible();
 
 		// Select the user
-		const userButton = page.locator('button.dc23-user-select-button:has-text("Test Profile User")').first();
+		const userButton = yoastSidebar.locator('button.dc23-user-select-button:has-text("Test Profile User")').first();
 		await userButton.click();
 
 		// Wait a moment for state update
 		await page.waitForTimeout(500);
 
 		// Verify search results are cleared
-		await expect(page.locator('.dc23-user-search-results')).not.toBeVisible({ timeout: 2000 });
+		await expect(yoastSidebar.locator('.dc23-user-search-results')).not.toBeVisible({ timeout: 2000 });
 	});
 
 	test('only shows for pages, not posts', async ({ admin, page }) => {
@@ -238,13 +248,15 @@ test.describe('ProfilePage Schema', () => {
 		if (await settingsButton.isVisible()) {
 			await settingsButton.click();
 		}
-		
-		const schemaTab = page.locator('button:has-text("Schema")').first();
+
+		const yoastSidebar =	page.getByRole('region', { name: 'Editor settings' });
+
+		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		if (await schemaTab.isVisible()) {
 			await schemaTab.click();
 		
 			// Try to set article type to ProfilePage (if the option even exists for posts)
-			const pageTypeSelect = page.getByLabel('Page type');
+			const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 			if (await pageTypeSelect.isVisible()) {
 				const hasProfilePage = await pageTypeSelect.locator('option[value="ProfilePage"]').count();
 				
@@ -252,7 +264,7 @@ test.describe('ProfilePage Schema', () => {
 					await pageTypeSelect.selectOption('ProfilePage');
 					
 					// ProfilePage Schema section should still not appear for posts
-					await expect(page.locator('text=ProfilePage Schema')).not.toBeVisible({ timeout: 2000 });
+					await expect(yoastSidebar.locator('text=ProfilePage Schema')).not.toBeVisible({ timeout: 2000 });
 				}
 			}
 		}
