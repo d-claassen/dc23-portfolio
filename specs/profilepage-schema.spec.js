@@ -33,8 +33,14 @@ test.describe('ProfilePage Schema', () => {
 		}
 	});
 
-	test.beforeEach(async ({ admin }) => {
+	test.beforeEach(async ({ admin, page }) => {
 		await admin.createNewPost({ postType: 'page' });
+		
+		// Close the patterns modal if it appears
+		const closeButton = page.locator('button[aria-label="Close"]').first();
+		if (await closeButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+			await closeButton.click();
+		}
 	});
 
 	test('ProfilePage Schema section does not appear by default', async ({ page, editor }) => {
@@ -49,18 +55,19 @@ test.describe('ProfilePage Schema', () => {
 	});
 
 	test('ProfilePage Schema section appears when page type is ProfilePage', async ({ page }) => {
-		// Open Yoast SEO settings
-		const settingsButton = page.locator('button[aria-label*="Settings"]').first();
-		if (await settingsButton.isVisible()) {
-			await settingsButton.click();
-		}
+		// Open the Yoast SEO sidebar
+		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
+		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
+		await yoastButton.click();
 
 		// Navigate to Schema tab
 		const schemaTab = page.locator('button:has-text("Schema")').first();
+		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 
 		// Change page type to ProfilePage
 		const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Wait for ProfilePage Schema section to appear
@@ -68,16 +75,17 @@ test.describe('ProfilePage Schema', () => {
 	});
 
 	test('can search for users', async ({ page }) => {
-		// Set page type to ProfilePage
-		const settingsButton = page.locator('button[aria-label*="Settings"]').first();
-		if (await settingsButton.isVisible()) {
-			await settingsButton.click();
-		}
+		// Open Yoast SEO sidebar and set page type to ProfilePage
+		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
+		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
+		await yoastButton.click();
 		
 		const schemaTab = page.locator('button:has-text("Schema")').first();
+		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
 		const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Wait for ProfilePage Schema section
@@ -100,16 +108,17 @@ test.describe('ProfilePage Schema', () => {
 	});
 
 	test('can select a user and save to post meta', async ({ page, editor }) => {
-		// Set page type to ProfilePage
-		const settingsButton = page.locator('button[aria-label*="Settings"]').first();
-		if (await settingsButton.isVisible()) {
-			await settingsButton.click();
-		}
+		// Open Yoast SEO sidebar and set page type to ProfilePage
+		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
+		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
+		await yoastButton.click();
 		
 		const schemaTab = page.locator('button:has-text("Schema")').first();
+		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
 		const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Search for user
@@ -135,12 +144,12 @@ test.describe('ProfilePage Schema', () => {
 		await page.waitForLoadState('domcontentloaded');
 		
 		// Open Yoast SEO and Schema tab again
-		const settingsButtonReload = page.locator('button[aria-label*="Settings"]').first();
-		if (await settingsButtonReload.isVisible()) {
-			await settingsButtonReload.click();
-		}
+		const yoastButtonReload = page.locator('button[aria-label*="Yoast"]').first();
+		await yoastButtonReload.waitFor({ state: 'visible', timeout: 5000 });
+		await yoastButtonReload.click();
 		
 		const schemaTabReload = page.locator('button:has-text("Schema")').first();
+		await schemaTabReload.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTabReload.click();
 
 		// Check that the selected user is still shown
@@ -149,16 +158,17 @@ test.describe('ProfilePage Schema', () => {
 	});
 
 	test('displays user profile information', async ({ page }) => {
-		// Set page type to ProfilePage
-		const settingsButton = page.locator('button[aria-label*="Settings"]').first();
-		if (await settingsButton.isVisible()) {
-			await settingsButton.click();
-		}
+		// Open Yoast SEO sidebar and set page type to ProfilePage
+		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
+		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
+		await yoastButton.click();
 		
 		const schemaTab = page.locator('button:has-text("Schema")').first();
+		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
 		const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Search and select user
@@ -179,16 +189,17 @@ test.describe('ProfilePage Schema', () => {
 	});
 
 	test('clears search results after user selection', async ({ page }) => {
-		// Set page type to ProfilePage
-		const settingsButton = page.locator('button[aria-label*="Settings"]').first();
-		if (await settingsButton.isVisible()) {
-			await settingsButton.click();
-		}
+		// Open Yoast SEO sidebar and set page type to ProfilePage
+		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
+		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
+		await yoastButton.click();
 		
 		const schemaTab = page.locator('button:has-text("Schema")').first();
+		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
 		const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Search for user
@@ -213,6 +224,12 @@ test.describe('ProfilePage Schema', () => {
 	test('only shows for pages, not posts', async ({ admin, page }) => {
 		// Create a regular post instead of a page
 		await admin.createNewPost({ postType: 'post' });
+		
+		// Close any modal that might appear
+		const closeButton = page.locator('button[aria-label="Close"]').first();
+		if (await closeButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+			await closeButton.click();
+		}
 
 		// Open Yoast SEO if available
 		const settingsButton = page.locator('button[aria-label*="Settings"]').first();
