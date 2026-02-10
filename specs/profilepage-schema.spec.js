@@ -66,7 +66,7 @@ test.describe('ProfilePage Schema', () => {
 		await schemaTab.click();
 
 		// Change page type to ProfilePage
-		const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+		const pageTypeSelect = page.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
@@ -84,7 +84,7 @@ test.describe('ProfilePage Schema', () => {
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
-		const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+		const pageTypeSelect = page.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
@@ -117,7 +117,7 @@ test.describe('ProfilePage Schema', () => {
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
-		const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+		const pageTypeSelect = page.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
@@ -167,7 +167,7 @@ test.describe('ProfilePage Schema', () => {
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
-		const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+		const pageTypeSelect = page.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
@@ -198,7 +198,7 @@ test.describe('ProfilePage Schema', () => {
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		
-		const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+		const pageTypeSelect = page.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
@@ -242,7 +242,7 @@ test.describe('ProfilePage Schema', () => {
 			await schemaTab.click();
 		
 			// Try to set article type to ProfilePage (if the option even exists for posts)
-			const pageTypeSelect = page.locator('select[name*="pageType"], select[name*="articleType"]').first();
+			const pageTypeSelect = page.getByLabel('Page type');
 			if (await pageTypeSelect.isVisible()) {
 				const hasProfilePage = await pageTypeSelect.locator('option[value="ProfilePage"]').count();
 				
