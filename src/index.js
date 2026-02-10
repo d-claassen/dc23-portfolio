@@ -1,4 +1,4 @@
-37-/**
+/**
  * WordPress dependencies
  */
 import { render, useState, useEffect } from '@wordpress/element';
