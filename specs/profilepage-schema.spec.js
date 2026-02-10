@@ -59,19 +59,21 @@ test.describe('ProfilePage Schema', () => {
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
 		await yoastButton.click();
+		
+		const yoastSidebar =	page.getByRole('region', { name: 'Editor settings' });
 
 		// Navigate to Schema tab
-		const schemaTab = page.locator('button:has-text("Schema")').first();
+		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 
 		// Change page type to ProfilePage
-		const pageTypeSelect = page.getByLabel('Page type');
+		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Wait for ProfilePage Schema section to appear
-		await expect(page.locator('text=ProfilePage Schema')).toBeVisible({ timeout: 5000 });
+		await expect(yoastSidebar.locator('text=ProfilePage Schema')).toBeVisible({ timeout: 5000 });
 	});
 
 	test('can search for users', async ({ page }) => {
