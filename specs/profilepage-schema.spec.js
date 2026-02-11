@@ -66,6 +66,7 @@ test.describe('ProfilePage Schema', () => {
 		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
+		await schemaTab.scrollIntoViewIfNeeded();
 
 		// Change page type to ProfilePage
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
@@ -87,7 +88,8 @@ test.describe('ProfilePage Schema', () => {
 		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
-		
+		await schemaTab.scrollIntoViewIfNeeded();
+
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
@@ -122,6 +124,7 @@ test.describe('ProfilePage Schema', () => {
 		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
+		await schemaTab.scrollIntoViewIfNeeded();
 		
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
@@ -176,6 +179,7 @@ test.describe('ProfilePage Schema', () => {
 		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
+		await schemaTab.scrollIntoViewIfNeeded();
 		
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
@@ -209,6 +213,7 @@ test.describe('ProfilePage Schema', () => {
 		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
+		await schemaTab.scrollIntoViewIfNeeded();
 		
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
@@ -254,6 +259,7 @@ test.describe('ProfilePage Schema', () => {
 		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		if (await schemaTab.isVisible()) {
 			await schemaTab.click();
+			await schemaTab.scrollIntoViewIfNeeded();
 		
 			// Try to set article type to ProfilePage (if the option even exists for posts)
 			const pageTypeSelect = yoastSidebar.getByLabel('Page type');
