@@ -19,11 +19,11 @@ function ProfilePageSchemaSection() {
 	const [selectedUser, setSelectedUser] = useState(null);
 	const [userProfile, setUserProfile] = useState(null);
 
-	// Get the article type from Yoast SEO
-	const articleType = useSelect((select) => {
+	// Get the page type from Yoast SEO
+	const pageType = useSelect((select) => {
 		// Check if Yoast SEO store is available
 		const yoastStore = select('yoast-seo/editor');
-		return yoastStore ? yoastStore.getArticleType() : null;
+		return yoastStore ? yoastStore.getPageType() : null;
 	}, []);
 
 	// Get current post type
@@ -47,8 +47,8 @@ function ProfilePageSchemaSection() {
 	}, [savedUserId]);
 
 	// Only show this section when post type is page and page type is ProfilePage
-	console.log({postType, articleType});
-	if (postType !== 'page' || articleType !== 'ProfilePage') {
+	console.log({postType, pageType});
+	if (postType !== 'page' || pageType !== 'ProfilePage') {
 		return null;
 	}
 
