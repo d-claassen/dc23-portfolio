@@ -2,6 +2,7 @@ const { test, expect } = require('@wordpress/e2e-test-utils-playwright');
 
 test.describe('Author Socials block', () => {
   let consoleLogs = [];
+  const debug = false;
   
   const setBasicSocials = async ( { admin, page } ) => {
     // setup author with social profiles first
