@@ -32,7 +32,7 @@ test.describe('Author Socials block', () => {
     await page.getByLabel('YouTube profile URL').fill('');
     await page.getByRole('button', { name: 'Update Profile' }).click();
 
-    if (consoleLogs.length > 0) {
+    if (debug && consoleLogs.length > 0) {
       console.log('Page logs:', consoleLogs);
     }
     page.removeAllListeners('console');
