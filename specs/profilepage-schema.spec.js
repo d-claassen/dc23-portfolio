@@ -5,6 +5,7 @@ const { test, expect } = require('@wordpress/e2e-test-utils-playwright');
 
 test.describe('ProfilePage Schema', () => {
 	let testUserId;
+	let consoleLogs = [];
 	
 	test.beforeAll(async ({ requestUtils }) => {
 		// Create a test user for selection
@@ -34,6 +35,9 @@ test.describe('ProfilePage Schema', () => {
 	});
 
 	test.beforeEach(async ({ admin, page }) => {
+	 consoleLogs = [];
+  page.on('console', msg => consoleLogs.push(msg.text()));
+
 		await admin.createNewPost({ postType: 'page' });
 		
 		// Close the patterns modal if it appears
@@ -43,6 +47,13 @@ test.describe('ProfilePage Schema', () => {
 		}
 	});
 
+	test.afterEach(async ({ admin, page }) => {
+		if (consoleLogs.length > 0) {
+			console.log('Page logs:', consoleLogs);
+		}
+		page.removeAllListeners('console');
+	});
+	
 	test('ProfilePage Schema section does not appear by default', async ({ page, editor }) => {
 		// Open the Yoast SEO sidebar (if not already open)
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
