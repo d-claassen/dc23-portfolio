@@ -85,7 +85,9 @@ test.describe('ProfilePage Schema', () => {
 		await pageTypeSelect.selectOption('ProfilePage');
 
 		// Wait for ProfilePage Schema section to appear
-		await expect(yoastSidebar.locator('text=ProfilePage Schema')).toBeVisible({ timeout: 5000 });
+		const portfolioTab = yoastSidebar.locator('text=ProfilePage Schema');
+		portfolioTab.scrollIntoViewIfNeeded();
+		await expect(portfolioTab).toBeVisible({ timeout: 5000 });
 	});
 
 	test('can search for users', async ({ page }) => {
