@@ -83,7 +83,8 @@ test.describe('ProfilePage Schema', () => {
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
-
+		await pageTypeSelect.scrollIntoViewIfNeeded();
+		
 		// Wait for ProfilePage Schema section to appear
 		const portfolioTab = yoastSidebar.locator('text=ProfilePage Schema');
 		portfolioTab.scrollIntoViewIfNeeded();
@@ -106,7 +107,8 @@ test.describe('ProfilePage Schema', () => {
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
-
+		await pageTypeSelect.scrollIntoViewIfNeeded();
+		
 		// Wait for ProfilePage Schema section
 		await expect(yoastSidebar.locator('text=ProfilePage Schema')).toBeVisible();
 
@@ -142,7 +144,8 @@ test.describe('ProfilePage Schema', () => {
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
-
+		await pageTypeSelect.scrollIntoViewIfNeeded();
+		
 		// Search for user
 		const searchInput = yoastSidebar.locator('input[placeholder*="Search for a user"]').first();
 		await searchInput.fill('Test Profile');
@@ -197,7 +200,8 @@ test.describe('ProfilePage Schema', () => {
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
-
+		await pageTypeSelect.scrollIntoViewIfNeeded();
+		
 		// Search and select user
 		const searchInput = yoastSidebar.locator('input[placeholder*="Search for a user"]').first();
 		await searchInput.fill('Test Profile');
@@ -276,6 +280,7 @@ test.describe('ProfilePage Schema', () => {
 		
 			// Try to set article type to ProfilePage (if the option even exists for posts)
 			const pageTypeSelect = yoastSidebar.getByLabel('Page type');
+			await pageTypeSelect.scrollIntoViewIfNeeded();
 			if (await pageTypeSelect.isVisible()) {
 				const hasProfilePage = await pageTypeSelect.locator('option[value="ProfilePage"]').count();
 				
