@@ -20,22 +20,21 @@ function ProfilePageSchemaSection() {
 	const [userProfile, setUserProfile] = useState(null);
 
 	// Get the page type from Yoast SEO
-	const pageType = useSelect((select) => {
-		// Check if Yoast SEO store is available
+	const { pageType } = useSelect((select) => {
 		const yoastStore = select('yoast-seo/editor');
-		return yoastStore ? yoastStore.getPageType() : null;
+		return {
+			pageType: yoastStore.getPageType(),
+		};
 	}, []);
 
 	// Get current post type
-	const postType = useSelect(
-		(select) => select(editorStore).getCurrentPostType(),
-		[]
-	);
-
-	const savedUserId = useSelect(
-		(select) => select(editorStore).getEditedPostAttribute('meta')?._dc23_portfolio_user_id,
-		[]
-	);
+	const { postType, savedUserId } = useSelect((select) => {
+		const store = select(editorStore);
+		return {
+			postType: store.getCurrentPostType(),
+			savedUserId: store.getEditedPostAttribute('meta')?._dc23_portfolio_user_id,
+		};
+	}, [] );
 
 	const { editPost } = useDispatch(editorStore);
 
