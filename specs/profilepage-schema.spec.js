@@ -80,12 +80,16 @@ test.describe('ProfilePage Schema', () => {
 		await schemaTab.scrollIntoViewIfNeeded();
 
 		// Change page type to ProfilePage
+		await page.getByRole('combobox', { name: 'Page type' }).click();
+		await page.getByRole('option').filter({ hasText: 'Profile page' }).click();
+/*
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 		await pageTypeSelect.scrollIntoViewIfNeeded();
 		// close tab, trigger change?
 		await schemaTab.click();
+*/
 
 		// Wait for ProfilePage Schema section to appear
 		const portfolioTab = yoastSidebar.locator('text=ProfilePage Schema');
