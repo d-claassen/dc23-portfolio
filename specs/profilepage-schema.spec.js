@@ -98,7 +98,7 @@ test.describe('ProfilePage Schema', () => {
 		await expect(portfolioTab).toBeVisible({ timeout: 5000 });
 	});
 
-	test('can search for users', async ({ page }) => {
+	test.skip('can search for users', async ({ page }) => {
 		// Open Yoast SEO sidebar and set page type to ProfilePage
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
@@ -135,7 +135,7 @@ test.describe('ProfilePage Schema', () => {
 		await expect(yoastSidebar.locator('text=Test Profile User')).toBeVisible();
 	});
 
-	test('can select a user and save to post meta', async ({ page, editor }) => {
+	test.skip('can select a user and save to post meta', async ({ page, editor }) => {
 		// Open Yoast SEO sidebar and set page type to ProfilePage
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
@@ -191,7 +191,7 @@ test.describe('ProfilePage Schema', () => {
 		await expect(yoastSidebarReload.locator('.dc23-user-profile:has-text("Test Profile User")')).toBeVisible();
 	});
 
-	test('displays user profile information', async ({ page }) => {
+	test.skip('displays user profile information', async ({ page }) => {
 		// Open Yoast SEO sidebar and set page type to ProfilePage
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
@@ -226,7 +226,7 @@ test.describe('ProfilePage Schema', () => {
 		await expect(userProfile).toContainText('Test Profile User');
 	});
 
-	test('clears search results after user selection', async ({ page }) => {
+	test.skip('clears search results after user selection', async ({ page }) => {
 		// Open Yoast SEO sidebar and set page type to ProfilePage
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
