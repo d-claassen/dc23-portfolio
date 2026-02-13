@@ -23,8 +23,6 @@ function ProfilePageSchemaSection() {
 	const { pageType } = useSelect((select) => {
 		const yoastStore = select('yoast-seo/editor');
 		
-		console.log( Object.keys( yoastStore ) );
-		
 		return {
 			pageType: yoastStore.getPageType(),
 		};
