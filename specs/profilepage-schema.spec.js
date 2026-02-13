@@ -84,7 +84,9 @@ test.describe('ProfilePage Schema', () => {
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 		await pageTypeSelect.scrollIntoViewIfNeeded();
-		
+		// close tab, trigger change?
+		await schemaTab.click();
+
 		// Wait for ProfilePage Schema section to appear
 		const portfolioTab = yoastSidebar.locator('text=ProfilePage Schema');
 		portfolioTab.scrollIntoViewIfNeeded();
