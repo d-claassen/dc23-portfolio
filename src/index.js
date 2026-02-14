@@ -20,11 +20,12 @@ function ProfilePageSchemaSection() {
 	const [userProfile, setUserProfile] = useState(null);
 
 	// Get the page type from Yoast SEO
-	const { pageType } = useSelect((select) => {
+	const { pageType, defaultPageType } = useSelect((select) => {
 		const yoastStore = select('yoast-seo/editor');
 		
 		return {
 			pageType: yoastStore.getPageType(),
+			defaultPageType: yoastStore.getDefaultPageType(),
 		};
 	}, []);
 
@@ -47,7 +48,7 @@ function ProfilePageSchemaSection() {
 	}, [savedUserId]);
 
 	// Only show this section when post type is page and page type is ProfilePage
-	console.log({postType, pageType});
+	console.log({postType, pageType, defaultPageType});
 	if (postType !== 'page' || pageType !== 'ProfilePage') {
 		return null;
 	}
