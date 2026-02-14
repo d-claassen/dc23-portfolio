@@ -82,7 +82,9 @@ test.describe('ProfilePage Schema', () => {
 		// Change page type to ProfilePage
 		await page.getByRole('combobox', { name: 'Page type' }).click();
 		//await page.getByRole('option').filter({ hasText: 'Profile page' }).click({force: true});
-		await page.getByRole('option', { name: 'Profile Page' }).click();
+		//await page.getByRole('option', { name: 'Profile Page' }).click();
+		await page.keyboard.type('profi');
+		await page.keyboard.press('Tab'); // Or enter
 /*
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
