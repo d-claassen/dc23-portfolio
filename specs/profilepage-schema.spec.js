@@ -6,7 +6,7 @@ const { test, expect } = require('@wordpress/e2e-test-utils-playwright');
 test.describe('ProfilePage Schema', () => {
 	let testUserId;
 	let consoleLogs = [];
-	
+
 	test.beforeAll(async ({ requestUtils }) => {
 		// Create a test user for selection
 		const user = await requestUtils.rest({
@@ -39,7 +39,7 @@ test.describe('ProfilePage Schema', () => {
   page.on('console', msg => consoleLogs.push(msg.text()));
 
 		await admin.createNewPost({ postType: 'page' });
-		
+
 		// Close the patterns modal if it appears
 		const closeButton = page.locator('button[aria-label="Close"]').first();
 		if (await closeButton.isVisible({ timeout: 2000 }).catch(() => false)) {
@@ -53,7 +53,7 @@ test.describe('ProfilePage Schema', () => {
 		}
 		page.removeAllListeners('console');
 	});
-	
+
 	test('ProfilePage Schema section does not appear by default', async ({ page, editor }) => {
 		// Open the Yoast SEO sidebar (if not already open)
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
@@ -70,7 +70,7 @@ test.describe('ProfilePage Schema', () => {
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
 		await yoastButton.click();
-		
+
 		const yoastSidebar =	page.getByRole('region', { name: 'Editor settings' });
 
 		// Navigate to Schema tab
@@ -96,7 +96,6 @@ test.describe('ProfilePage Schema', () => {
 
 		// Wait for ProfilePage Schema section to appear
 		const portfolioTab = yoastSidebar.locator('text=ProfilePage Schema');
-		portfolioTab.scrollIntoViewIfNeeded();
 		await expect(portfolioTab).toBeVisible({ timeout: 5000 });
 	});
 
@@ -117,7 +116,7 @@ test.describe('ProfilePage Schema', () => {
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 		await pageTypeSelect.scrollIntoViewIfNeeded();
-		
+
 		// Wait for ProfilePage Schema section
 		await expect(yoastSidebar.locator('text=ProfilePage Schema')).toBeVisible();
 
@@ -132,7 +131,7 @@ test.describe('ProfilePage Schema', () => {
 		// Check that search results appear
 		const searchResults = yoastSidebar.locator('.dc23-user-search-results');
 		await expect(searchResults).toBeVisible({ timeout: 3000 });
-		
+
 		// Check that our test user appears in results
 		await expect(yoastSidebar.locator('text=Test Profile User')).toBeVisible();
 	});
@@ -144,17 +143,17 @@ test.describe('ProfilePage Schema', () => {
 		await yoastButton.click();
 
 		const yoastSidebar =	page.getByRole('region', { name: 'Editor settings' });
-		
+
 		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		await schemaTab.scrollIntoViewIfNeeded();
-		
+
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 		await pageTypeSelect.scrollIntoViewIfNeeded();
-		
+
 		// Search for user
 		const searchInput = yoastSidebar.locator('input[placeholder*="Search for a user"]').first();
 		await searchInput.fill('Test Profile');
@@ -173,10 +172,10 @@ test.describe('ProfilePage Schema', () => {
 
 		// Verify the meta was saved by reloading and checking
 		await page.reload();
-		
+
 		// Wait for editor to load
 		await page.waitForLoadState('domcontentloaded');
-		
+
 		// Open Yoast SEO and Schema tab again
 		const yoastButtonReload = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButtonReload.waitFor({ state: 'visible', timeout: 5000 });
@@ -200,17 +199,17 @@ test.describe('ProfilePage Schema', () => {
 		await yoastButton.click();
 
 		const yoastSidebar =	page.getByRole('region', { name: 'Editor settings' });
-		
+
 		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		await schemaTab.scrollIntoViewIfNeeded();
-		
+
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
 		await pageTypeSelect.scrollIntoViewIfNeeded();
-		
+
 		// Search and select user
 		const searchInput = yoastSidebar.locator('input[placeholder*="Search for a user"]').first();
 		await searchInput.fill('Test Profile');
@@ -222,7 +221,7 @@ test.describe('ProfilePage Schema', () => {
 		// Check that user info is displayed
 		const userProfile = yoastSidebar.locator('.dc23-user-profile');
 		await expect(userProfile).toBeVisible();
-		
+
 		// Check for name
 		await expect(userProfile.locator('text=Name:')).toBeVisible();
 		await expect(userProfile).toContainText('Test Profile User');
@@ -235,12 +234,12 @@ test.describe('ProfilePage Schema', () => {
 		await yoastButton.click();
 
 		const yoastSidebar =	page.getByRole('region', { name: 'Editor settings' });
-		
+
 		const schemaTab = yoastSidebar.locator('button:has-text("Schema")').first();
 		await schemaTab.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTab.click();
 		await schemaTab.scrollIntoViewIfNeeded();
-		
+
 		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
 		await pageTypeSelect.selectOption('ProfilePage');
@@ -267,7 +266,7 @@ test.describe('ProfilePage Schema', () => {
 	test('only shows for pages, not posts', async ({ admin, page }) => {
 		// Create a regular post instead of a page
 		await admin.createNewPost({ postType: 'post' });
-		
+
 		// Close any modal that might appear
 		const closeButton = page.locator('button[aria-label="Close"]').first();
 		if (await closeButton.isVisible({ timeout: 2000 }).catch(() => false)) {
@@ -286,16 +285,16 @@ test.describe('ProfilePage Schema', () => {
 		if (await schemaTab.isVisible()) {
 			await schemaTab.click();
 			await schemaTab.scrollIntoViewIfNeeded();
-		
+
 			// Try to set article type to ProfilePage (if the option even exists for posts)
 			const pageTypeSelect = yoastSidebar.getByLabel('Page type');
 			await pageTypeSelect.scrollIntoViewIfNeeded();
 			if (await pageTypeSelect.isVisible()) {
 				const hasProfilePage = await pageTypeSelect.locator('option[value="ProfilePage"]').count();
-				
+
 				if (hasProfilePage > 0) {
 					await pageTypeSelect.selectOption('ProfilePage');
-					
+
 					// ProfilePage Schema section should still not appear for posts
 					await expect(yoastSidebar.locator('text=ProfilePage Schema')).not.toBeVisible({ timeout: 2000 });
 				}
