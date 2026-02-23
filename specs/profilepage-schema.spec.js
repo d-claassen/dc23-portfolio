@@ -81,25 +81,15 @@ test.describe('ProfilePage Schema', () => {
 
 		// Change page type to ProfilePage
 		await page.getByRole('combobox', { name: 'Page type' }).click();
-		//await page.getByRole('option').filter({ hasText: 'Profile page' }).click({force: true});
-		//await page.getByRole('option', { name: 'Profile Page' }).click();
 		await page.keyboard.type('profi');
-		await page.keyboard.press('Tab'); // Or enter
-/*
-		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
-		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
-		await pageTypeSelect.selectOption('ProfilePage');
-		await pageTypeSelect.scrollIntoViewIfNeeded();
-		// close tab, trigger change?
-		await schemaTab.click();
-*/
+		await page.keyboard.press('Tab');
 
 		// Wait for ProfilePage Schema section to appear
 		const portfolioTab = yoastSidebar.locator('text=ProfilePage Schema');
 		await expect(portfolioTab).toBeVisible({ timeout: 5000 });
 	});
 
-	test.skip('can search for users', async ({ page }) => {
+	test('can search for users', async ({ page }) => {
 		// Open Yoast SEO sidebar and set page type to ProfilePage
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
@@ -112,10 +102,10 @@ test.describe('ProfilePage Schema', () => {
 		await schemaTab.click();
 		await schemaTab.scrollIntoViewIfNeeded();
 
-		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
-		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
-		await pageTypeSelect.selectOption('ProfilePage');
-		await pageTypeSelect.scrollIntoViewIfNeeded();
+		// Change page type to ProfilePage
+		await page.getByRole('combobox', { name: 'Page type' }).click();
+		await page.keyboard.type('profi');
+		await page.keyboard.press('Tab');
 
 		// Wait for ProfilePage Schema section
 		await expect(yoastSidebar.locator('text=ProfilePage Schema')).toBeVisible();
