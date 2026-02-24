@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         php_version: ["8.3","8.4","8.5"]
         wp_version: ["6.9"]
@@ -66,7 +67,7 @@ jobs:
           composer-options: '--prefer-dist --optimize-autoloader'
 
       - name: NPM build
-        run: npm run build
+        run: npm run build -- --stats verbose
 
       - name: Install Playwright dependencies
         run: npx playwright install chromium firefox webkit --with-deps
