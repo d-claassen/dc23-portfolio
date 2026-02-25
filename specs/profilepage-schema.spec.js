@@ -177,6 +177,12 @@ test.describe('ProfilePage Schema', () => {
 		// Wait for editor to load
 		await page.waitForLoadState('domcontentloaded');
 
+		// Close the patterns modal if it appears
+		const closeButton = page.locator('button[aria-label="Close"]').first();
+		if (await closeButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+			await closeButton.click();
+		}
+
 		// Open Yoast SEO and Schema tab again
 		const yoastButtonReload = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButtonReload.waitFor({ state: 'visible', timeout: 5000 });
