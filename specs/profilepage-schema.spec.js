@@ -178,9 +178,9 @@ test.describe('ProfilePage Schema', () => {
 		await page.waitForLoadState('domcontentloaded');
 
 		// Close the patterns modal if it appears
-		const closeButton = page.locator('button[aria-label="Close"]').first();
-		if (await closeButton.isVisible({ timeout: 2000 }).catch(() => false)) {
-			await closeButton.click();
+		const patternModalTitle = page.locateByText('Choose a pattern').first();
+		if (await patternModalTitle.isVisible({ timeout: 2000 }).catch(() => false)) {
+			await page.keyboard.press('Escape');
 		}
 
 		// Open Yoast SEO and Schema tab again
