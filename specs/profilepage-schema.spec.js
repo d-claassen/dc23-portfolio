@@ -62,7 +62,7 @@ test.describe('ProfilePage Schema', () => {
 		}
 
 		// Check that ProfilePage Schema section is not visible
-		await expect(page.locator('text=ProfilePage Schema')).not.toBeVisible({ timeout: 2000 });
+		await expect(page.locator('button:has-text("ProfilePage Schema")')).not.toBeVisible({ timeout: 2000 });
 	});
 
 	test('ProfilePage Schema section appears when page type is ProfilePage', async ({ page }) => {
@@ -85,7 +85,7 @@ test.describe('ProfilePage Schema', () => {
 		await page.keyboard.press('Tab');
 
 		// Wait for ProfilePage Schema section to appear
-		const portfolioTab = yoastSidebar.locator('text=ProfilePage Schema');
+		const portfolioTab = yoastSidebar.locator('button:has-text("ProfilePage Schema")');
 		await expect(portfolioTab).toBeVisible({ timeout: 5000 });
 	});
 
@@ -108,7 +108,8 @@ test.describe('ProfilePage Schema', () => {
 		await page.keyboard.press('Tab');
 
 		// Wait for ProfilePage Schema section
-		await expect(yoastSidebar.locator('text=ProfilePage Schema')).toBeVisible();
+		const portfolioTab = yoastSidebar.locator('button:has-text("ProfilePage Schema")');
+		await expect(portfolioTab).toBeVisible();
 
 		// Find the search input
 		const searchInput = yoastSidebar.locator('input[placeholder*="Search for a user"]').first();
