@@ -83,6 +83,7 @@ test.describe('ProfilePage Schema', () => {
 		await page.getByRole('combobox', { name: 'Page type' }).click();
 		await page.keyboard.type('profi');
 		await page.keyboard.press('Tab');
+		await page.keyboard.press('Tab');
 
 		// Wait for ProfilePage Schema section to appear
 		const portfolioTab = yoastSidebar.locator('button:has-text("ProfilePage Schema")');
@@ -105,6 +106,7 @@ test.describe('ProfilePage Schema', () => {
 		// Change page type to ProfilePage
 		await page.getByRole('combobox', { name: 'Page type' }).click();
 		await page.keyboard.type('profi');
+		await page.keyboard.press('Tab');
 		await page.keyboard.press('Tab');
 
 		// Wait for ProfilePage Schema section
