@@ -9,6 +9,8 @@ import apiFetch from '@wordpress/api-fetch';
 import { store as editorStore } from '@wordpress/editor';
 import { __ } from '@wordpress/i18n';
 
+const PanelBodyWithRenderPriority = ({ renderPriority, ...props }) => ( <PanelBody {...props} /> );
+
 /**
  * ProfilePage Schema Section Component
  */
@@ -22,7 +24,7 @@ function ProfilePageSchemaSection() {
 	// Get the page type from Yoast SEO
 	const { pageType, defaultPageType } = useSelect((select) => {
 		const yoastStore = select('yoast-seo/editor');
-		
+
 		return {
 			pageType: yoastStore.getPageType(),
 			defaultPageType: yoastStore.getDefaultPageType(),
@@ -112,7 +114,8 @@ function ProfilePageSchemaSection() {
 
 	return (
 		<Fill name="YoastSidebar">
-			<PanelBody
+			<PanelBodyWithRenderPriority
+					renderPriority={ 28.1 }
 				title={__('ProfilePage Schema', 'dc23-portfolio')}
 				initialOpen={true}
 			>
@@ -173,7 +176,7 @@ function ProfilePageSchemaSection() {
 						</div>
 					)}
 				</div>
-			</PanelBody>
+			</PanelBodyWithRenderPriority>
 		</Fill>
 	);
 }
