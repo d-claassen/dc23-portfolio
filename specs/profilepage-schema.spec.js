@@ -38,7 +38,10 @@ test.describe('ProfilePage Schema', () => {
 	 consoleLogs = [];
   page.on('console', msg => consoleLogs.push(msg.text()));
 
-		await admin.createNewPost({ postType: 'page' });
+		await admin.createNewPost({
+			title: 'Test page for ProfilePage markup',
+			postType: 'page',
+		});
 
 		// Close the patterns modal if it appears
 		const closeButton = page.locator('button[aria-label="Close"]').first();
