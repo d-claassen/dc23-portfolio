@@ -191,7 +191,7 @@ test.describe('ProfilePage Schema', () => {
 
 		const yoastSidebarReload =	page.getByRole('region', { name: 'Editor settings' });
 
-		const schemaTabReload = yoastSidebarReload.locator('button:has-text("Schema")').first();
+		const schemaTabReload = yoastSidebarReload.locator('button:has-text("ProfilePage Schema")').first();
 		await schemaTabReload.waitFor({ state: 'visible', timeout: 5000 });
 		await schemaTabReload.click();
 
