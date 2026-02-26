@@ -41,6 +41,7 @@ test.describe('ProfilePage Schema', () => {
 		await admin.createNewPost({
 			title: 'Test page for ProfilePage markup',
 			postType: 'page',
+			content: 'This page is about our author. Its a more extensive version of their bio, with some hostoric highlights.',
 		});
 
 		// Close the patterns modal if it appears
