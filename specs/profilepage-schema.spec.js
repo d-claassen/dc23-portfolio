@@ -178,7 +178,7 @@ test.describe('ProfilePage Schema', () => {
 		await page.waitForLoadState('domcontentloaded');
 
 		// Close the patterns modal if it appears
-		const patternModalTitle = page.locateByText('Choose a pattern').first();
+		const patternModalTitle = page.getByText('Choose a pattern').first();
 		if (await patternModalTitle.isVisible({ timeout: 2000 }).catch(() => false)) {
 			await page.keyboard.press('Escape');
 		}
