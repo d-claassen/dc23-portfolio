@@ -182,7 +182,8 @@ test.describe('ProfilePage Schema', () => {
 
 		const schemaTabReload = yoastSidebarReload.locator('button:has-text("ProfilePage Schema")').first();
 		await schemaTabReload.waitFor({ state: 'visible', timeout: 5000 });
-		await schemaTabReload.click();
+
+		// await schemaTabReload.click();
 
 		// Check that the selected user is still shown
 		await expect(yoastSidebarReload.locator('text=Selected Profile')).toBeVisible({ timeout: 5000 });
