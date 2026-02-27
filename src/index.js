@@ -50,7 +50,6 @@ function ProfilePageSchemaSection() {
 	}, [savedUserId]);
 
 	// Only show this section when post type is page and page type is ProfilePage
-	console.error({postType, pageType, defaultPageType, savedUserId});
 	if (postType !== 'page' || pageType !== 'ProfilePage') {
 		return null;
 	}
@@ -111,6 +110,8 @@ function ProfilePageSchemaSection() {
 		setSearchTerm(value);
 		searchUsers(value);
 	};
+	
+	console.error({savedUserId});
 
 	return (
 		<Fill name="YoastSidebar">
