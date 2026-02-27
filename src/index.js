@@ -14,7 +14,7 @@ const PanelBodyWithRenderPriority = ({ renderPriority, ...props }) => ( <PanelBo
 /**
  * ProfilePage Schema Section Component
  */
-function ProfilePageSchemaSection() {
+function ProfilePageSchemaContent() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [users, setUsers] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -114,9 +114,7 @@ function ProfilePageSchemaSection() {
 	console.error({savedUserId});
 
 	return (
-		<Fill name="YoastSidebar">
-			<PanelBodyWithRenderPriority
-					renderPriority={ 28.1 }
+			<PanelBody
 				title={__('ProfilePage Schema', 'dc23-portfolio')}
 				initialOpen={true}
 			>
@@ -177,10 +175,19 @@ function ProfilePageSchemaSection() {
 						</div>
 					)}
 				</div>
-			</PanelBodyWithRenderPriority>
-		</Fill>
+			</PanelBody>
 	);
 }
+
+const ProfilePageSchemaSection = () => {
+	return (
+		<Fill name="YoastSidebar">
+			<div renderPriority={ 28.1 }>
+				<ProfilePageSchemaContent />
+			</div>
+		</Fill>
+	);
+};
 
 // Register the plugin
 registerPlugin('dc23-profile-page-schema', {
