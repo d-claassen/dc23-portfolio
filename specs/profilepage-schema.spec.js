@@ -5,7 +5,6 @@ const { test, expect } = require('@wordpress/e2e-test-utils-playwright');
 
 test.describe('ProfilePage Schema', () => {
 	let testUserId;
-	let consoleLogs = [];
 
 	test.beforeAll(async ({ requestUtils }) => {
 		// Create a test user for selection
@@ -35,9 +34,6 @@ test.describe('ProfilePage Schema', () => {
 	});
 
 	test.beforeEach(async ({ admin, page }) => {
-	 consoleLogs = [];
-  page.on('console', msg => consoleLogs.push(msg.text()));
-
 		await admin.createNewPost({
 			title: 'Test page for ProfilePage markup',
 			postType: 'page',
@@ -49,13 +45,6 @@ test.describe('ProfilePage Schema', () => {
 		if (await closeButton.isVisible({ timeout: 2000 }).catch(() => false)) {
 			await closeButton.click();
 		}
-	});
-
-	test.afterEach(async ({ admin, page }) => {
-		if (consoleLogs.length > 0) {
-			console.log('Page logs:', consoleLogs);
-		}
-		page.removeAllListeners('console');
 	});
 
 	test('ProfilePage Schema section does not appear by default', async ({ page, editor }) => {
