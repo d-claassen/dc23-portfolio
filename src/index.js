@@ -50,7 +50,7 @@ function ProfilePageSchemaSection() {
 	}, [savedUserId]);
 
 	// Only show this section when post type is page and page type is ProfilePage
-	console.warn({postType, pageType, defaultPageType});
+	console.error({postType, pageType, defaultPageType, savedUserId});
 	if (postType !== 'page' || pageType !== 'ProfilePage') {
 		return null;
 	}
