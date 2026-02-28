@@ -190,7 +190,7 @@ test.describe('ProfilePage Schema', () => {
 		await expect(yoastSidebarReload.locator('.dc23-user-profile:has-text("Test Profile User")')).toBeVisible();
 	});
 
-	test.skip('displays user profile information', async ({ page }) => {
+	test('displays user profile information', async ({ page }) => {
 		// Open Yoast SEO sidebar and set page type to ProfilePage
 		const yoastButton = page.locator('button[aria-label*="Yoast"]').first();
 		await yoastButton.waitFor({ state: 'visible', timeout: 5000 });
@@ -203,10 +203,11 @@ test.describe('ProfilePage Schema', () => {
 		await schemaTab.click();
 		await schemaTab.scrollIntoViewIfNeeded();
 
-		const pageTypeSelect = yoastSidebar.getByLabel('Page type');
-		await pageTypeSelect.waitFor({ state: 'visible', timeout: 5000 });
-		await pageTypeSelect.selectOption('ProfilePage');
-		await pageTypeSelect.scrollIntoViewIfNeeded();
+		// Change page type to ProfilePage
+		await yoastSidebar.getByRole('combobox', { name: 'Page type' }).click();
+		await page.keyboard.type('profi');
+		await page.keyboard.press('Tab');
+		await page.keyboard.press('Tab');
 
 		// Search and select user
 		const searchInput = yoastSidebar.locator('input[placeholder*="Search for a user"]').first();
