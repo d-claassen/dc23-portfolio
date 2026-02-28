@@ -127,7 +127,7 @@ function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context )
 	return $schema_graph;
 }
 
-function custom_rest_user_profiles() {
+function dc23_portfolio_rest_user_profiles() {
 	if ( ! function_exists( 'YoastSEO' ) ) {
 		return;
 	}
@@ -150,7 +150,7 @@ function custom_rest_user_profiles() {
 	}
 }
 
-add_action('rest_api_init', 'custom_rest_user_profiles');
+add_action('rest_api_init', 'dc23_portfolio_rest_user_profiles');
 
 /**
  * Modify WebPage schema to add mainEntity and about properties for ProfilePage.
