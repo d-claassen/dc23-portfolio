@@ -17,7 +17,7 @@ final class Profile_Integration {
      *
      * @return list<Abstract_Schema_Piece> The graph pieces.
      */
-    public function add_software_app( $pieces, $context ) {
+    public function add_profile( $pieces, $context ) {
        $pieces[] = new Profile( $context );
     
        return $pieces;
