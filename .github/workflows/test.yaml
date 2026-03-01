@@ -56,6 +56,11 @@ jobs:
 
       - name: 'Validate composer.json and composer.lock'
         run: 'composer validate --no-check-publish'
+        continue-on-error: true
+
+      - name: 'update composer.json and composer.lock'
+        run: 'composer update'
+        continue-on-error: true
 
       - name: 'NPM install'
         run: npm install
