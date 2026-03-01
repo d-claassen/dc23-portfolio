@@ -27,6 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once 'vendor/autoload.php';
+require_once 'lib/Generators/Schema/Profile.php';
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
@@ -82,6 +83,8 @@ add_action( 'enqueue_block_editor_assets', 'dc23_portfolio_enqueue_editor_assets
  * Initialize schema hooks for portfolio blocks.
  */
 function dc23_portfolio_schema_init() {
+	new \DC23\Portfolio\Generator\Schema\Profile();
+	
 	add_filter( 'wpseo_schema_block_dc23-portfolio/skill', 'dc23_portfolio_skills_to_schema', 10, 3 );
 	add_filter( 'wpseo_schema_webpage', 'dc23_portfolio_schema_webpage', 10, 1 );
 	add_filter( 'wpseo_schema_graph_pieces', 'dc23_portfolio_schema_graph_pieces', 11, 2 );
