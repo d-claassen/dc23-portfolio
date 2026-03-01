@@ -96,7 +96,7 @@ jobs:
         run: npm run test:e2e
 
       - name: 'Archive test artifacts'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: ${{ failure() && steps.tests.conclusion == 'failure' }}
         with:
           name: 'tests'
