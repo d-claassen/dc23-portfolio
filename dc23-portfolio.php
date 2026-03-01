@@ -83,7 +83,7 @@ add_action( 'enqueue_block_editor_assets', 'dc23_portfolio_enqueue_editor_assets
  * Initialize schema hooks for portfolio blocks.
  */
 function dc23_portfolio_schema_init() {
-	new \DC23\Portfolio\Generator\Schema\Profile();
+	new \DC23\Portfolio\Generators\Schema\Profile();
 	
 	add_filter( 'wpseo_schema_block_dc23-portfolio/skill', 'dc23_portfolio_skills_to_schema', 10, 3 );
 	add_filter( 'wpseo_schema_webpage', 'dc23_portfolio_schema_webpage', 10, 1 );
