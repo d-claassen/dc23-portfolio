@@ -1,12 +1,12 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "dc23-portfolio/skill",
+	"name": "dc23-portfolio/education",
 	"version": "0.1.0",
-	"title": "Portfolio skill",
+	"title": "Education",
 	"category": "portfolio",
-	"icon": "star-filled",
-	"description": "Display your skills with automatic schema.org integration.",
+	"icon": "welcome-learn-more",
+	"description": "Add education history with automatic schema.org Role integration.",
 	"example": {},
 	"supports": {
 		"html": false,
@@ -25,16 +25,28 @@
 		}
 	},
 	"attributes": {
-		"name": {
+		"roleId": {
+			"type": "string"
+		},
+		"degree": {
+			"type": "string"
+		},
+		"roleName": {
+			"type": "string"
+		},
+		"organizationId": {
+			"type": "string"
+		},
+		"organizationName": {
+			"type": "string"
+		},
+		"startDate": {
+			"type": "string"
+		},
+		"endDate": {
 			"type": "string"
 		},
 		"description": {
-			"type": "string"
-		},
-		"sameAs": {
-			"type": "string"
-		},
-		"specialtyId": {
 			"type": "string"
 		}
 	},

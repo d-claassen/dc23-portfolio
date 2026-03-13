@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "dc23-portfolio/organization",
+	"version": "0.1.0",
+	"title": "Organization",
+	"category": "portfolio",
+	"icon": "building",
+	"description": "Define an organization for schema.org reference (metadata only, not visible on page).",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"organizationId": {
+			"type": "string"
+		},
+		"name": {
+			"type": "string"
+		},
+		"type": {
+			"type": "string",
+			"default": "Corporation"
+		},
+		"url": {
+			"type": "string"
+		},
+		"sameAs": {
+			"type": "array",
+			"default": []
+		},
+		"parentOrganizationId": {
+			"type": "string"
+		},
+		"parentStartDate": {
+			"type": "string"
+		}
+	},
+	"textdomain": "dc23-portfolio",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css"
+}

@@ -1,12 +1,12 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "dc23-portfolio/skill",
+	"name": "dc23-portfolio/experience",
 	"version": "0.1.0",
-	"title": "Portfolio skill",
+	"title": "Work Experience",
 	"category": "portfolio",
-	"icon": "star-filled",
-	"description": "Display your skills with automatic schema.org integration.",
+	"icon": "businessman",
+	"description": "Add work experience with automatic schema.org EmployeeRole integration.",
 	"example": {},
 	"supports": {
 		"html": false,
@@ -25,16 +25,25 @@
 		}
 	},
 	"attributes": {
-		"name": {
+		"roleId": {
+			"type": "string"
+		},
+		"roleName": {
+			"type": "string"
+		},
+		"organizationId": {
+			"type": "string"
+		},
+		"organizationName": {
+			"type": "string"
+		},
+		"startDate": {
+			"type": "string"
+		},
+		"endDate": {
 			"type": "string"
 		},
 		"description": {
-			"type": "string"
-		},
-		"sameAs": {
-			"type": "string"
-		},
-		"specialtyId": {
 			"type": "string"
 		}
 	},

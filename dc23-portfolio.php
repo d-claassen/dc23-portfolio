@@ -38,6 +38,9 @@ require_once 'vendor/autoload.php';
 function dc23_portfolio_block_init() {
 	register_block_type( __DIR__ . '/build/skill' );
 	register_block_type( __DIR__ . '/build/socials' );
+	register_block_type( __DIR__ . '/build/experience' );
+	register_block_type( __DIR__ . '/build/education' );
+	register_block_type( __DIR__ . '/build/organization' );
 }
 add_action( 'init', 'dc23_portfolio_block_init' );
 
@@ -82,20 +85,28 @@ add_action( 'enqueue_block_editor_assets', 'dc23_portfolio_enqueue_editor_assets
  * Initialize schema hooks for portfolio blocks.
  */
 function dc23_portfolio_schema_init() {
+	// Legacy skill block schema handler (kept for backwards compatibility).
 	add_filter( 'wpseo_schema_block_dc23-portfolio/skill', 'dc23_portfolio_skills_to_schema', 10, 3 );
+
+	// Initialize Resume schema aggregator.
+	$resume = new \DC23\Portfolio\Schema\Resume();
+	$resume->register();
+
+	// Keep existing Person schema for basic profile pages (non-resume).
 	add_filter( 'wpseo_schema_webpage', 'dc23_portfolio_schema_webpage', 10, 1 );
 	add_filter( 'wpseo_schema_graph_pieces', 'dc23_portfolio_schema_graph_pieces', 11, 2 );
-	// add_filter( 'wpseo_pre_schema_block_type_dc23-portfolio/education', 'dc23_portfolio_education_to_schema', 10, 3 );
-	// add_filter( 'wpseo_pre_schema_block_type_dc23-portfolio/experience', 'dc23_portfolio_experience_to_schema', 10, 3 );
 }
 add_action( 'init', 'dc23_portfolio_schema_init' );
 
 /**
  * Convert skills block attributes to schema.org data.
  *
- * @param array $schema_graph Current schema data.
- * @param array $block_data Block data including attributes.
- * @param Meta_Tags_Context $context Yoast context.
+ * Note: This is now handled by Resume.php's collect_specialties() method,
+ * but kept here for backwards compatibility if blocks are used without the Resume class.
+ *
+ * @param array             $schema_graph Current schema data.
+ * @param array             $block_data   Block data including attributes.
+ * @param Meta_Tags_Context $context      Yoast context.
  * @return array Modified schema data.
  */
 function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context ) {
@@ -103,26 +114,26 @@ function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context )
 		return $schema_graph;
 	}
 
-    $specialty = [
-        '@id'   => $context->canonical . '#/schema/Specialty/' . $block['id'],
-        '@type'=>'http://schema.org/Specialty',
-        'name'=>$block_data['attrs']['name'],
-    ];
+	// Generate a unique ID based on the skill name.
+	$skill_id = sanitize_title( $block_data['attrs']['name'] );
 
-	$description = $block_data['attrs']['description'];
+	$specialty = [
+		'@id'   => $context->canonical . '#/schema/Specialty/' . $skill_id,
+		'@type' => 'http://schema.org/Specialty',
+		'name'  => $block_data['attrs']['name'],
+	];
+
+	$description = $block_data['attrs']['description'] ?? '';
 	if ( ! empty( $description ) ) {
-        $specialty['description'] = $description;
+		$specialty['description'] = $description;
 	}
 
-/* 
-@id":"https://www.dennisclaassen.nl/#/schema/Specialty/5"
-"@type":"http://schema.org/Specialty"
-"name":"Soft skills"
-"description":"Communication, coaching, prioritizing, proactive."
-"sameAs":"https://en.wikipedia.org/wiki/Soft_skills"
-*/
+	$same_as = $block_data['attrs']['sameAs'] ?? '';
+	if ( ! empty( $same_as ) ) {
+		$specialty['sameAs'] = $same_as;
+	}
 
-    array_push( $schema_graph, $specialty );
+	array_push( $schema_graph, $specialty );
 
 	return $schema_graph;
 }

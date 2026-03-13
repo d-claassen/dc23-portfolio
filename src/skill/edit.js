@@ -2,8 +2,8 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useBlockProps } from '@wordpress/block-editor';
-import { TextControl } from '@wordpress/components';
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import { TextControl, PanelBody } from '@wordpress/components';
 
 /**
  * Internal dependencies.
@@ -19,12 +19,31 @@ import './editor.scss';
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes, isSelected } ) {
-	const { name, description } = attributes;
+	const { name, description, sameAs, specialtyId } = attributes;
 	const setName = (name) => setAttributes( { ...attributes, name });
 	const setDescription = (description) => setAttributes( { ...attributes, description });
 
 	return (
-		<div { ...useBlockProps() }>
+		<>
+			<InspectorControls>
+				<PanelBody title={ __( 'Schema Settings', 'dc23-portfolio' ) }>
+					<TextControl
+						label={ __( 'Specialty ID', 'dc23-portfolio' ) }
+						value={ specialtyId }
+						onChange={ ( value ) => setAttributes( { specialtyId: value } ) }
+						help={ __( 'Optional: Override the auto-generated @id', 'dc23-portfolio' ) }
+					/>
+					<TextControl
+						label={ __( 'Same As URL', 'dc23-portfolio' ) }
+						value={ sameAs }
+						onChange={ ( value ) => setAttributes( { sameAs: value } ) }
+						placeholder={ __( 'e.g., https://en.wikipedia.org/wiki/Web_development', 'dc23-portfolio' ) }
+						help={ __( 'Reference URL (Wikipedia, etc.)', 'dc23-portfolio' ) }
+						type="url"
+					/>
+				</PanelBody>
+			</InspectorControls>
+			<div { ...useBlockProps() }>
 			<div className="skills-block">
 				<div className="skill-item">
 					<div className="skill-preview" style={{ display: 'flex', gap: '0.5em', alignItems: 'center' }}>
@@ -63,5 +82,6 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 				</div>
 			</div>
 		</div>
+		</>
 	);
 }

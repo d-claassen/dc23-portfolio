@@ -1,5 +1,10 @@
 {
     "name": "dennis/dc23-tea",
+    "autoload": {
+        "psr-4": {
+            "DC23\\Portfolio\\": "lib/"
+        }
+    },
     "require-dev": {
         "wpackagist-plugin/the-events-calendar": ">=6.8,<7",
         "wpackagist-plugin/wordpress-seo": ">=24.0,<=27.2",

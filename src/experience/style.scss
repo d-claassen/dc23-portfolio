@@ -1,0 +1,32 @@
+.experience-block {
+	margin-bottom: 2em;
+
+	.experience-item {
+		.experience-role {
+			margin-top: 0;
+			margin-bottom: 0.5em;
+			font-size: 1.25em;
+			font-weight: bold;
+		}
+
+		.experience-organization {
+			font-weight: 600;
+			color: #666;
+			margin-bottom: 0.5em;
+		}
+
+		.experience-dates {
+			font-size: 0.9em;
+			color: #999;
+			margin-bottom: 0.5em;
+
+			time {
+				font-style: italic;
+			}
+		}
+
+		.experience-description {
+			line-height: 1.6;
+		}
+	}
+}
