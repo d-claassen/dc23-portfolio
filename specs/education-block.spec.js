@@ -17,7 +17,7 @@ test('can be inserted and configured', async ({ page, editor }) => {
 	await expect(educationBlock).toBeVisible();
 
 	// Check default name is editable
-	const titleInput = educationBlock.locator('input[placeholder*="name"]').first();
+	const titleInput = educationBlock.locator('input[placeholder*="institution"]').first();
 
 	// Change the title TextControl
 	await titleInput.click();
