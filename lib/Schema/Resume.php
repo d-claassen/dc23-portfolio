@@ -19,8 +19,7 @@ final class Resume {
 	 */
 	public function register(): void {
 		\add_filter( 'wpseo_schema_person', [ $this, 'enhance_person_with_resume' ], 11, 2 );
-		\add_filter( 'wpseo_schema_webpage', [ $this, 'make_person_main_entity' ], 11, 2 );
-		\add_filter( 'wpseo_schema_graph_pieces', [ $this, 'add_organizations_and_specialties_to_schema' ], 11, 2 );
+		\add_filter( 'wpseo_schema_graph_pieces', [ $this, 'add_portfolio_person_and_related_pieces' ], 11, 2 );
 	}
 
 	/**
@@ -38,35 +37,6 @@ final class Resume {
 		return $user_id ? (int) $user_id : null;
 	}
 
-	/**
-	 * Enhance the WebPage with a mainEntity reference to the Person.
-	 *
-	 * @template T of array{"@type": string}
-	 *
-	 * @param T                 $webpage_data The WebPage schema piece.
-	 * @param Meta_Tags_Context $context      The page context.
-	 *
-	 * @return T|(T&array{mainEntity: array{"@id": string}, about: array{"@id": string}}) The original or enhanced WebPage piece.
-	 */
-	public function make_person_main_entity( $webpage_data, $context ) {
-		$user_id = $this->get_portfolio_user_id();
-
-		if ( ! $user_id ) {
-			return $webpage_data;
-		}
-
-		$webpage_type = (array) ( $webpage_data['@type'] ?? [] );
-		if ( ! \in_array( 'ProfilePage', $webpage_type, true ) ) {
-			return $webpage_data;
-		}
-
-		$person_id = \trailingslashit( \get_permalink() ) . '#/schema/person/' . $user_id;
-
-		$webpage_data['mainEntity'] = [ '@id' => $person_id ];
-		$webpage_data['about']      = [ '@id' => $person_id ];
-
-		return $webpage_data;
-	}
 
 	/**
 	 * Enhance a Schema.org Person piece with resume data from blocks.
@@ -91,8 +61,13 @@ final class Resume {
 			return $person_data;
 		}
 
-		// Override @id for consistency with our structure.
-		$person_data['@id'] = \trailingslashit( \get_permalink() ) . '#/schema/person/' . $user_id;
+		// Only enhance if this Person piece is for the portfolio user.
+		// Use Yoast's ID_Helper to generate the expected @id for comparison.
+		$expected_id = \YoastSEO()->helpers->schema->id->get_user_schema_id( $user_id, $context );
+		if ( ! isset( $person_data['@id'] ) || $person_data['@id'] !== $expected_id ) {
+			// This is a different Person piece - don't modify it.
+			return $person_data;
+		}
 
 		// Add interaction statistics.
 		$nr_of_posts = \count_user_posts( $user_id, 'post', true );
@@ -294,14 +269,14 @@ final class Resume {
 	}
 
 	/**
-	 * Add Organizations and Specialties to the schema graph.
+	 * Add Portfolio Person, Organizations, and Specialties to the schema graph.
 	 *
 	 * @param array<\Yoast\WP\SEO\Generators\Schema\Abstract_Schema_Piece> $pieces  Pieces in the graph.
 	 * @param Meta_Tags_Context                                            $context The page context.
 	 *
 	 * @return array<\Yoast\WP\SEO\Generators\Schema\Abstract_Schema_Piece> Pieces for the graph.
 	 */
-	public function add_organizations_and_specialties_to_schema( $pieces, $context ) {
+	public function add_portfolio_person_and_related_pieces( $pieces, $context ) {
 		\assert( $context instanceof Meta_Tags_Context );
 
 		$user_id = $this->get_portfolio_user_id();
@@ -315,6 +290,12 @@ final class Resume {
 		if ( ! \in_array( 'ProfilePage', $webpage_type, true ) ) {
 			return $pieces;
 		}
+
+		// Add Portfolio Person piece (extends Yoast's Person generator).
+		$portfolio_person = new Portfolio_Person();
+		$portfolio_person->context = $context;
+		$portfolio_person->helpers = \YoastSEO()->helpers;
+		$pieces[] = $portfolio_person;
 
 		// Collect organizations.
 		$organizations = $this->collect_organizations();

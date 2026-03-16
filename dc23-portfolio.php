@@ -89,9 +89,8 @@ function dc23_portfolio_schema_init() {
 	$resume = new \DC23\Portfolio\Schema\Resume();
 	$resume->register();
 
-	// Keep existing Person schema for basic profile pages (non-resume).
+	// Add mainEntity reference to ProfilePage WebPage schema.
 	add_filter( 'wpseo_schema_webpage', 'dc23_portfolio_schema_webpage', 10, 1 );
-	add_filter( 'wpseo_schema_graph_pieces', 'dc23_portfolio_schema_graph_pieces', 11, 2 );
 }
 add_action( 'init', 'dc23_portfolio_schema_init' );
 
@@ -146,8 +145,8 @@ function dc23_portfolio_schema_webpage( $data ) {
 		return $data;
 	}
 
-	// Generate the Person @id
-	$person_id = trailingslashit( get_permalink() ) . '#/schema/person/' . $user_id;
+	// Generate the Person @id using Yoast's ID_Helper for consistency
+	$person_id = YoastSEO()->helpers->schema->id->get_user_schema_id( $user_id, null );
 
 	// Add mainEntity and about properties
 	$data['mainEntity'] = array( '@id' => $person_id );
@@ -156,71 +155,3 @@ function dc23_portfolio_schema_webpage( $data ) {
 	return $data;
 }
 
-/**
- * Add Person schema piece for the selected user.
- *
- * @param array $pieces Current schema pieces.
- * @param \Yoast\WP\SEO\Context\Meta_Tags_Context $context Yoast context.
- * @return array Modified schema pieces.
- */
-function dc23_portfolio_schema_graph_pieces( $pieces, $context ) {
-	// Only process on singular pages
-	if ( ! is_singular( 'page' ) ) {
-		return $pieces;
-	}
-
-	// Get the selected user ID from post meta
-	$user_id = get_post_meta( get_the_ID(), '_dc23_portfolio_user_id', true );
-
-	// Return early if no user selected
-	if ( empty( $user_id ) ) {
-		return $pieces;
-	}
-
-	// Get the user
-	$user = get_userdata( $user_id );
-	if ( ! $user ) {
-		return $pieces;
-	}
-
-	// Build Person schema
-	$person_schema = array(
-		'@type' => 'Person',
-		'@id'   => trailingslashit( get_permalink() ) . '#/schema/person/' . $user_id,
-		'name'  => $user->display_name,
-	);
-
-	// Add Yoast SEO Premium profile fields if available
-	$yoast_title = get_user_meta( $user_id, 'wpseo_title', true );
-	if ( ! empty( $yoast_title ) ) {
-		$person_schema['jobTitle'] = $yoast_title;
-	}
-
-	$yoast_pronouns = get_user_meta( $user_id, 'wpseo_pronouns', true );
-	if ( ! empty( $yoast_pronouns ) ) {
-		$person_schema['knowsAbout'] = $yoast_pronouns; // Using knowsAbout as there's no perfect property for pronouns
-	}
-
-	$yoast_employer = get_user_meta( $user_id, 'wpseo_employer', true );
-	if ( ! empty( $yoast_employer ) ) {
-		$person_schema['worksFor'] = array(
-			'@type' => 'Organization',
-			'name'  => $yoast_employer,
-		);
-	}
-
-	// Add email if available
-	if ( ! empty( $user->user_email ) ) {
-		$person_schema['email'] = $user->user_email;
-	}
-
-	// Add URL if available
-	if ( ! empty( $user->user_url ) ) {
-		$person_schema['url'] = $user->user_url;
-	}
-
-	// Add the Person piece to the graph
-	$pieces[] = new \DC23\Portfolio\Schema\Piece( $person_schema, $person_schema['@id'] );
-
-	return $pieces;
-}
