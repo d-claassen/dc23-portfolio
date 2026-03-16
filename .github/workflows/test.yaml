@@ -24,7 +24,7 @@ jobs:
         dependencies_version: ["locked"]
         include:
           # Lowest PHP, WP, and deps
-          - php_version: "8.1"
+          - php_version: "8.2"
             wp_version: "6.7"
             dependencies_version: "lowest"
           # Unstable latest PHP and WP
