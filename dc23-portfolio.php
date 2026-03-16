@@ -85,9 +85,6 @@ add_action( 'enqueue_block_editor_assets', 'dc23_portfolio_enqueue_editor_assets
  * Initialize schema hooks for portfolio blocks.
  */
 function dc23_portfolio_schema_init() {
-	// Legacy skill block schema handler (kept for backwards compatibility).
-	add_filter( 'wpseo_schema_block_dc23-portfolio/skill', 'dc23_portfolio_skills_to_schema', 10, 3 );
-
 	// Initialize Resume schema aggregator.
 	$resume = new \DC23\Portfolio\Schema\Resume();
 	$resume->register();
@@ -97,46 +94,6 @@ function dc23_portfolio_schema_init() {
 	add_filter( 'wpseo_schema_graph_pieces', 'dc23_portfolio_schema_graph_pieces', 11, 2 );
 }
 add_action( 'init', 'dc23_portfolio_schema_init' );
-
-/**
- * Convert skills block attributes to schema.org data.
- *
- * Note: This is now handled by Resume.php's collect_specialties() method,
- * but kept here for backwards compatibility if blocks are used without the Resume class.
- *
- * @param array             $schema_graph Current schema data.
- * @param array             $block_data   Block data including attributes.
- * @param Meta_Tags_Context $context      Yoast context.
- * @return array Modified schema data.
- */
-function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context ) {
-	if ( empty( $block_data['attrs']['name'] ) ) {
-		return $schema_graph;
-	}
-
-	// Generate a unique ID based on the skill name.
-	$skill_id = sanitize_title( $block_data['attrs']['name'] );
-
-	$specialty = [
-		'@id'   => $context->canonical . '#/schema/Specialty/' . $skill_id,
-		'@type' => 'http://schema.org/Specialty',
-		'name'  => $block_data['attrs']['name'],
-	];
-
-	$description = $block_data['attrs']['description'] ?? '';
-	if ( ! empty( $description ) ) {
-		$specialty['description'] = $description;
-	}
-
-	$same_as = $block_data['attrs']['sameAs'] ?? '';
-	if ( ! empty( $same_as ) ) {
-		$specialty['sameAs'] = $same_as;
-	}
-
-	array_push( $schema_graph, $specialty );
-
-	return $schema_graph;
-}
 
 function dc23_portfolio_rest_user_profiles() {
 	if ( ! function_exists( 'YoastSEO' ) ) {
