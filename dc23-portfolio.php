@@ -263,7 +263,7 @@ function dc23_portfolio_schema_graph_pieces( $pieces, $context ) {
 	}
 
 	// Add the Person piece to the graph
-	$pieces[] = $person_schema;
+	$pieces[] = new \DC23\Portfolio\Schema\Piece( $person_schema, $person_schema['@id'] );
 
 	return $pieces;
 }
