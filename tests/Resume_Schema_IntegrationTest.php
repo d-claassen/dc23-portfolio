@@ -84,11 +84,13 @@ class Resume_Schema_IntegrationTest extends \WP_UnitTestCase {
 		$yoast_schema = $this->get_yoast_schema_output();
 		$yoast_schema_data = \json_decode( $yoast_schema, JSON_OBJECT_AS_ARRAY );
 
-		$org_piece = $this->get_piece_by_type( $yoast_schema_data['@graph'], 'Organization' );
+		// Find the Test Company organization specifically
+		$test_company = $this->get_piece_by_name( $yoast_schema_data['@graph'], 'Test Company' );
 
-		$this->assertSame( 'https://schema.org/Organization', $org_piece['@type'] );
-		$this->assertSame( 'Test Company', $org_piece['name'] );
-		$this->assertStringContainsString( '#/schema/organization/', $org_piece['@id'] );
+		$this->assertNotNull( $test_company, 'Test Company organization should be in schema graph' );
+		$this->assertSame( 'https://schema.org/Organization', $test_company['@type'] );
+		$this->assertSame( 'Test Company', $test_company['name'] );
+		$this->assertStringContainsString( '#/schema/organization/', $test_company['@id'] );
 	}
 
 	/**
@@ -339,5 +341,24 @@ class Resume_Schema_IntegrationTest extends \WP_UnitTestCase {
 
 		// Return first instance.
 		return reset( $nodes_of_type );
+	}
+
+	/**
+	 * Find a Schema.org piece in the root of the Graph by its name.
+	 *
+	 * @param array<int, array{"name"?: string}> $graph Schema.org graph.
+	 * @param string                             $name  Name to search for.
+	 *
+	 * @return array{"name": string}|null The matching schema.org piece or null if not found.
+	 */
+	private function get_piece_by_name( $graph, $name ): ?array {
+		$nodes_with_name = array_filter( $graph, fn( $piece ) => isset( $piece['name'] ) && $piece['name'] === $name );
+
+		if ( empty( $nodes_with_name ) ) {
+			return null;
+		}
+
+		// Return first instance.
+		return reset( $nodes_with_name );
 	}
 }
