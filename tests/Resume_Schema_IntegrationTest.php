@@ -219,48 +219,63 @@ class Resume_Schema_IntegrationTest extends \WP_UnitTestCase {
 		$blocks = [
 			// Experience block
 			[
-				'blockName' => 'dc23-portfolio/experience',
-				'attrs'     => [
+				'blockName'    => 'dc23-portfolio/experience',
+				'attrs'        => [
 					'roleName'       => 'Senior Developer',
 					'organizationId' => $org_id,
 					'startDate'      => '2020-01-01',
 					'endDate'        => '2023-12-31',
 				],
+				'innerBlocks'  => [],
+				'innerHTML'    => '',
+				'innerContent' => [],
 			],
 			// Education block
 			[
-				'blockName' => 'dc23-portfolio/education',
-				'attrs'     => [
+				'blockName'    => 'dc23-portfolio/education',
+				'attrs'        => [
 					'degree'         => 'Computer Science',
 					'organizationId' => $org_id,
 					'startDate'      => '2015-09-01',
 					'endDate'        => '2019-06-30',
 				],
+				'innerBlocks'  => [],
+				'innerHTML'    => '',
+				'innerContent' => [],
 			],
 			// Skill blocks
 			[
-				'blockName' => 'dc23-portfolio/skill',
-				'attrs'     => [
+				'blockName'    => 'dc23-portfolio/skill',
+				'attrs'        => [
 					'name'        => 'PHP',
 					'description' => 'Expert in PHP development',
 				],
+				'innerBlocks'  => [],
+				'innerHTML'    => '',
+				'innerContent' => [],
 			],
 			[
-				'blockName' => 'dc23-portfolio/skill',
-				'attrs'     => [
+				'blockName'    => 'dc23-portfolio/skill',
+				'attrs'        => [
 					'name'        => 'JavaScript',
 					'description' => 'Advanced JavaScript skills',
 				],
+				'innerBlocks'  => [],
+				'innerHTML'    => '',
+				'innerContent' => [],
 			],
 			// Organization block
 			[
-				'blockName' => 'dc23-portfolio/organization',
-				'attrs'     => [
+				'blockName'    => 'dc23-portfolio/organization',
+				'attrs'        => [
 					'organizationId' => $org_id,
 					'name'           => 'Test Company',
 					'type'           => 'Organization',
 					'url'            => 'https://testcompany.com',
 				],
+				'innerBlocks'  => [],
+				'innerHTML'    => '',
+				'innerContent' => [],
 			],
 		];
 
