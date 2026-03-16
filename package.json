@@ -15,6 +15,7 @@
 		"readme.*",
 		"dc23-portfolio.php",
 		"vendor/**",
+		"lib/**",
 		"build/**"
 	],
 	"main": "build/index.js",
