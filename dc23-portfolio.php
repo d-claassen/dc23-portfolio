@@ -90,7 +90,7 @@ function dc23_portfolio_schema_init() {
 	$resume->register();
 
 	// Add mainEntity reference to ProfilePage WebPage schema.
-	add_filter( 'wpseo_schema_webpage', 'dc23_portfolio_schema_webpage', 10, 1 );
+	add_filter( 'wpseo_schema_webpage', 'dc23_portfolio_schema_webpage', 10, 2 );
 }
 add_action( 'init', 'dc23_portfolio_schema_init' );
 
@@ -122,10 +122,11 @@ add_action('rest_api_init', 'dc23_portfolio_rest_user_profiles');
 /**
  * Modify WebPage schema to add mainEntity and about properties for ProfilePage.
  *
- * @param array $data WebPage schema data.
+ * @param array                                       $data    WebPage schema data.
+ * @param \Yoast\WP\SEO\Context\Meta_Tags_Context $context Yoast context.
  * @return array Modified WebPage schema data.
  */
-function dc23_portfolio_schema_webpage( $data ) {
+function dc23_portfolio_schema_webpage( $data, $context ) {
 	// Only process on singular pages
 	if ( ! is_singular( 'page' ) ) {
 		return $data;
@@ -145,8 +146,8 @@ function dc23_portfolio_schema_webpage( $data ) {
 		return $data;
 	}
 
-	// Generate the Person @id using Yoast's ID_Helper for consistency
-	$person_id = YoastSEO()->helpers->schema->id->get_user_schema_id( $user_id, null );
+	// Generate the Person @id using Yoast's ID_Helper with context for complete URL
+	$person_id = YoastSEO()->helpers->schema->id->get_user_schema_id( $user_id, $context );
 
 	// Add mainEntity and about properties
 	$data['mainEntity'] = array( '@id' => $person_id );
