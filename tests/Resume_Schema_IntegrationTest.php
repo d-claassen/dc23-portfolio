@@ -188,7 +188,7 @@ class Resume_Schema_IntegrationTest extends \WP_UnitTestCase {
 		$person_piece = $this->get_piece_by_type( $yoast_schema_data['@graph'], 'Person' );
 
 		// Check that Person @id includes the user ID
-		$this->assertStringContainsString( '#/schema/person/' . $this->user_id, $person_piece['@id'] );
+		$this->assertStringContainsString( \YoastSEO()->helpers->schema->id->get_user_schema_id( $thid->user_id, null ), $person_piece['@id'] );
 
 		// Check that knowsAbout contains references (not embedded objects)
 		if ( isset( $person_piece['knowsAbout'] ) ) {
