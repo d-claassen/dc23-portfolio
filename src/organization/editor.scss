@@ -1,0 +1,13 @@
+.organization-block {
+	padding: 1em;
+	border: 2px dashed #999;
+	border-radius: 4px;
+	background: #f0f0f0;
+	opacity: 0.8;
+
+	.organization-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+	}
+}

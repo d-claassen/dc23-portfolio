@@ -1,0 +1,12 @@
+.education-block {
+	padding: 1em;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: #f9f9f9;
+
+	.education-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+	}
+}

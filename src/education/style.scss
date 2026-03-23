@@ -1,0 +1,33 @@
+.education-block {
+	margin-bottom: 2em;
+
+	.education-item {
+
+		.education-degree {
+			margin-top: 0;
+			margin-bottom: 0.5em;
+			font-size: 1.25em;
+			font-weight: 700;
+		}
+
+		.education-institution {
+			font-weight: 600;
+			color: #666;
+			margin-bottom: 0.5em;
+		}
+
+		.education-dates {
+			font-size: 0.9em;
+			color: #999;
+			margin-bottom: 0.5em;
+
+			time {
+				font-style: italic;
+			}
+		}
+
+		.education-description {
+			line-height: 1.6;
+		}
+	}
+}

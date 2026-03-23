@@ -38,6 +38,9 @@ require_once 'vendor/autoload.php';
 function dc23_portfolio_block_init() {
 	register_block_type( __DIR__ . '/build/skill' );
 	register_block_type( __DIR__ . '/build/socials' );
+	register_block_type( __DIR__ . '/build/experience' );
+	register_block_type( __DIR__ . '/build/education' );
+	register_block_type( __DIR__ . '/build/organization' );
 }
 add_action( 'init', 'dc23_portfolio_block_init' );
 
@@ -82,50 +85,14 @@ add_action( 'enqueue_block_editor_assets', 'dc23_portfolio_enqueue_editor_assets
  * Initialize schema hooks for portfolio blocks.
  */
 function dc23_portfolio_schema_init() {
-	add_filter( 'wpseo_schema_block_dc23-portfolio/skill', 'dc23_portfolio_skills_to_schema', 10, 3 );
-	add_filter( 'wpseo_schema_webpage', 'dc23_portfolio_schema_webpage', 10, 1 );
-	add_filter( 'wpseo_schema_graph_pieces', 'dc23_portfolio_schema_graph_pieces', 11, 2 );
-	// add_filter( 'wpseo_pre_schema_block_type_dc23-portfolio/education', 'dc23_portfolio_education_to_schema', 10, 3 );
-	// add_filter( 'wpseo_pre_schema_block_type_dc23-portfolio/experience', 'dc23_portfolio_experience_to_schema', 10, 3 );
+	// Initialize Resume schema aggregator.
+	$resume = new \DC23\Portfolio\Schema\Resume();
+	$resume->register();
+
+	// Add mainEntity reference to ProfilePage WebPage schema.
+	add_filter( 'wpseo_schema_webpage', 'dc23_portfolio_schema_webpage', 10, 2 );
 }
 add_action( 'init', 'dc23_portfolio_schema_init' );
-
-/**
- * Convert skills block attributes to schema.org data.
- *
- * @param array $schema_graph Current schema data.
- * @param array $block_data Block data including attributes.
- * @param Meta_Tags_Context $context Yoast context.
- * @return array Modified schema data.
- */
-function dc23_portfolio_skills_to_schema( $schema_graph, $block_data, $context ) {
-	if ( empty( $block_data['attrs']['name'] ) ) {
-		return $schema_graph;
-	}
-
-    $specialty = [
-        '@id'   => $context->canonical . '#/schema/Specialty/' . $block['id'],
-        '@type'=>'http://schema.org/Specialty',
-        'name'=>$block_data['attrs']['name'],
-    ];
-
-	$description = $block_data['attrs']['description'];
-	if ( ! empty( $description ) ) {
-        $specialty['description'] = $description;
-	}
-
-/* 
-@id":"https://www.dennisclaassen.nl/#/schema/Specialty/5"
-"@type":"http://schema.org/Specialty"
-"name":"Soft skills"
-"description":"Communication, coaching, prioritizing, proactive."
-"sameAs":"https://en.wikipedia.org/wiki/Soft_skills"
-*/
-
-    array_push( $schema_graph, $specialty );
-
-	return $schema_graph;
-}
 
 function dc23_portfolio_rest_user_profiles() {
 	if ( ! function_exists( 'YoastSEO' ) ) {
@@ -155,10 +122,11 @@ add_action('rest_api_init', 'dc23_portfolio_rest_user_profiles');
 /**
  * Modify WebPage schema to add mainEntity and about properties for ProfilePage.
  *
- * @param array $data WebPage schema data.
+ * @param array                                       $data    WebPage schema data.
+ * @param \Yoast\WP\SEO\Context\Meta_Tags_Context $context Yoast context.
  * @return array Modified WebPage schema data.
  */
-function dc23_portfolio_schema_webpage( $data ) {
+function dc23_portfolio_schema_webpage( $data, $context ) {
 	// Only process on singular pages
 	if ( ! is_singular( 'page' ) ) {
 		return $data;
@@ -178,8 +146,8 @@ function dc23_portfolio_schema_webpage( $data ) {
 		return $data;
 	}
 
-	// Generate the Person @id
-	$person_id = trailingslashit( get_permalink() ) . '#/schema/person/' . $user_id;
+	// Generate the Person @id using Yoast's ID_Helper with context for complete URL
+	$person_id = YoastSEO()->helpers->schema->id->get_user_schema_id( $user_id, $context );
 
 	// Add mainEntity and about properties
 	$data['mainEntity'] = array( '@id' => $person_id );
@@ -188,71 +156,3 @@ function dc23_portfolio_schema_webpage( $data ) {
 	return $data;
 }
 
-/**
- * Add Person schema piece for the selected user.
- *
- * @param array $pieces Current schema pieces.
- * @param \Yoast\WP\SEO\Context\Meta_Tags_Context $context Yoast context.
- * @return array Modified schema pieces.
- */
-function dc23_portfolio_schema_graph_pieces( $pieces, $context ) {
-	// Only process on singular pages
-	if ( ! is_singular( 'page' ) ) {
-		return $pieces;
-	}
-
-	// Get the selected user ID from post meta
-	$user_id = get_post_meta( get_the_ID(), '_dc23_portfolio_user_id', true );
-
-	// Return early if no user selected
-	if ( empty( $user_id ) ) {
-		return $pieces;
-	}
-
-	// Get the user
-	$user = get_userdata( $user_id );
-	if ( ! $user ) {
-		return $pieces;
-	}
-
-	// Build Person schema
-	$person_schema = array(
-		'@type' => 'Person',
-		'@id'   => trailingslashit( get_permalink() ) . '#/schema/person/' . $user_id,
-		'name'  => $user->display_name,
-	);
-
-	// Add Yoast SEO Premium profile fields if available
-	$yoast_title = get_user_meta( $user_id, 'wpseo_title', true );
-	if ( ! empty( $yoast_title ) ) {
-		$person_schema['jobTitle'] = $yoast_title;
-	}
-
-	$yoast_pronouns = get_user_meta( $user_id, 'wpseo_pronouns', true );
-	if ( ! empty( $yoast_pronouns ) ) {
-		$person_schema['knowsAbout'] = $yoast_pronouns; // Using knowsAbout as there's no perfect property for pronouns
-	}
-
-	$yoast_employer = get_user_meta( $user_id, 'wpseo_employer', true );
-	if ( ! empty( $yoast_employer ) ) {
-		$person_schema['worksFor'] = array(
-			'@type' => 'Organization',
-			'name'  => $yoast_employer,
-		);
-	}
-
-	// Add email if available
-	if ( ! empty( $user->user_email ) ) {
-		$person_schema['email'] = $user->user_email;
-	}
-
-	// Add URL if available
-	if ( ! empty( $user->user_url ) ) {
-		$person_schema['url'] = $user->user_url;
-	}
-
-	// Add the Person piece to the graph
-	$pieces[] = $person_schema;
-
-	return $pieces;
-}

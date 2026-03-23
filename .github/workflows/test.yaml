@@ -13,13 +13,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  e2e-playwright:
+  phpunit:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
       matrix:
-        php_version: ["8.3","8.4","8.5"]
+        # Stable PHP, WP, and deps
+        php_version: ["8.2","8.3","8.4"]
         wp_version: ["6.9"]
         dependencies_version: ["locked"]
         include:
@@ -28,12 +28,11 @@ jobs:
             wp_version: "6.7"
             dependencies_version: "lowest"
           # Unstable latest PHP and WP
-          - php_version: "8.6"
+          - php_version: "8.5"
             wp_version: "master"
             dependencies_version: "highest"
 
-
-    name: "E2E Test: WP ${{ matrix.wp_version }} / PHP ${{ matrix.php_version }} / Composer ${{ matrix.dependencies_version }}"
+    name: "PHPUnit Test: WP ${{ matrix.wp_version }} / PHP ${{ matrix.php_version }} / Composer ${{ matrix.dependencies_version }}"
 
     # Allow builds to fail on as-of-yet unreleased WordPress versions.
     continue-on-error: ${{ matrix.wp_version == 'master' }}
@@ -66,38 +65,29 @@ jobs:
           dependency-versions: ${{ matrix.dependencies_version }}
           composer-options: '--prefer-dist --optimize-autoloader'
 
-      - name: NPM build
-        run: npm run build -- --stats verbose
+      - name: 'NPM WordPress dependency versions'
+        if: ${{ matrix.wp_version != 'master' }}
+        run: npm run-script packages-update -- --dist-tag=wp-${{ matrix.wp_version }}
 
-      - name: Install Playwright dependencies
-        run: npx playwright install chromium firefox webkit --with-deps
+      - name: NPM build
+        run: npm run build
 
       - name: Install WordPress and start the server
-        run: npm run wp-env start || npm run wp-env start
+        run: npm run wp-env start -- --xdebug=coverage || npm run wp-env start -- --xdebug=coverage
 
       - name: 'Debug wp-env'
         run: |
           docker ps -a
-          # npm run wp-env run -- tests-mysql mysql -- --version
           npm run wp-env run -- tests-wordpress php -- --version
-          # npm run wp-env run -- tests-wordpress php -m
-          # npm run wp-env run -- tests-wordpress php -i
-          # npm run wp-env run -- --env-cwd='wp-content/themes/dennisclaassen2023' tests-wordpress ./vendor/bin/phpunit -- --version
-          # npm run wp-env run -- tests-wordpress locale -a
           npm run wp-env run -- tests-cli wp core version
-          # npm run wp-env run -- tests-cli wp user list
-          npm run wp-env run -- tests-cli wp theme list
           npm run wp-env run -- tests-cli wp plugin list
 
-      - name: Run the tests
-        id: tests
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        run: npm run test:e2e
+      - name: Run PHPUnit tests
+        run: npm run wp-env run -- --env-cwd='wp-content/plugins/dc23-portfolio' tests-wordpress composer test -- -- --coverage-text --display-errors --display-warnings
 
       - name: 'Archive test artifacts'
         uses: actions/upload-artifact@v7
-        if: ${{ failure() && steps.tests.conclusion == 'failure' }}
+        if: failure()
         with:
-          name: 'tests'
+          name: 'test-results-wp${{ matrix.wp_version }}-php${{ matrix.php_version }}-${{ matrix.dependencies_version }}'
           path: 'artifacts'

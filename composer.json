@@ -1,10 +1,16 @@
 {
-    "name": "dennis/dc23-tea",
+    "name": "dennis/dc23-portfolio",
+    "autoload": {
+        "psr-4": {
+            "DC23\\Portfolio\\": "lib/"
+        }
+    },
     "require-dev": {
-        "wpackagist-plugin/the-events-calendar": ">=6.8,<7",
         "wpackagist-plugin/wordpress-seo": ">=24.0,<=27.2",
         "yoast/yoastcs": "^3.1",
-        "composer/installers": "^2.0"
+        "composer/installers": "^2.0",
+        "phpunit/phpunit": "^11.5",
+        "yoast/phpunit-polyfills": "^4.0"
     },
     "repositories": {
         "wpackagist": {
@@ -30,10 +36,12 @@
     },
     "scripts": {
         "phplint": "@php ./vendor/bin/parallel-lint . -e php --show-deprecated --exclude vendor --exclude .git",
-        "phpcs": "@php ./vendor/bin/phpcs --runtime-set ignore_warnings_on_exit 1"
+        "phpcs": "@php ./vendor/bin/phpcs --runtime-set ignore_warnings_on_exit 1",
+        "test": "@php ./vendor/bin/phpunit --process-isolation"
     },
     "scripts-descriptions": {
         "phplint": "Check the PHP files for parse errors.",
-        "phpcs": "Check the PHP files for code style violations and best practices."
+        "phpcs": "Check the PHP files for code style violations and best practices.",
+        "test": "Test the PHP functionality behaves as expected."
     }
 }
