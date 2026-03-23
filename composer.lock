@@ -2949,15 +2949,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-seo",
-            "version": "27.1.1",
+            "version": "27.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-                "reference": "tags/27.1.1"
+                "reference": "tags/27.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.27.1.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.27.2.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -3092,10 +3092,10 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }
