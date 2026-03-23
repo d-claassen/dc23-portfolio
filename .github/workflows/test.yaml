@@ -60,7 +60,7 @@ jobs:
         run: npm install
 
       - name: 'Composer install'
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
         with:
           dependency-versions: ${{ matrix.dependencies_version }}
           composer-options: '--prefer-dist --optimize-autoloader'
