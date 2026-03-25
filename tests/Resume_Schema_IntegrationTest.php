@@ -209,6 +209,100 @@ class Resume_Schema_IntegrationTest extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Test that portfolio blocks nested inside a Group block are found and processed.
+	 */
+	public function test_should_find_blocks_nested_in_group(): void {
+		$page_id = $this->create_portfolio_page_with_nested_blocks( 'group' );
+
+		$this->go_to( \get_permalink( $page_id ) );
+
+		add_filter( 'wpseo_schema_webpage_type', function() {
+			return [ 'ProfilePage', 'WebPage' ];
+		} );
+
+		$yoast_schema = $this->get_yoast_schema_output();
+		$yoast_schema_data = \json_decode( $yoast_schema, JSON_OBJECT_AS_ARRAY );
+
+		$person_piece = $this->get_piece_by_type( $yoast_schema_data['@graph'], 'Person' );
+
+		// Verify nested experience block was found
+		$this->assertArrayHasKey( 'worksFor', $person_piece, 'Person should have worksFor from nested block' );
+		$this->assertCount( 1, $person_piece['worksFor'], 'Should find 1 nested work experience' );
+		$this->assertSame( 'Nested Developer', $person_piece['worksFor'][0]['roleName'] );
+
+		// Verify nested education block was found
+		$this->assertArrayHasKey( 'alumniOf', $person_piece, 'Person should have alumniOf from nested block' );
+		$this->assertCount( 1, $person_piece['alumniOf'], 'Should find 1 nested education entry' );
+		$this->assertSame( 'Nested Engineering', $person_piece['alumniOf'][0]['roleName'] );
+
+		// Verify nested skill block was found
+		$this->assertArrayHasKey( 'knowsAbout', $person_piece, 'Person should have knowsAbout from nested block' );
+		$this->assertCount( 1, $person_piece['knowsAbout'], 'Should find 1 nested skill' );
+
+		// Verify nested organization block was found
+		$nested_org = $this->get_piece_by_name( $yoast_schema_data['@graph'], 'Nested Test Company' );
+		$this->assertNotNull( $nested_org, 'Nested organization should be in schema graph' );
+		$this->assertSame( 'Nested Test Company', $nested_org['name'] );
+	}
+
+	/**
+	 * Test that portfolio blocks nested inside Columns/Column blocks are found and processed.
+	 */
+	public function test_should_find_blocks_nested_in_columns(): void {
+		$page_id = $this->create_portfolio_page_with_nested_blocks( 'columns' );
+
+		$this->go_to( \get_permalink( $page_id ) );
+
+		add_filter( 'wpseo_schema_webpage_type', function() {
+			return [ 'ProfilePage', 'WebPage' ];
+		} );
+
+		$yoast_schema = $this->get_yoast_schema_output();
+		$yoast_schema_data = \json_decode( $yoast_schema, JSON_OBJECT_AS_ARRAY );
+
+		$person_piece = $this->get_piece_by_type( $yoast_schema_data['@graph'], 'Person' );
+
+		// Verify blocks from different columns were both found
+		$this->assertArrayHasKey( 'worksFor', $person_piece, 'Person should have worksFor from column 1' );
+		$this->assertArrayHasKey( 'alumniOf', $person_piece, 'Person should have alumniOf from column 2' );
+		$this->assertArrayHasKey( 'knowsAbout', $person_piece, 'Person should have knowsAbout from column 1' );
+
+		$nested_org = $this->get_piece_by_name( $yoast_schema_data['@graph'], 'Nested Test Company' );
+		$this->assertNotNull( $nested_org, 'Organization from column 2 should be in schema graph' );
+	}
+
+	/**
+	 * Test that deeply nested portfolio blocks (Group > Columns > Column) are found and processed.
+	 */
+	public function test_should_find_deeply_nested_blocks(): void {
+		$page_id = $this->create_portfolio_page_with_nested_blocks( 'deep' );
+
+		$this->go_to( \get_permalink( $page_id ) );
+
+		add_filter( 'wpseo_schema_webpage_type', function() {
+			return [ 'ProfilePage', 'WebPage' ];
+		} );
+
+		$yoast_schema = $this->get_yoast_schema_output();
+		$yoast_schema_data = \json_decode( $yoast_schema, JSON_OBJECT_AS_ARRAY );
+
+		$person_piece = $this->get_piece_by_type( $yoast_schema_data['@graph'], 'Person' );
+
+		// Verify all deeply nested blocks were found
+		$this->assertArrayHasKey( 'worksFor', $person_piece, 'Should find experience 3 levels deep' );
+		$this->assertSame( 'Nested Developer', $person_piece['worksFor'][0]['roleName'] );
+
+		$this->assertArrayHasKey( 'alumniOf', $person_piece, 'Should find education 3 levels deep' );
+		$this->assertSame( 'Nested Engineering', $person_piece['alumniOf'][0]['roleName'] );
+
+		$this->assertArrayHasKey( 'knowsAbout', $person_piece, 'Should find skills 3 levels deep' );
+		$this->assertCount( 1, $person_piece['knowsAbout'], 'Should find 1 skill 3 levels deep' );
+
+		$nested_org = $this->get_piece_by_name( $yoast_schema_data['@graph'], 'Nested Test Company' );
+		$this->assertNotNull( $nested_org, 'Should find organization 3 levels deep' );
+	}
+
+	/**
 	 * Create a test portfolio page with all types of blocks.
 	 *
 	 * @return int Page ID.
@@ -375,5 +469,171 @@ class Resume_Schema_IntegrationTest extends \WP_UnitTestCase {
 
 		// Return first instance.
 		return reset( $nodes_with_name );
+	}
+
+	/**
+	 * Create a test portfolio page with nested blocks.
+	 *
+	 * @param string $nesting_type Type of nesting: 'group', 'columns', or 'deep'.
+	 * @return int Page ID.
+	 */
+	private function create_portfolio_page_with_nested_blocks( string $nesting_type = 'group' ): int {
+		$org_id = \trailingslashit( home_url() ) . '#/schema/organization/nested-test-company';
+
+		// Create portfolio blocks
+		$experience_block = [
+			'blockName'    => 'dc23-portfolio/experience',
+			'attrs'        => [
+				'roleName'       => 'Nested Developer',
+				'organizationId' => $org_id,
+				'startDate'      => '2021-01-01',
+				'endDate'        => '2024-12-31',
+			],
+			'innerBlocks'  => [],
+			'innerHTML'    => '',
+			'innerContent' => [],
+		];
+
+		$education_block = [
+			'blockName'    => 'dc23-portfolio/education',
+			'attrs'        => [
+				'degree'         => 'Nested Engineering',
+				'organizationId' => $org_id,
+				'startDate'      => '2016-09-01',
+				'endDate'        => '2020-06-30',
+			],
+			'innerBlocks'  => [],
+			'innerHTML'    => '',
+			'innerContent' => [],
+		];
+
+		$skill_block = [
+			'blockName'    => 'dc23-portfolio/skill',
+			'attrs'        => [
+				'name'        => 'Nested Skills',
+				'description' => 'Skills found in nested blocks',
+			],
+			'innerBlocks'  => [],
+			'innerHTML'    => '',
+			'innerContent' => [],
+		];
+
+		$organization_block = [
+			'blockName'    => 'dc23-portfolio/organization',
+			'attrs'        => [
+				'organizationId' => $org_id,
+				'name'           => 'Nested Test Company',
+				'type'           => 'Organization',
+				'url'            => 'https://nestedtest.com',
+			],
+			'innerBlocks'  => [],
+			'innerHTML'    => '',
+			'innerContent' => [],
+		];
+
+		// Build different nesting structures
+		if ( $nesting_type === 'group' ) {
+			// Nest all blocks inside a Group block
+			$blocks = [
+				[
+					'blockName'    => 'core/group',
+					'attrs'        => [],
+					'innerBlocks'  => [
+						$experience_block,
+						$education_block,
+						$skill_block,
+						$organization_block,
+					],
+					'innerHTML'    => '<div class="wp-block-group"></div>',
+					'innerContent' => [ '<div class="wp-block-group">', null, null, null, null, '</div>' ],
+				],
+			];
+		} elseif ( $nesting_type === 'columns' ) {
+			// Nest blocks inside Columns > Column structure
+			$blocks = [
+				[
+					'blockName'    => 'core/columns',
+					'attrs'        => [],
+					'innerBlocks'  => [
+						[
+							'blockName'    => 'core/column',
+							'attrs'        => [],
+							'innerBlocks'  => [
+								$experience_block,
+								$skill_block,
+							],
+							'innerHTML'    => '<div class="wp-block-column"></div>',
+							'innerContent' => [ '<div class="wp-block-column">', null, null, '</div>' ],
+						],
+						[
+							'blockName'    => 'core/column',
+							'attrs'        => [],
+							'innerBlocks'  => [
+								$education_block,
+								$organization_block,
+							],
+							'innerHTML'    => '<div class="wp-block-column"></div>',
+							'innerContent' => [ '<div class="wp-block-column">', null, null, '</div>' ],
+						],
+					],
+					'innerHTML'    => '<div class="wp-block-columns"></div>',
+					'innerContent' => [ '<div class="wp-block-columns">', null, null, '</div>' ],
+				],
+			];
+		} elseif ( $nesting_type === 'deep' ) {
+			// Deeply nested: Group > Columns > Column > portfolio blocks
+			$blocks = [
+				[
+					'blockName'    => 'core/group',
+					'attrs'        => [],
+					'innerBlocks'  => [
+						[
+							'blockName'    => 'core/columns',
+							'attrs'        => [],
+							'innerBlocks'  => [
+								[
+									'blockName'    => 'core/column',
+									'attrs'        => [],
+									'innerBlocks'  => [
+										$experience_block,
+										$education_block,
+										$skill_block,
+										$organization_block,
+									],
+									'innerHTML'    => '<div class="wp-block-column"></div>',
+									'innerContent' => [ '<div class="wp-block-column">', null, null, null, null, '</div>' ],
+								],
+							],
+							'innerHTML'    => '<div class="wp-block-columns"></div>',
+							'innerContent' => [ '<div class="wp-block-columns">', null, '</div>' ],
+						],
+					],
+					'innerHTML'    => '<div class="wp-block-group"></div>',
+					'innerContent' => [ '<div class="wp-block-group">', null, '</div>' ],
+				],
+			];
+		} else {
+			throw new \InvalidArgumentException( "Unknown nesting type: $nesting_type" );
+		}
+
+		$post_content = '';
+		foreach ( $blocks as $block ) {
+			$post_content .= serialize_block( $block );
+		}
+
+		$page_id = self::factory()->post->create( [
+			'post_type'    => 'page',
+			'post_title'   => 'Portfolio with Nested Blocks',
+			'post_content' => $post_content,
+			'post_status'  => 'publish',
+		] );
+
+		// Set the portfolio user ID
+		\update_post_meta( $page_id, '_dc23_portfolio_user_id', $this->user_id );
+
+		// Update object to persist meta value to indexable
+		self::factory()->post->update_object( $page_id, [] );
+
+		return $page_id;
 	}
 }
