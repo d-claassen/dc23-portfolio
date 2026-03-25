@@ -37,6 +37,37 @@ final class Resume {
 		return $user_id ? (int) $user_id : null;
 	}
 
+	/**
+	 * Recursively flatten nested blocks into a single-level array.
+	 *
+	 * WordPress blocks can be nested inside container blocks (Group, Columns, etc.).
+	 * This method recursively traverses the block tree and returns all blocks
+	 * in a flat array, making it easier to find portfolio blocks at any nesting level.
+	 *
+	 * @param array<array<string, mixed>> $blocks Array of blocks from parse_blocks().
+	 *
+	 * @return array<array<string, mixed>> Flattened array of all blocks.
+	 */
+	private function flatten_blocks( array $blocks ): array {
+		$flattened = [];
+
+		foreach ( $blocks as $block ) {
+			// Skip blocks without a name (usually whitespace/HTML comments).
+			if ( empty( $block['blockName'] ) ) {
+				continue;
+			}
+
+			// Add the current block to the flattened array.
+			$flattened[] = $block;
+
+			// Recursively process inner blocks if they exist.
+			if ( ! empty( $block['innerBlocks'] ) && \is_array( $block['innerBlocks'] ) ) {
+				$flattened = \array_merge( $flattened, $this->flatten_blocks( $block['innerBlocks'] ) );
+			}
+		}
+
+		return $flattened;
+	}
 
 	/**
 	 * Enhance a Schema.org Person piece with resume data from blocks.
@@ -129,7 +160,7 @@ final class Resume {
 		$blocks      = \parse_blocks( $post->post_content );
 		$experiences = [];
 
-		foreach ( $blocks as $block ) {
+		foreach ( $this->flatten_blocks( $blocks ) as $block ) {
 			if ( $block['blockName'] === 'dc23-portfolio/experience' && ! empty( $block['attrs'] ) ) {
 				$experiences[] = $this->build_employee_role( $block['attrs'] );
 			}
@@ -184,7 +215,7 @@ final class Resume {
 		$blocks    = \parse_blocks( $post->post_content );
 		$education = [];
 
-		foreach ( $blocks as $block ) {
+		foreach ( $this->flatten_blocks( $blocks ) as $block ) {
 			if ( $block['blockName'] === 'dc23-portfolio/education' && ! empty( $block['attrs'] ) ) {
 				$education[] = $this->build_education_role( $block['attrs'] );
 			}
@@ -239,7 +270,7 @@ final class Resume {
 		$blocks      = \parse_blocks( $post->post_content );
 		$specialties = [];
 
-		foreach ( $blocks as $block ) {
+		foreach ( $this->flatten_blocks( $blocks ) as $block ) {
 			if ( $block['blockName'] === 'dc23-portfolio/skill' && ! empty( $block['attrs']['name'] ) ) {
 				$specialty = [
 					'@type' => 'http://schema.org/Specialty',
@@ -326,7 +357,7 @@ final class Resume {
 		$blocks        = \parse_blocks( $post->post_content );
 		$organizations = [];
 
-		foreach ( $blocks as $block ) {
+		foreach ( $this->flatten_blocks( $blocks ) as $block ) {
 			if ( $block['blockName'] === 'dc23-portfolio/organization' && ! empty( $block['attrs'] ) ) {
 				$organizations[] = $this->build_organization( $block['attrs'] );
 			}
