@@ -6,7 +6,7 @@
         }
     },
     "require-dev": {
-        "wpackagist-plugin/wordpress-seo": ">=24.0,<=27.2",
+        "wpackagist-plugin/wordpress-seo": ">=24.0,<=27.4",
         "yoast/yoastcs": "^3.1",
         "composer/installers": "^2.0",
         "phpunit/phpunit": "^11.5",
