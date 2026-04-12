@@ -97,7 +97,7 @@ jobs:
         run: 'echo ${{ steps.git_tag.outputs.tag_name }}'
         
       - name: Create Github Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           prerelease: ${{ startsWith(github.event.inputs.increment, 'pre') }}
           draft: ${{ github.event.inputs.draft }}
