@@ -13,6 +13,14 @@ updates:
       interval: "weekly"
     assignees:
       - d-claassen
+    groups:
+      wordpress:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "@wordpress/*"
 
   - package-ecosystem: "composer"
     directory: "/"
