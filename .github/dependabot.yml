@@ -54,3 +54,7 @@ updates:
           - "slevomat/*"
           - "automattic/vipwpcs"
           - "dealerdirect/phpcodesniffer-composer-installer"
+      wp-compatibility:
+        patterns:
+          - "yoast/*"
+          - "wpackagist-plugin/*"
