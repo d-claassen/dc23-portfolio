@@ -22,7 +22,7 @@
 	"devDependencies": {
 		"@wordpress/date": "^6.0.0",
 		"@wordpress/env": "^12.0.0",
-		"@wordpress/scripts": "^36.1.0"
+		"@wordpress/scripts": "^37.0.0"
 	},
 	"scripts": {
 		"build": "wp-scripts build --webpack-copy-php",
