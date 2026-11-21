@@ -5,7 +5,7 @@
  * Requires at least: 6.6
  * Requires PHP:      7.2
  * Requires Plugins:  wordpress-seo
- * Version:           0.4.1
+ * Version:           0.4.2
  * Author:            The WordPress Contributors
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -26,7 +26,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-require_once 'vendor/autoload.php';
+// The release ZIP bundles its own autoloader. When the plugin is installed with Composer,
+// the project's autoloader already covers it and this file does not exist.
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	require_once __DIR__ . '/vendor/autoload.php';
+}
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.

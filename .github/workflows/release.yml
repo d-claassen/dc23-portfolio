@@ -1,0 +1,99 @@
+# Release workflow of a distribution repository (d-claassen/<slug>).
+#
+# Maintained in d-claassen/dc23-monorepo at templates/release-workflow/release.yml and copied into
+# every distribution repository by tools/build-plugin.mjs. Do not edit it in the distribution
+# repository: the next release overwrites it.
+#
+# The monorepo pushes a release commit as tag vX.Y.Z, without moving main. This workflow then builds
+# <slug>.zip (the tagged files plus the production autoloader) and creates the GitHub release with it.
+# The monorepo moves main to the tag only after this release exists, because Git Updater reads the
+# version from main and must never see a version whose ZIP is missing.
+#
+# The workflow never overwrites an existing release or asset, so it can be re-run safely.
+
+name: 'Release'
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to (re)create the release for, e.g. v1.2.3'
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: 'Release ${{ github.event.inputs.tag || github.ref_name }}'
+    runs-on: ubuntu-latest
+
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+      SLUG: ${{ github.event.repository.name }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: 'Checkout the tag'
+        uses: actions/checkout@v7
+        with:
+          ref: refs/tags/${{ env.TAG }}
+
+      - name: 'Check the tag against the plugin files'
+        run: |
+          VERSION="${TAG#v}"
+          HEADER="$(grep -m1 -E '^\s*\*\s*Version:' "$SLUG.php" | awk '{print $NF}')"
+          STABLE="$(grep -m1 -E '^Stable tag:' readme.txt | awk '{print $NF}')"
+          echo "tag=$TAG header=$HEADER stable=$STABLE"
+          test "$HEADER" = "$VERSION" || { echo "::error::Plugin header Version $HEADER does not match tag $TAG"; exit 1; }
+          test "$STABLE" = "$VERSION" || { echo "::error::readme.txt Stable tag $STABLE does not match tag $TAG"; exit 1; }
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: 'Setup PHP'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
+      - name: 'Build the plugin ZIP'
+        run: |
+          # Only the Composer autoloader is added: the plugins have no production dependencies.
+          if jq -e '(.require // {}) | keys | map(select(. != "php" and (startswith("ext-") | not))) | length > 0' composer.json > /dev/null; then
+            echo "::error::composer.json has production dependencies; this workflow only generates the autoloader."
+            exit 1
+          fi
+          STAGE="$RUNNER_TEMP/stage/$SLUG"
+          mkdir -p "$STAGE"
+          git archive HEAD | tar -x -C "$STAGE"
+          cd "$STAGE"
+          # The published composer.json has no require-dev, so this installs nothing but the autoloader,
+          # the same files a `composer install --no-dev` in the plugin's own repository produced.
+          COMPOSER_ROOT_VERSION="$VERSION" composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts --no-plugins
+          test -f vendor/autoload.php
+          rm -rf composer.json composer.lock .github .gitattributes
+          cd ..
+          zip -r -q -X "$GITHUB_WORKSPACE/$SLUG.zip" "$SLUG"
+          unzip -Z1 "$GITHUB_WORKSPACE/$SLUG.zip" | sort > "$GITHUB_WORKSPACE/$SLUG.zip.txt"
+          echo "Files in $SLUG.zip: $(wc -l < "$GITHUB_WORKSPACE/$SLUG.zip.txt")"
+
+      - name: 'Create the release and upload the ZIP'
+        run: |
+          if gh release view "$TAG" --json assets --jq '.assets[].name' > assets.txt 2> /dev/null; then
+            if grep -qx "$SLUG.zip" assets.txt; then
+              echo "Release $TAG already has $SLUG.zip; nothing to do."
+            else
+              echo "Release $TAG exists without $SLUG.zip; uploading it."
+              gh release upload "$TAG" "$SLUG.zip"
+            fi
+          else
+            PRERELEASE=""
+            case "$VERSION" in *-*) PRERELEASE="--prerelease" ;; esac
+            gh release create "$TAG" "$SLUG.zip" --verify-tag --title "$TAG" --notes-from-tag $PRERELEASE
+          fi
