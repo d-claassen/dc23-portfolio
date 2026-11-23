@@ -1,15 +1,5 @@
-# Release workflow of a distribution repository (d-claassen/<slug>).
-#
-# Maintained in d-claassen/dc23-monorepo at templates/release-workflow/release.yml and copied into
-# every distribution repository by tools/build-plugin.mjs. Do not edit it in the distribution
-# repository: the next release overwrites it.
-#
-# The monorepo pushes a release commit as tag vX.Y.Z, without moving main. This workflow then builds
-# <slug>.zip (the tagged files plus the production autoloader) and creates the GitHub release with it.
-# The monorepo moves main to the tag only after this release exists, because Git Updater reads the
-# version from main and must never see a version whose ZIP is missing.
-#
-# The workflow never overwrites an existing release or asset, so it can be re-run safely.
+# Creates this plugin's GitHub release from a version tag. Shared by all DC23 plugins and maintained
+# in d-claassen/dc23-monorepo; changes made here are overwritten by the next release.
 
 name: 'Release'
 
@@ -64,17 +54,11 @@ jobs:
 
       - name: 'Build the plugin ZIP'
         run: |
-          # Only the Composer autoloader is added: the plugins have no production dependencies.
-          if jq -e '(.require // {}) | keys | map(select(. != "php" and (startswith("ext-") | not))) | length > 0' composer.json > /dev/null; then
-            echo "::error::composer.json has production dependencies; this workflow only generates the autoloader."
-            exit 1
-          fi
           STAGE="$RUNNER_TEMP/stage/$SLUG"
           mkdir -p "$STAGE"
           git archive HEAD | tar -x -C "$STAGE"
           cd "$STAGE"
-          # The published composer.json has no require-dev, so this installs nothing but the autoloader,
-          # the same files a `composer install --no-dev` in the plugin's own repository produced.
+          # Sites without Composer need the plugin's own autoloader.
           COMPOSER_ROOT_VERSION="$VERSION" composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts --no-plugins
           test -f vendor/autoload.php
           rm -rf composer.json composer.lock .github .gitattributes
